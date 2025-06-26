@@ -3,87 +3,87 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Dr. Kumar Laboratories Color System */
+/* Ayurvedic Design System Colors */
 
 @layer base {
   :root {
-    --background: 255 255 255;
-    --foreground: 36 41 46;
+    --background: 250 248 246;
+    --foreground: 41 37 36;
 
-    --card: 255 255 255;
-    --card-foreground: 36 41 46;
+    --card: 255 251 235;
+    --card-foreground: 41 37 36;
 
-    --popover: 255 255 255;
-    --popover-foreground: 36 41 46;
+    --popover: 255 251 235;
+    --popover-foreground: 41 37 36;
 
-    --primary: 114 52 33;
+    --primary: 46 125 50;
     --primary-foreground: 255 255 255;
 
-    --secondary: 248 250 252;
-    --secondary-foreground: 15 23 42;
+    --secondary: 249 246 238;
+    --secondary-foreground: 41 37 36;
 
-    --muted: 248 250 252;
-    --muted-foreground: 100 116 139;
+    --muted: 249 246 238;
+    --muted-foreground: 120 113 108;
 
-    --accent: 248 250 252;
-    --accent-foreground: 15 23 42;
+    --accent: 252 211 77;
+    --accent-foreground: 41 37 36;
 
-    --destructive: 211 47 47;
+    --destructive: 239 68 68;
     --destructive-foreground: 255 255 255;
 
-    --border: 226 232 240;
-    --input: 226 232 240;
-    --ring: 114 52 33;
+    --border: 231 229 228;
+    --input: 231 229 228;
+    --ring: 46 125 50;
 
     --radius: 1rem;
 
-    --sidebar-background: 255 255 255;
-    --sidebar-foreground: 36 41 46;
-    --sidebar-primary: 114 52 33;
+    --sidebar-background: 255 251 235;
+    --sidebar-foreground: 41 37 36;
+    --sidebar-primary: 46 125 50;
     --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 248 250 252;
-    --sidebar-accent-foreground: 15 23 42;
-    --sidebar-border: 226 232 240;
-    --sidebar-ring: 114 52 33;
+    --sidebar-accent: 249 246 238;
+    --sidebar-accent-foreground: 41 37 36;
+    --sidebar-border: 231 229 228;
+    --sidebar-ring: 46 125 50;
   }
 
   .dark {
-    --background: 0 0 0;
-    --foreground: 255 255 255;
+    --background: 12 10 9;
+    --foreground: 250 250 249;
 
-    --card: 12 12 12;
-    --card-foreground: 255 255 255;
+    --card: 24 24 27;
+    --card-foreground: 250 250 249;
 
-    --popover: 12 12 12;
-    --popover-foreground: 255 255 255;
+    --popover: 24 24 27;
+    --popover-foreground: 250 250 249;
 
-    --primary: 25 118 210;
-    --primary-foreground: 255 255 255;
+    --primary: 125 179 125;
+    --primary-foreground: 12 10 9;
 
-    --secondary: 30 41 59;
-    --secondary-foreground: 248 250 252;
+    --secondary: 39 39 42;
+    --secondary-foreground: 250 250 249;
 
-    --muted: 30 41 59;
-    --muted-foreground: 148 163 184;
+    --muted: 39 39 42;
+    --muted-foreground: 161 161 170;
 
-    --accent: 30 41 59;
-    --accent-foreground: 248 250 252;
+    --accent: 74 148 196;
+    --accent-foreground: 250 250 249;
 
-    --destructive: 211 47 47;
-    --destructive-foreground: 255 255 255;
+    --destructive: 239 68 68;
+    --destructive-foreground: 250 250 249;
 
-    --border: 30 41 59;
-    --input: 30 41 59;
-    --ring: 25 118 210;
+    --border: 39 39 42;
+    --input: 39 39 42;
+    --ring: 125 179 125;
 
-    --sidebar-background: 12 12 12;
-    --sidebar-foreground: 255 255 255;
-    --sidebar-primary: 25 118 210;
-    --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 30 41 59;
-    --sidebar-accent-foreground: 248 250 252;
-    --sidebar-border: 30 41 59;
-    --sidebar-ring: 25 118 210;
+    --sidebar-background: 24 24 27;
+    --sidebar-foreground: 250 250 249;
+    --sidebar-primary: 74 148 196;
+    --sidebar-primary-foreground: 12 10 9;
+    --sidebar-accent: 39 39 42;
+    --sidebar-accent-foreground: 250 250 249;
+    --sidebar-border: 39 39 42;
+    --sidebar-ring: 74 148 196;
   }
 }
 
@@ -99,45 +99,19 @@
 }
 
 @layer components {
-  .product-card {
-    @apply bg-card border border-border rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden;
+  .ayurvedic-gradient {
+    @apply bg-gradient-to-br from-ayurvedic-green-50 via-ayurvedic-beige-50 to-ayurvedic-gold-50;
   }
   
-  .product-card:hover .product-image {
-    @apply scale-105;
+  .ayurvedic-card {
+    @apply bg-card/80 backdrop-blur-sm border border-ayurvedic-green-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
   }
   
-  .product-image {
-    @apply transition-transform duration-300;
+  .ayurvedic-button {
+    @apply bg-ayurvedic-green-500 hover:bg-ayurvedic-green-600 text-white font-medium px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-md;
   }
   
-  .btn-primary {
-    @apply bg-[#723421] hover:bg-[#723421]/90 text-white font-medium px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-md;
+  .concern-pill {
+    @apply bg-ayurvedic-beige-100 hover:bg-ayurvedic-green-100 text-ayurvedic-green-700 px-4 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-300 hover:scale-105 border border-ayurvedic-green-200/50;
   }
-  
-  .btn-secondary {
-    @apply bg-[#d32f2f] hover:bg-[#d32f2f]/90 text-white font-medium px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-md;
-  }
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-muted;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-border rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-muted-foreground;
 }
