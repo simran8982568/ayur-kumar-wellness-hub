@@ -1,236 +1,255 @@
 
 import React, { useState, useEffect } from 'react';
-import Navbar from '@/components/Navbar';
-import Sidebar from '@/components/Sidebar';
+import Header from '@/components/Header';
 import HeroBanner from '@/components/HeroBanner';
 import ConcernBlocks from '@/components/ConcernBlocks';
 import ProductSection from '@/components/ProductSection';
+import TrustReviews from '@/components/TrustReviews';
 import TestimonialSection from '@/components/TestimonialSection';
 import FeedbackSection from '@/components/FeedbackSection';
 import Footer from '@/components/Footer';
 
 const Index = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Sample product data
-  const bestSellers = [
+  // Sample product data for featured sections
+  const mensHealthProducts = [
     {
       id: 1,
-      name: "Immunity Gold Capsules - Complete Protection",
-      price: 899,
-      originalPrice: 1299,
+      name: "Men's Vitality Booster",
+      price: 599,
+      originalPrice: 799,
       rating: 4.8,
-      reviews: 2453,
+      reviews: 245,
       image: "/api/placeholder/300/300",
       badge: "Bestseller",
-      inStock: true
+      inStock: true,
+      description: "Natural energy and stamina enhancer"
     },
     {
       id: 2,
-      name: "Men's Vitality Booster Combo Pack",
-      price: 1499,
-      originalPrice: 2187,
-      rating: 4.9,
-      reviews: 1876,
+      name: "Testosterone Support Capsules",
+      price: 899,
+      originalPrice: 1199,
+      rating: 4.7,
+      reviews: 189,
       image: "/api/placeholder/300/300",
-      badge: "Combo",
-      inStock: true
+      inStock: true,
+      description: "Hormonal balance and strength"
     },
     {
       id: 3,
-      name: "Digestive Care Ayurvedic Syrup",
-      price: 649,
-      originalPrice: 849,
-      rating: 4.7,
-      reviews: 1234,
+      name: "Male Fertility Enhancer",
+      price: 749,
+      rating: 4.6,
+      reviews: 156,
       image: "/api/placeholder/300/300",
-      inStock: true
+      badge: "New",
+      inStock: true,
+      description: "Comprehensive reproductive health"
     },
     {
       id: 4,
-      name: "Women's Wellness Herbal Tea",
-      price: 399,
+      name: "Stress Relief for Men",
+      price: 449,
       originalPrice: 599,
-      rating: 4.6,
-      reviews: 987,
+      rating: 4.5,
+      reviews: 203,
       image: "/api/placeholder/300/300",
-      badge: "New",
-      inStock: false
+      inStock: true,
+      description: "Natural stress management"
     }
   ];
 
-  const newArrivals = [
+  const womensHealthProducts = [
     {
       id: 5,
-      name: "Stress Relief Natural Tablets",
-      price: 749,
-      originalPrice: 999,
-      rating: 4.5,
-      reviews: 456,
+      name: "Women's Wellness Complex",
+      price: 649,
+      originalPrice: 849,
+      rating: 4.9,
+      reviews: 312,
       image: "/api/placeholder/300/300",
-      badge: "New",
-      inStock: true
+      badge: "Popular",
+      inStock: true,
+      description: "Complete feminine health support"
     },
     {
       id: 6,
-      name: "Joint Care Ayurvedic Oil",
+      name: "Hormonal Balance Tablets",
       price: 549,
-      rating: 4.8,
-      reviews: 789,
+      rating: 4.7,
+      reviews: 267,
       image: "/api/placeholder/300/300",
-      inStock: true
+      inStock: true,
+      description: "Natural hormone regulation"
     },
     {
       id: 7,
-      name: "Skin Glow Herbal Face Pack",
-      price: 299,
-      originalPrice: 449,
-      rating: 4.4,
-      reviews: 567,
+      name: "Iron & Calcium Supplement",
+      price: 399,
+      originalPrice: 499,
+      rating: 4.8,
+      reviews: 198,
       image: "/api/placeholder/300/300",
-      badge: "Popular",
-      inStock: true
+      inStock: true,
+      description: "Essential nutrients for women"
     },
     {
       id: 8,
-      name: "Sleep Well Natural Drops",
-      price: 449,
-      rating: 4.7,
-      reviews: 345,
+      name: "Pregnancy Care Capsules",
+      price: 799,
+      rating: 4.9,
+      reviews: 145,
       image: "/api/placeholder/300/300",
-      inStock: true
+      badge: "Trusted",
+      inStock: true,
+      description: "Safe prenatal nutrition"
     }
   ];
 
-  // Theme management
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
+  const comboProducts = [
+    {
+      id: 9,
+      name: "Complete Health Combo",
+      price: 1299,
+      originalPrice: 1899,
+      rating: 4.8,
+      reviews: 89,
+      image: "/api/placeholder/300/300",
+      badge: "Best Value",
+      inStock: true,
+      description: "3-month complete wellness pack"
+    },
+    {
+      id: 10,
+      name: "Immunity Power Pack",
+      price: 899,
+      originalPrice: 1299,
+      rating: 4.7,
+      reviews: 134,
+      image: "/api/placeholder/300/300",
+      inStock: true,
+      description: "Boost your natural immunity"
+    },
+    {
+      id: 11,
+      name: "Digestive Health Duo",
+      price: 749,
+      originalPrice: 999,
+      rating: 4.6,
+      reviews: 76,
+      image: "/api/placeholder/300/300",
+      inStock: true,
+      description: "Complete digestive care"
+    },
+    {
+      id: 12,
+      name: "Energy & Focus Bundle",
+      price: 999,
+      originalPrice: 1399,
+      rating: 4.5,
+      reviews: 98,
+      image: "/api/placeholder/300/300",
+      badge: "New",
+      inStock: true,
+      description: "Mental and physical energy"
     }
-  }, []);
+  ];
 
-  const toggleTheme = () => {
-    const newTheme = !isDarkMode;
-    setIsDarkMode(newTheme);
-    
-    if (newTheme) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+  const essentialProducts = [
+    {
+      id: 13,
+      name: "Daily Multivitamin",
+      price: 299,
+      originalPrice: 399,
+      rating: 4.7,
+      reviews: 456,
+      image: "/api/placeholder/300/300",
+      badge: "Essential",
+      inStock: true,
+      description: "Complete daily nutrition"
+    },
+    {
+      id: 14,
+      name: "Herbal Immunity Tea",
+      price: 199,
+      rating: 4.6,
+      reviews: 289,
+      image: "/api/placeholder/300/300",
+      inStock: true,
+      description: "Natural immunity booster"
+    },
+    {
+      id: 15,
+      name: "Digestive Enzymes",
+      price: 449,
+      originalPrice: 599,
+      rating: 4.8,
+      reviews: 167,
+      image: "/api/placeholder/300/300",
+      inStock: true,
+      description: "Better digestion naturally"
+    },
+    {
+      id: 16,
+      name: "Sleep Support Tablets",
+      price: 349,
+      rating: 4.5,
+      reviews: 234,
+      image: "/api/placeholder/300/300",
+      badge: "Popular",
+      inStock: true,
+      description: "Natural sleep enhancement"
     }
-  };
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  ];
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar 
-        onToggleSidebar={toggleSidebar}
-        isDarkMode={isDarkMode}
-        onToggleTheme={toggleTheme}
-      />
-      
-      <Sidebar 
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-      />
+      <Header />
       
       <main className="relative">
-        {/* Hero Banner */}
+        {/* Hero Banner - PRESERVED as per client instruction */}
         <HeroBanner />
         
         {/* Concern Blocks */}
         <ConcernBlocks />
         
-        {/* Best Sellers */}
+        {/* Featured Product Sections */}
         <ProductSection 
-          title="Best Sellers"
-          subtitle="Most loved products by our customers"
-          products={bestSellers}
+          title="Men's Health"
+          subtitle="Specialized healthcare solutions for men"
+          products={mensHealthProducts}
+          showViewAll={true}
         />
         
-        {/* Why Our Products Section */}
-        <div className="py-16 bg-gradient-to-br from-ayurvedic-green-50 to-ayurvedic-beige-50">
-          <div className="max-w-7xl mx-auto px-4 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-ayurvedic-green-800 mb-4">
-                Why Choose Our Products?
-              </h2>
-              <p className="text-ayurvedic-green-600 text-lg max-w-2xl mx-auto">
-                Experience the perfect blend of ancient Ayurvedic wisdom and modern scientific research
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-ayurvedic-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">🌿</span>
-                </div>
-                <h3 className="text-xl font-semibold text-ayurvedic-green-800 mb-2">100% Natural</h3>
-                <p className="text-ayurvedic-green-600">Pure herbal ingredients sourced directly from trusted farms</p>
-              </div>
-              
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-ayurvedic-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">🔬</span>
-                </div>
-                <h3 className="text-xl font-semibold text-ayurvedic-green-800 mb-2">Lab Tested</h3>
-                <p className="text-ayurvedic-green-600">Every product undergoes rigorous quality testing for safety</p>
-              </div>
-              
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-ayurvedic-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">👨‍⚕️</span>
-                </div>
-                <h3 className="text-xl font-semibold text-ayurvedic-green-800 mb-2">Doctor Formulated</h3>
-                <p className="text-ayurvedic-green-600">Developed by experienced Ayurvedic practitioners</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProductSection 
+          title="Women's Health"
+          subtitle="Comprehensive wellness for women"
+          products={womensHealthProducts}
+          showViewAll={true}
+        />
+        
+        <ProductSection 
+          title="Health Combos"
+          subtitle="Complete wellness packages at great value"
+          products={comboProducts}
+          showViewAll={true}
+        />
+        
+        <ProductSection 
+          title="Daily Essentials"
+          subtitle="Must-have products for everyday health"
+          products={essentialProducts}
+          showViewAll={true}
+        />
+
+        {/* Trust and Reviews Section */}
+        <TrustReviews />
         
         {/* Testimonials */}
         <TestimonialSection />
         
-        {/* New Arrivals */}
-        <ProductSection 
-          title="New Arrivals"
-          subtitle="Latest additions to our wellness collection"
-          products={newArrivals}
-        />
-        
         {/* Feedback Section */}
         <FeedbackSection />
-        
-        {/* Newsletter Signup */}
-        <div className="py-16 bg-ayurvedic-green-800 text-white">
-          <div className="max-w-4xl mx-auto text-center px-4 lg:px-8">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Stay Updated with Wellness Tips
-            </h2>
-            <p className="text-ayurvedic-green-200 text-lg mb-8 max-w-2xl mx-auto">
-              Get expert Ayurvedic advice, exclusive offers, and health tips delivered to your inbox
-            </p>
-            
-            <div className="flex flex-col sm:flex-row max-w-md mx-auto gap-4">
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="flex-1 px-4 py-3 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-ayurvedic-green-300"
-              />
-              <button className="bg-ayurvedic-gold-500 hover:bg-ayurvedic-gold-600 text-white font-medium px-8 py-3 rounded-full transition-colors">
-                Subscribe
-              </button>
-            </div>
-          </div>
-        </div>
       </main>
       
       <Footer />

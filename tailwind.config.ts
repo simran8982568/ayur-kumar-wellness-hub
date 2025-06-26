@@ -53,45 +53,11 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Ayurvedic color palette
-				ayurvedic: {
-					green: {
-						50: '#f0f9f0',
-						100: '#d9f2d9',
-						200: '#b3e6b3',
-						300: '#7dd37d',
-						400: '#4caf4c',
-						500: '#2e7d32',
-						600: '#1b5e20',
-						700: '#0d4e15'
-					},
-					beige: {
-						50: '#fdfcf8',
-						100: '#f9f6ee',
-						200: '#f2ead5',
-						300: '#e8d7b3',
-						400: '#d4b886',
-						500: '#c49a6b',
-						600: '#a67c52'
-					},
-					gold: {
-						50: '#fffbeb',
-						100: '#fef3c7',
-						200: '#fde68a',
-						300: '#fcd34d',
-						400: '#fbbf24',
-						500: '#f59e0b',
-						600: '#d97706'
-					},
-					herbal: {
-						50: '#f0f4f8',
-						100: '#d9e8f2',
-						200: '#b3d1e6',
-						300: '#7db3d3',
-						400: '#4a94c4',
-						500: '#2e7db5',
-						600: '#1e5f8f'
-					}
+				// Dr. Kumar Laboratories brand colors
+				brand: {
+					primary: '#723421',
+					secondary: '#c74a1b',
+					alert: '#d32f2f'
 				}
 			},
 			borderRadius: {
@@ -129,13 +95,24 @@ export default {
 				'slide-in-right': {
 					'0%': { transform: 'translateX(100%)' },
 					'100%': { transform: 'translateX(0)' }
+				},
+				'zoom-in': {
+					'0%': { transform: 'scale(1)' },
+					'100%': { transform: 'scale(1.05)' }
+				},
+				'cart-bounce': {
+					'0%, 20%, 60%, 100%': { transform: 'translateY(0)' },
+					'40%': { transform: 'translateY(-10px)' },
+					'80%': { transform: 'translateY(-5px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
-				'slide-in-right': 'slide-in-right 0.3s ease-out'
+				'slide-in-right': 'slide-in-right 0.3s ease-out',
+				'zoom-in': 'zoom-in 0.3s ease-out',
+				'cart-bounce': 'cart-bounce 0.6s ease-out'
 			}
 		}
 	},

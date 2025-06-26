@@ -2,6 +2,7 @@
 import React from 'react';
 import ProductCard from './ProductCard';
 import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 interface Product {
   id: number;
@@ -13,6 +14,7 @@ interface Product {
   image: string;
   badge?: string;
   inStock: boolean;
+  description?: string;
 }
 
 interface ProductSectionProps {
@@ -28,16 +30,21 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   products, 
   showViewAll = true 
 }) => {
+  const handleAddToCart = (product: Product) => {
+    console.log('Added to cart:', product);
+    // This would typically dispatch to a cart context or state management
+  };
+
   return (
-    <div className="py-12 px-4 lg:px-8">
+    <section className="py-12 px-4 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-ayurvedic-green-800 mb-2">
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-primary mb-2">
               {title}
             </h2>
             {subtitle && (
-              <p className="text-ayurvedic-green-600 text-lg">
+              <p className="text-muted-foreground text-lg">
                 {subtitle}
               </p>
             )}
@@ -46,16 +53,21 @@ const ProductSection: React.FC<ProductSectionProps> = ({
           {showViewAll && (
             <Button 
               variant="outline" 
-              className="border-2 border-ayurvedic-green-500 text-ayurvedic-green-700 hover:bg-ayurvedic-green-50 rounded-full font-medium hidden md:flex"
+              className="border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white rounded-lg font-medium hidden md:flex items-center space-x-2"
             >
-              View All
+              <span>View All</span>
+              <ArrowRight className="w-4 h-4" />
             </Button>
           )}
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard 
+              key={product.id} 
+              product={product} 
+              onAddToCart={handleAddToCart}
+            />
           ))}
         </div>
         
@@ -63,14 +75,15 @@ const ProductSection: React.FC<ProductSectionProps> = ({
           <div className="text-center mt-8 md:hidden">
             <Button 
               variant="outline" 
-              className="border-2 border-ayurvedic-green-500 text-ayurvedic-green-700 hover:bg-ayurvedic-green-50 rounded-full font-medium"
+              className="border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white rounded-lg font-medium flex items-center space-x-2 mx-auto"
             >
-              View All Products
+              <span>View All Products</span>
+              <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
