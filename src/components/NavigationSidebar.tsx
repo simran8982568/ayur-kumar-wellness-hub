@@ -31,16 +31,15 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
       />
       
       {/* Sidebar */}
-      <div className="fixed right-0 top-0 h-full w-80 max-w-[90vw] bg-background border-l border-border z-50 transform transition-transform duration-300 animate-slide-in-right">
+      <div className="fixed right-0 top-0 h-full w-80 max-w-[90vw] bg-white border-l border-gray-200 z-50 transform transition-transform duration-300 animate-slide-in-right">
         <div className="p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-semibold text-brand-primary">Menu</h2>
+            <h2 className="text-xl font-semibold text-gray-900 tracking-tight">Menu</h2>
             <Button
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="rounded-full"
               aria-label="Close menu"
             >
               <X className="h-5 w-5" />
@@ -54,10 +53,10 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
                 key={item.href}
                 to={item.href}
                 onClick={onClose}
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors group"
+                className="flex items-center space-x-3 p-3 border border-transparent hover:border-gray-200 hover:bg-gray-50 transition-colors group"
               >
                 <item.icon className="h-5 w-5 text-brand-primary group-hover:text-brand-secondary transition-colors" />
-                <span className="font-medium text-foreground group-hover:text-brand-secondary transition-colors">
+                <span className="font-medium text-gray-900 group-hover:text-brand-secondary transition-colors uppercase tracking-wide text-sm">
                   {item.label}
                 </span>
               </Link>
@@ -65,10 +64,10 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
           </nav>
 
           {/* Sign Out Button */}
-          <div className="mt-8 pt-8 border-t border-border">
+          <div className="mt-8 pt-8 border-t border-gray-200">
             <Button
               variant="destructive"
-              className="w-full bg-brand-alert hover:bg-brand-alert/90 text-white font-medium"
+              className="w-full bg-brand-alert hover:bg-brand-alert/90 text-white font-medium uppercase tracking-wide"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out

@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Dr. Kumar Laboratories Design System */
+/* Dr. Kumar Laboratories Minimalist Design System */
 
 @layer base {
   :root {
@@ -35,21 +35,21 @@
     --input: 0 0% 89%;
     --ring: 14 56% 29%;
 
-    --radius: 0.5rem;
+    --radius: 0;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 0 0% 0%;
     --foreground: 0 0% 98%;
 
-    --card: 240 10% 3.9%;
+    --card: 0 0% 0%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 10% 3.9%;
+    --popover: 0 0% 0%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
+    --primary-foreground: 0 0% 0%;
 
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
@@ -72,29 +72,51 @@
 @layer base {
   * {
     @apply border-border;
+    border-radius: 0 !important; /* Force sharp edges globally */
   }
   
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  h1 {
+    @apply text-3xl font-bold tracking-tight leading-snug;
+  }
+
+  h2 {
+    @apply text-xl font-semibold tracking-tight leading-snug;
+  }
+
+  h3 {
+    @apply text-base font-medium tracking-tight;
+  }
+
+  p {
+    @apply text-sm leading-relaxed;
   }
 }
 
 @layer components {
-  .healthcare-card {
-    @apply bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-300;
+  .minimalist-card {
+    @apply border border-gray-200 bg-white p-4 shadow-none;
   }
   
-  .product-card-hover {
-    @apply transform transition-all duration-300 hover:scale-105 hover:shadow-lg;
+  .minimalist-button {
+    @apply px-4 py-2 border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white text-sm font-medium uppercase tracking-wide transition-all duration-200;
   }
   
-  .brand-button {
-    @apply bg-brand-secondary hover:bg-brand-primary text-white font-medium px-6 py-3 rounded-lg transition-all duration-300;
+  .minimalist-button-primary {
+    @apply px-4 py-2 bg-brand-primary text-white hover:bg-brand-secondary text-sm font-medium uppercase tracking-wide transition-all duration-200;
   }
   
+  .minimalist-input {
+    @apply border border-gray-300 px-3 py-2 focus:outline-none focus:ring-0 focus:border-gray-900 text-sm;
+  }
+
   .cart-popup {
-    @apply fixed top-4 right-4 bg-card border border-border rounded-lg shadow-xl p-4 z-50 min-w-80 animate-slide-in-right;
+    @apply fixed top-4 right-4 bg-white border border-gray-200 p-4 z-50 min-w-80 animate-slide-in-right shadow-sm;
   }
 
   @media (prefers-reduced-motion: reduce) {

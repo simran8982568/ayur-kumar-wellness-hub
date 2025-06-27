@@ -28,21 +28,21 @@ const TrustReviews: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 bg-muted/30">
+    <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-brand-primary mb-4">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">
             Real People, Real Stories
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base text-gray-600 max-w-2xl mx-auto">
             See what our patients say about their experience with Dr. Kumar Laboratories
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {reviews.map((review) => (
-            <div key={review.id} className="healthcare-card p-6 relative">
-              <Quote className="absolute top-4 right-4 h-6 w-6 text-brand-primary/30" />
+            <div key={review.id} className="minimalist-card p-6 relative">
+              <Quote className="absolute top-4 right-4 h-6 w-6 text-gray-300" />
               
               {/* Rating */}
               <div className="flex items-center mb-4">
@@ -59,20 +59,20 @@ const TrustReviews: React.FC = () => {
               </div>
 
               {/* Comment */}
-              <p className="text-foreground mb-4 italic leading-relaxed">
+              <p className="text-gray-900 mb-4 italic leading-relaxed text-sm">
                 "{review.comment}"
               </p>
 
               {/* Reviewer Info */}
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-brand-primary/10 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-brand-primary/10 flex items-center justify-center">
                   <span className="text-brand-primary font-semibold text-sm">
                     {review.name.charAt(0)}
                   </span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-foreground">{review.name}</h4>
-                  <p className="text-sm text-muted-foreground">{review.location}</p>
+                  <h4 className="font-semibold text-gray-900 text-sm tracking-tight">{review.name}</h4>
+                  <p className="text-sm text-gray-500">{review.location}</p>
                 </div>
               </div>
             </div>
@@ -81,18 +81,18 @@ const TrustReviews: React.FC = () => {
 
         {/* Trust Indicators */}
         <div className="mt-12 text-center">
-          <div className="flex flex-wrap justify-center items-center gap-8 text-muted-foreground">
+          <div className="flex flex-wrap justify-center items-center gap-8 text-gray-500">
             <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-sm">1000+ Happy Patients</span>
+              <div className="w-2 h-2 bg-green-500"></div>
+              <span className="text-sm uppercase tracking-wide">1000+ Happy Patients</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span className="text-sm">15+ Years Experience</span>
+              <div className="w-2 h-2 bg-blue-500"></div>
+              <span className="text-sm uppercase tracking-wide">15+ Years Experience</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-              <span className="text-sm">MBBS Certified</span>
+              <div className="w-2 h-2 bg-purple-500"></div>
+              <span className="text-sm uppercase tracking-wide">MBBS Certified</span>
             </div>
           </div>
         </div>

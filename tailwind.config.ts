@@ -19,6 +19,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Montserrat', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -53,17 +56,18 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Dr. Kumar Laboratories brand colors
+				// Dr. Kumar Laboratories brand colors - minimalist approach
 				brand: {
 					primary: '#723421',
 					secondary: '#c74a1b',
-					alert: '#d32f2f'
+					alert: '#d32f2f',
+					accent: '#f97316' // orange-500 for minimal accent use
 				}
 			},
 			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				lg: '0', // Remove all rounded corners
+				md: '0',
+				sm: '0'
 			},
 			keyframes: {
 				'accordion-down': {
@@ -95,24 +99,13 @@ export default {
 				'slide-in-right': {
 					'0%': { transform: 'translateX(100%)' },
 					'100%': { transform: 'translateX(0)' }
-				},
-				'zoom-in': {
-					'0%': { transform: 'scale(1)' },
-					'100%': { transform: 'scale(1.05)' }
-				},
-				'cart-bounce': {
-					'0%, 20%, 60%, 100%': { transform: 'translateY(0)' },
-					'40%': { transform: 'translateY(-10px)' },
-					'80%': { transform: 'translateY(-5px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
-				'slide-in-right': 'slide-in-right 0.3s ease-out',
-				'zoom-in': 'zoom-in 0.3s ease-out',
-				'cart-bounce': 'cart-bounce 0.6s ease-out'
+				'slide-in-right': 'slide-in-right 0.3s ease-out'
 			}
 		}
 	},

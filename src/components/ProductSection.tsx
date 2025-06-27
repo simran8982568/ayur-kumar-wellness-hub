@@ -36,15 +36,15 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   };
 
   return (
-    <section className="py-12 px-4 lg:px-8">
+    <section className="py-16 px-4 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-primary mb-2">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
               {title}
             </h2>
             {subtitle && (
-              <p className="text-muted-foreground text-lg">
+              <p className="text-gray-600 text-base">
                 {subtitle}
               </p>
             )}
@@ -53,7 +53,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
           {showViewAll && (
             <Button 
               variant="outline" 
-              className="border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white rounded-lg font-medium hidden md:flex items-center space-x-2"
+              className="border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white font-medium hidden md:flex items-center space-x-2 uppercase tracking-wide"
             >
               <span>View All</span>
               <ArrowRight className="w-4 h-4" />
@@ -75,7 +75,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
           <div className="text-center mt-8 md:hidden">
             <Button 
               variant="outline" 
-              className="border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white rounded-lg font-medium flex items-center space-x-2 mx-auto"
+              className="border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white font-medium flex items-center space-x-2 mx-auto uppercase tracking-wide"
             >
               <span>View All Products</span>
               <ArrowRight className="w-4 h-4" />

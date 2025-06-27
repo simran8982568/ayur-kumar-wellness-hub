@@ -44,16 +44,16 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+      <header className="sticky top-0 z-40 w-full bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-brand-primary rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-brand-primary flex items-center justify-center">
               <span className="text-white font-bold text-lg">DK</span>
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-brand-primary">Dr. Kumar Laboratories</h1>
-              <p className="text-xs text-muted-foreground">Healthcare & Wellness</p>
+              <h1 className="text-xl font-bold text-brand-primary tracking-tight">Dr. Kumar Laboratories</h1>
+              <p className="text-xs text-gray-600 uppercase tracking-wide">Healthcare & Wellness</p>
             </div>
           </div>
 
@@ -64,7 +64,6 @@ const Header: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={toggleTheme}
-              className="rounded-full"
               aria-label="Toggle theme"
             >
               {isDarkMode ? (
@@ -79,12 +78,12 @@ const Header: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={() => setIsCartOpen(!isCartOpen)}
-              className="rounded-full relative"
+              className="relative"
               aria-label="Shopping cart"
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-brand-alert text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-cart-bounce">
+                <span className="absolute -top-1 -right-1 bg-brand-alert text-white text-xs h-5 w-5 flex items-center justify-center font-medium">
                   {cartItems}
                 </span>
               )}
@@ -95,7 +94,6 @@ const Header: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={toggleSidebar}
-              className="rounded-full"
               aria-label="Open menu"
             >
               <Menu className="h-5 w-5" />
