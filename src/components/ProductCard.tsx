@@ -24,31 +24,47 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNow }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
   const discount = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    setIsLoading(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
     onAddToCart?.(product);
     
     // Add to recently viewed (localStorage)
     const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
     const updatedViewed = [product, ...recentlyViewed.filter((p: Product) => p.id !== product.id)].slice(0, 10);
     localStorage.setItem('recentlyViewed', JSON.stringify(updatedViewed));
+    
+    setIsLoading(false);
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
+    setIsLoading(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
     onBuyNow?.(product);
     
     // Add to recently viewed (localStorage)
     const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
     const updatedViewed = [product, ...recentlyViewed.filter((p: Product) => p.id !== product.id)].slice(0, 10);
     localStorage.setItem('recentlyViewed', JSON.stringify(updatedViewed));
+    
+    setIsLoading(false);
   };
 
   return (
     <div 
-      className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-black p-4 group cursor-pointer h-full transition-transform duration-300 hover:scale-105"
+      className="production-card card-hover h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -60,7 +76,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         )}
         
         <button 
-          className="absolute top-3 right-3 z-10 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 p-2 transition-colors duration-200 hover:bg-gray-50 dark:hover:bg-gray-900"
+          className="absolute top-3 right-3 z-10 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 p-2 smooth-transition hover:bg-gray-50 dark:hover:bg-gray-900"
           aria-label="Add to wishlist"
         >
           <Heart className="w-4 h-4 text-gray-600 dark:text-gray-400" />
@@ -75,9 +91,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         <img 
           src={product.image} 
           alt={product.name}
-          className={`w-full h-48 object-cover transition-transform duration-300 ${
+          className={`w-full h-48 object-cover smooth-transition ${
             isHovered ? 'scale-110' : 'scale-100'
           }`}
+          loading="lazy"
         />
         
         {!product.inStock && (
@@ -90,7 +107,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
       </div>
       
       <div className="p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-brand-primary transition-colors tracking-tight">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-brand-primary smooth-transition tracking-tight line-clamp-2">
           {product.name}
         </h3>
         
@@ -127,17 +144,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         
         <div className="space-y-2">
           <Button 
-            className="w-full bg-brand-primary text-white hover:bg-brand-secondary font-medium uppercase tracking-wide"
-            disabled={!product.inStock}
+            className="w-full production-button-primary"
+            disabled={!product.inStock || isLoading}
             onClick={handleBuyNow}
           >
-            {product.inStock ? 'Buy Now' : 'Notify Me'}
+            {isLoading ? (
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Processing...</span>
+              </div>
+            ) : (
+              product.inStock ? 'Buy Now' : 'Notify Me'
+            )}
           </Button>
           
           <Button 
-            variant="outline"
-            className="w-full border border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-black font-medium flex items-center justify-center space-x-2 uppercase tracking-wide"
-            disabled={!product.inStock}
+            className="w-full production-button-secondary flex items-center justify-center space-x-2"
+            disabled={!product.inStock || isLoading}
             onClick={handleAddToCart}
           >
             <ShoppingCart className="w-4 h-4" />

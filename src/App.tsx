@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +7,7 @@ import Index from "./pages/Index";
 import ShopAll from "./pages/ShopAll";
 import Checkout from "./pages/Checkout";
 import About from "./pages/About";
+import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,7 +24,7 @@ const App = () => (
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/cart" element={<Checkout />} />
           <Route path="/about-us" element={<About />} />
-          <Route path="/product/:slug" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Product Detail - Coming Soon</h1></div>} />
+          <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/blog" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Blog - Coming Soon</h1></div>} />
           <Route path="/blog/:slug" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Blog Post - Coming Soon</h1></div>} />
           <Route path="/shop" element={<ShopAll />} />
@@ -41,6 +41,7 @@ const App = () => (
           <Route path="/consult" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Consultation - Coming Soon</h1></div>} />
           <Route path="/account" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">My Account - Coming Soon</h1></div>} />
           <Route path="/wishlist" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Wishlist - Coming Soon</h1></div>} />
+          <Route path="/feedback" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Feedback - Coming Soon</h1></div>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

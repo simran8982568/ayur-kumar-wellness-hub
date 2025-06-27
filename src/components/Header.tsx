@@ -30,8 +30,12 @@ const Header: React.FC = () => {
     document.documentElement.classList.toggle('dark', newTheme);
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
+  const handleShopClick = () => {
+    navigate('/shop-all');
   };
 
   const handleCartClick = () => {
@@ -42,7 +46,6 @@ const Header: React.FC = () => {
     setCartItems(prev => prev + 1);
     setIsCartOpen(true);
     
-    // Auto-close cart popup after 3 seconds
     setTimeout(() => {
       setIsCartOpen(false);
     }, 3000);
@@ -50,15 +53,19 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800">
+      <header className="sticky top-0 z-40 w-full bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800 smooth-transition">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center space-x-3">
+          {/* Logo - Clickable to home */}
+          <div 
+            className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity duration-300"
+            onClick={handleLogoClick}
+          >
             <div className="w-12 h-12 flex items-center justify-center">
               <img 
                 src={isDarkMode ? "/lovable-uploads/b68b6220-d7de-409e-9588-7bd57831d577.png" : "/lovable-uploads/7e676976-4f68-46af-9f33-a2bef69fb911.png"}
                 alt="Dr. Kumar Laboratories"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain transition-all duration-300"
+                loading="eager"
               />
             </div>
             <div className="hidden sm:block">
@@ -67,20 +74,27 @@ const Header: React.FC = () => {
             </div>
           </div>
 
-          {/* Doctor Profile (Desktop) */}
-          <div className="hidden lg:flex items-center space-x-3 mr-auto ml-8">
-            <div className="w-10 h-10 overflow-hidden border-2 border-brand-primary">
-              <img 
-                src="/lovable-uploads/cd3f5eda-8484-4dee-940d-f87e26cac841.png"
-                alt="Dr. Kumar"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-black dark:text-white">Dr. Kumar</p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">MBBS, Sexologist ✅</p>
-            </div>
-          </div>
+          {/* Navigation Links - Desktop */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <button 
+              onClick={handleShopClick}
+              className="text-gray-700 dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary font-medium transition-colors duration-300"
+            >
+              Shop
+            </button>
+            <button 
+              onClick={() => navigate('/about-us')}
+              className="text-gray-700 dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary font-medium transition-colors duration-300"
+            >
+              About Us
+            </button>
+            <button 
+              onClick={() => navigate('/blog')}
+              className="text-gray-700 dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary font-medium transition-colors duration-300"
+            >
+              Blog
+            </button>
+          </nav>
 
           {/* Right side controls */}
           <div className="flex items-center space-x-2">
@@ -90,7 +104,7 @@ const Header: React.FC = () => {
               size="sm"
               onClick={toggleTheme}
               aria-label="Toggle theme"
-              className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition"
             >
               {isDarkMode ? (
                 <Sun className="h-5 w-5" />
@@ -104,7 +118,7 @@ const Header: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={handleCartClick}
-              className="relative text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="relative text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition"
               aria-label="Shopping cart"
             >
               <ShoppingCart className="h-5 w-5" />
@@ -119,9 +133,9 @@ const Header: React.FC = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={toggleSidebar}
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               aria-label="Open menu"
-              className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 smooth-transition"
             >
               <Menu className="h-5 w-5" />
             </Button>
