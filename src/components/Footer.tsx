@@ -24,14 +24,14 @@ const Footer: React.FC = () => {
   ];
 
   const policies = [
-    { name: 'Privacy Policy', href: '/privacy' },
-    { name: 'Terms & Conditions', href: '/terms' },
-    { name: 'Return Policy', href: '/returns' },
-    { name: 'Shipping Policy', href: '/shipping' }
+    { name: 'Privacy Policy', href: '/policies' },
+    { name: 'Terms & Conditions', href: '/policies' },
+    { name: 'Return Policy', href: '/policies' },
+    { name: 'Shipping Policy', href: '/policies' }
   ];
 
   return (
-    <footer className="bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 smooth-transition">
+    <footer className="bg-gray-50 text-gray-700 smooth-transition">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -48,21 +48,21 @@ const Footer: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-lg font-bold">Dr. Kumar Laboratories</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Healthcare & Wellness</p>
+                <p className="text-xs text-gray-500">Healthcare & Wellness</p>
               </div>
             </div>
 
-            {/* Dr. Kumar's Profile */}
-            <div className="flex items-center space-x-3 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+            {/* Dr. Kumar's Profile - Colored Image */}
+            <div className="flex items-center space-x-3 p-4 bg-white border border-gray-200">
               <img 
-                src="/lovable-uploads/cd3f5eda-8484-4dee-940d-f87e26cac841.png"
+                src="/lovable-uploads/ed6e92d3-776a-4b30-b919-b7a35406bf8f.png"
                 alt="Dr. Kumar"
-                className="w-16 h-16 object-cover border-2 border-gray-300 dark:border-gray-600 grayscale hover:grayscale-0 transition-all duration-300"
+                className="w-16 h-16 object-cover border-2 border-gray-300 transition-all duration-300"
               />
               <div>
-                <p className="text-sm font-semibold text-gray-900 dark:text-white">Dr. Kumar</p>
-                <p className="text-xs text-gray-600 dark:text-gray-400">Founder & Wellness Expert</p>
-                <p className="text-xs text-gray-500 dark:text-gray-500">MBBS, Sexologist ✅</p>
+                <p className="text-sm font-semibold text-gray-900">Dr. Kumar</p>
+                <p className="text-xs text-gray-600">Founder & Wellness Expert</p>
+                <p className="text-xs text-gray-500">MBBS, Sexologist ✅</p>
               </div>
             </div>
 
@@ -92,7 +92,7 @@ const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Quick Links</h4>
+            <h4 className="text-lg font-semibold mb-4 text-gray-900">Quick Links</h4>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.name}>
@@ -109,7 +109,7 @@ const Footer: React.FC = () => {
 
           {/* Categories */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Shop by Category</h4>
+            <h4 className="text-lg font-semibold mb-4 text-gray-900">Shop by Category</h4>
             <ul className="space-y-2">
               {categories.map((category) => (
                 <li key={category.name}>
@@ -127,7 +127,7 @@ const Footer: React.FC = () => {
           {/* Policies & Social */}
           <div className="space-y-6">
             <div>
-              <h4 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Legal</h4>
+              <h4 className="text-lg font-semibold mb-4 text-gray-900">Legal</h4>
               <ul className="space-y-2">
                 {policies.map((policy) => (
                   <li key={policy.name}>
@@ -144,15 +144,15 @@ const Footer: React.FC = () => {
 
             {/* Social Media */}
             <div>
-              <h4 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Follow Us</h4>
+              <h4 className="text-lg font-semibold mb-4 text-gray-900">Follow Us</h4>
               <div className="flex space-x-4">
-                <a href="#" className="bg-gray-200 dark:bg-gray-700 hover:bg-brand-primary dark:hover:bg-brand-primary p-2 transition-colors duration-300">
+                <a href="#" className="bg-gray-200 hover:bg-brand-primary p-2 transition-colors duration-300">
                   <Facebook className="w-5 h-5" />
                 </a>
-                <a href="#" className="bg-gray-200 dark:bg-gray-700 hover:bg-brand-primary dark:hover:bg-brand-primary p-2 transition-colors duration-300">
+                <a href="#" className="bg-gray-200 hover:bg-brand-primary p-2 transition-colors duration-300">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="#" className="bg-gray-200 dark:bg-gray-700 hover:bg-brand-primary dark:hover:bg-brand-primary p-2 transition-colors duration-300">
+                <a href="#" className="bg-gray-200 hover:bg-brand-primary p-2 transition-colors duration-300">
                   <Youtube className="w-5 h-5" />
                 </a>
               </div>
@@ -161,13 +161,13 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Payment Methods */}
-        <div className="border-t border-gray-200 dark:border-gray-800 pt-8 mb-6">
-          <h4 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Secure Payment Methods</h4>
+        <div className="border-t border-gray-200 pt-8 mb-6">
+          <h4 className="text-lg font-semibold mb-4 text-gray-900">Secure Payment Methods</h4>
           <div className="flex flex-wrap gap-3">
-            {['UPI', 'Visa', 'Mastercard', 'RuPay', 'Paytm', 'Google Pay', 'PhonePe'].map((method) => (
+            {['UPI', 'Visa', 'Mastercard', 'RuPay', 'Paytm', 'Google Pay', 'PhonePe', 'American Express', 'Maestro'].map((method) => (
               <div 
                 key={method}
-                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="bg-white border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700"
               >
                 {method}
               </div>
@@ -176,11 +176,11 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Footer */}
-        <div className="border-t border-gray-200 dark:border-gray-800 pt-6 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+        <div className="border-t border-gray-200 pt-6 text-center">
+          <p className="text-sm text-gray-500 mb-2">
             © 2024 Dr. Kumar Laboratories. All rights reserved.
           </p>
-          <p className="text-xs text-gray-400 dark:text-gray-500">
+          <p className="text-xs text-gray-400">
             Ayurvedic products have not been evaluated by the FDA. These statements have not been evaluated by the Food and Drug Administration. 
             These products are not intended to diagnose, treat, cure, or prevent any disease.
           </p>

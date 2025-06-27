@@ -41,42 +41,9 @@
     --primary-color: #723421;
     --accent-color: #c74a1b;
     --text-light: #212121;
-    --text-dark: #ffffff;
     --bg-light: #ffffff;
-    --bg-dark: #0c0c0c;
     --bg-section-light: #f8f9fa;
-    --bg-section-dark: #1a1a1a;
     --accent-muted: #f1eae5;
-  }
-
-  .dark {
-    --background: 0 0% 5%;
-    --foreground: 0 0% 100%;
-
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 100%;
-
-    --popover: 0 0% 5%;
-    --popover-foreground: 0 0% 100%;
-
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 5%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
   }
 }
 
@@ -92,11 +59,6 @@
     font-family: 'Montserrat', 'Inter', sans-serif;
     background-color: var(--bg-light);
     color: var(--text-light);
-  }
-
-  .dark body {
-    background-color: var(--bg-dark);
-    color: var(--text-dark);
   }
 
   h1 {
@@ -118,7 +80,7 @@
 
 @layer components {
   .production-card {
-    @apply bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-4 shadow-none transition-all duration-300;
+    @apply bg-white border border-gray-200 p-4 shadow-none transition-all duration-300;
   }
   
   .production-button-primary {
@@ -126,23 +88,19 @@
   }
   
   .production-button-secondary {
-    @apply px-6 py-3 border border-brand-primary text-brand-primary bg-white dark:bg-black hover:bg-brand-primary hover:text-white text-sm font-medium uppercase tracking-wide transition-all duration-300;
+    @apply px-6 py-3 border border-brand-primary text-brand-primary bg-white hover:bg-brand-primary hover:text-white text-sm font-medium uppercase tracking-wide transition-all duration-300;
   }
   
   .production-input {
-    @apply border border-gray-300 dark:border-gray-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent text-sm bg-white dark:bg-black text-black dark:text-white transition-all duration-300;
+    @apply border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent text-sm bg-white text-black transition-all duration-300;
   }
 
   .section-bg-light {
-    @apply bg-gray-50 dark:bg-gray-900;
+    @apply bg-gray-50;
   }
 
   .hero-gradient {
     background: linear-gradient(135deg, var(--bg-light) 0%, var(--accent-muted) 100%);
-  }
-
-  .dark .hero-gradient {
-    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-section-dark) 100%);
   }
 
   .card-hover {
