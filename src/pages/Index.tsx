@@ -1,12 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import HeroBanner from '@/components/HeroBanner';
-import ConcernBlocks from '@/components/ConcernBlocks';
+import HealthConcerns from '@/components/HealthConcerns';
 import ProductSection from '@/components/ProductSection';
 import TrustReviews from '@/components/TrustReviews';
 import TestimonialSection from '@/components/TestimonialSection';
-import FeedbackSection from '@/components/FeedbackSection';
+import TrustBadges from '@/components/TrustBadges';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -210,20 +209,20 @@ const Index = () => {
         {/* Hero Banner - PRESERVED as per client instruction */}
         <HeroBanner />
         
-        {/* Concern Blocks */}
-        <ConcernBlocks />
+        {/* Health Concerns Blocks */}
+        <HealthConcerns />
         
         {/* Featured Product Sections */}
         <ProductSection 
-          title="Men's Health"
-          subtitle="Specialized healthcare solutions for men"
+          title="Our Best Sellers"
+          subtitle="Most trusted products by our customers"
           products={mensHealthProducts}
           showViewAll={true}
         />
         
         <ProductSection 
-          title="Women's Health"
-          subtitle="Comprehensive wellness for women"
+          title="New Launches"
+          subtitle="Latest additions to our wellness collection"
           products={womensHealthProducts}
           showViewAll={true}
         />
@@ -242,14 +241,14 @@ const Index = () => {
           showViewAll={true}
         />
 
+        {/* Trust Badges */}
+        <TrustBadges />
+
         {/* Trust and Reviews Section */}
         <TrustReviews />
         
         {/* Testimonials */}
         <TestimonialSection />
-        
-        {/* Feedback Section */}
-        <FeedbackSection />
       </main>
       
       <Footer />

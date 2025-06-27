@@ -56,7 +56,7 @@ const Header: React.FC = () => {
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 flex items-center justify-center">
               <img 
-                src={isDarkMode ? "/lovable-uploads/5d254827-a0b5-4204-b492-02c4f52346f1.png" : "/lovable-uploads/70a2227a-b00e-42b6-b69e-aae3adc489c8.png"}
+                src={isDarkMode ? "/lovable-uploads/b68b6220-d7de-409e-9588-7bd57831d577.png" : "/lovable-uploads/7e676976-4f68-46af-9f33-a2bef69fb911.png"}
                 alt="Dr. Kumar Laboratories"
                 className="w-full h-full object-contain"
               />
@@ -64,6 +64,21 @@ const Header: React.FC = () => {
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-black dark:text-white tracking-tight">Dr. Kumar Laboratories</h1>
               <p className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">Healthcare & Wellness</p>
+            </div>
+          </div>
+
+          {/* Doctor Profile (Desktop) */}
+          <div className="hidden lg:flex items-center space-x-3 mr-auto ml-8">
+            <div className="w-10 h-10 overflow-hidden border-2 border-brand-primary">
+              <img 
+                src="/lovable-uploads/cd3f5eda-8484-4dee-940d-f87e26cac841.png"
+                alt="Dr. Kumar"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-black dark:text-white">Dr. Kumar</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">MBBS, Sexologist ✅</p>
             </div>
           </div>
 
