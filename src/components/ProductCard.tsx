@@ -1,8 +1,7 @@
 
 import React, { useState } from 'react';
-import { Star, ShoppingCart } from 'lucide-react';
+import { Heart, Star, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import WishlistButton from './WishlistButton';
 
 interface Product {
   id: number;
@@ -63,30 +62,28 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
     setIsLoading(false);
   };
 
-  const handleProductClick = () => {
-    window.location.href = `/product/${product.id}`;
-  };
-
   return (
     <div 
-      className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col cursor-pointer"
+      className="production-card card-hover h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative overflow-hidden mb-4 rounded-lg" onClick={handleProductClick}>
+      <div className="relative overflow-hidden mb-4">
         {product.badge && (
-          <div className="absolute top-3 left-3 z-10 bg-black text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded">
+          <div className="absolute top-3 left-3 z-10 bg-black text-white text-xs font-medium px-2 py-1 uppercase tracking-wide">
             {product.badge}
           </div>
         )}
         
-        <WishlistButton 
-          product={product}
-          className="absolute top-3 right-3 z-10 bg-white/80 backdrop-blur-sm hover:bg-white rounded-full"
-        />
+        <button 
+          className="absolute top-3 right-3 z-10 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 p-2 smooth-transition hover:bg-gray-50 dark:hover:bg-gray-900"
+          aria-label="Add to wishlist"
+        >
+          <Heart className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+        </button>
 
         {discount > 0 && (
-          <div className="absolute top-3 right-12 z-10 bg-red-500 text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded">
+          <div className="absolute top-3 right-12 z-10 bg-brand-accent text-white text-xs font-medium px-2 py-1 uppercase tracking-wide">
             -{discount}%
           </div>
         )}
@@ -94,31 +91,28 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         <img 
           src={product.image} 
           alt={product.name}
-          className={`w-full h-48 object-cover rounded-lg transition-transform duration-300 ${
+          className={`w-full h-48 object-cover smooth-transition ${
             isHovered ? 'scale-110' : 'scale-100'
           }`}
           loading="lazy"
         />
         
         {!product.inStock && (
-          <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center rounded-lg">
-            <span className="bg-red-500 text-white px-3 py-1 text-sm font-medium uppercase tracking-wide rounded">
+          <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center">
+            <span className="bg-red-500 text-white px-3 py-1 text-sm font-medium uppercase tracking-wide">
               Out of Stock
             </span>
           </div>
         )}
       </div>
       
-      <div className="flex-1 flex flex-col">
-        <h3 
-          className="font-semibold text-gray-900 mb-2 hover:text-brand-primary transition-colors line-clamp-2 cursor-pointer"
-          onClick={handleProductClick}
-        >
+      <div className="p-4 flex-1 flex flex-col">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-brand-primary smooth-transition tracking-tight line-clamp-2">
           {product.name}
         </h3>
         
         {product.description && (
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
             {product.description}
           </p>
         )}
@@ -126,22 +120,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         <div className="flex items-center mb-3">
           <div className="flex items-center">
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm font-medium text-gray-900 ml-1">
+            <span className="text-sm font-medium text-gray-900 dark:text-white ml-1">
               {product.rating}
             </span>
           </div>
-          <span className="text-sm text-gray-500 ml-2">
+          <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
             ({product.reviews} reviews)
           </span>
         </div>
         
         <div className="flex items-center justify-between mb-4 mt-auto">
           <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-gray-900">
+            <span className="text-xl font-bold text-gray-900 dark:text-white">
               ₹{product.price}
             </span>
             {product.originalPrice && (
-              <span className="text-sm text-gray-500 line-through">
+              <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
                 ₹{product.originalPrice}
               </span>
             )}
@@ -150,7 +144,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         
         <div className="space-y-2">
           <Button 
-            className="w-full bg-brand-primary hover:bg-brand-secondary text-white rounded-lg"
+            className="w-full production-button-primary"
             disabled={!product.inStock || isLoading}
             onClick={handleBuyNow}
           >
@@ -165,7 +159,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
           </Button>
           
           <Button 
-            className="w-full border border-brand-primary text-brand-primary bg-white hover:bg-brand-primary hover:text-white rounded-lg flex items-center justify-center space-x-2"
+            className="w-full production-button-secondary flex items-center justify-center space-x-2"
             disabled={!product.inStock || isLoading}
             onClick={handleAddToCart}
           >

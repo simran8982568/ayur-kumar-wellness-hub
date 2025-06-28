@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { X, Users, Heart, Package, Leaf, User, LogOut, ShoppingCart, Info } from 'lucide-react';
+import { X, Users, Heart, Package, Leaf, BookOpen, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -11,13 +11,12 @@ interface NavigationSidebarProps {
 
 const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }) => {
   const navigationItems = [
-    { icon: ShoppingCart, label: "Shop", href: "/shop" },
-    { icon: Info, label: "About Us", href: "/about-us" },
-    { icon: Users, label: "Men's Health", href: "/category/mens-health" },
-    { icon: Heart, label: "Women's Health", href: "/category/womens-health" },
-    { icon: Package, label: "Combos & Essentials", href: "/category/combos-essentials" },
+    { icon: Users, label: "Men's Health", href: "/mens-health" },
+    { icon: Heart, label: "Women's Health", href: "/womens-health" },
+    { icon: Package, label: "Combos", href: "/combos" },
+    { icon: Leaf, label: "Essentials", href: "/essentials" },
+    { icon: BookOpen, label: "Blog", href: "/blog" },
     { icon: User, label: "Account", href: "/account" },
-    { icon: Heart, label: "Wishlist", href: "/account/wishlist" },
   ];
 
   if (!isOpen) return null;
@@ -26,7 +25,7 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
     <>
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black/50 z-40 transition-opacity"
+        className="fixed inset-0 bg-black/50 z-50 transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -54,7 +53,7 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
                 key={item.href}
                 to={item.href}
                 onClick={onClose}
-                className="flex items-center space-x-3 p-3 border border-transparent hover:border-gray-200 hover:bg-gray-50 transition-colors group rounded-lg"
+                className="flex items-center space-x-3 p-3 border border-transparent hover:border-gray-200 hover:bg-gray-50 transition-colors group"
               >
                 <item.icon className="h-5 w-5 text-brand-primary group-hover:text-brand-secondary transition-colors" />
                 <span className="font-medium text-gray-900 group-hover:text-brand-secondary transition-colors uppercase tracking-wide text-sm">
@@ -68,7 +67,7 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
           <div className="mt-8 pt-8 border-t border-gray-200">
             <Button
               variant="destructive"
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-medium uppercase tracking-wide rounded-lg"
+              className="w-full bg-brand-alert hover:bg-brand-alert/90 text-white font-medium uppercase tracking-wide"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out
