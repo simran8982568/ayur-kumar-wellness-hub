@@ -6,6 +6,7 @@ import ProductSection from '@/components/ProductSection';
 import TrustReviews from '@/components/TrustReviews';
 import TestimonialSection from '@/components/TestimonialSection';
 import TrustBadges from '@/components/TrustBadges';
+import FAQSection from '@/components/FAQSection';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -249,6 +250,9 @@ const Index = () => {
         
         {/* Testimonials */}
         <TestimonialSection />
+
+        {/* FAQ Section */}
+        <FAQSection />
       </main>
       
       <Footer />

@@ -1,7 +1,9 @@
 
 import React, { useState } from 'react';
-import { Heart, Star, ShoppingCart } from 'lucide-react';
+import { Star, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import WishlistButton from './WishlistButton';
 
 interface Product {
   id: number;
@@ -14,6 +16,7 @@ interface Product {
   badge?: string;
   inStock: boolean;
   description?: string;
+  slug?: string;
 }
 
 interface ProductCardProps {
@@ -25,12 +28,19 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNow }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   
   const discount = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
-  const handleAddToCart = async () => {
+  const handleCardClick = () => {
+    const slug = product.slug || product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+    navigate(`/product/${slug}`);
+  };
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsLoading(true);
     
     // Simulate API call
@@ -46,7 +56,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
     setIsLoading(false);
   };
 
-  const handleBuyNow = async () => {
+  const handleBuyNow = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsLoading(true);
     
     // Simulate API call
@@ -64,26 +75,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
 
   return (
     <div 
-      className="production-card card-hover h-full flex flex-col"
+      className="production-card card-hover h-full flex flex-col cursor-pointer rounded-2xl overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleCardClick}
     >
       <div className="relative overflow-hidden mb-4">
         {product.badge && (
-          <div className="absolute top-3 left-3 z-10 bg-black text-white text-xs font-medium px-2 py-1 uppercase tracking-wide">
+          <div className="absolute top-3 left-3 z-10 bg-black text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-xl">
             {product.badge}
           </div>
         )}
         
-        <button 
-          className="absolute top-3 right-3 z-10 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 p-2 smooth-transition hover:bg-gray-50 dark:hover:bg-gray-900"
-          aria-label="Add to wishlist"
-        >
-          <Heart className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-        </button>
+        <WishlistButton productId={product.id} />
 
         {discount > 0 && (
-          <div className="absolute top-3 right-12 z-10 bg-brand-accent text-white text-xs font-medium px-2 py-1 uppercase tracking-wide">
+          <div className="absolute top-3 right-12 z-10 bg-brand-accent text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-xl">
             -{discount}%
           </div>
         )}
@@ -98,8 +105,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         />
         
         {!product.inStock && (
-          <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center">
-            <span className="bg-red-500 text-white px-3 py-1 text-sm font-medium uppercase tracking-wide">
+          <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center rounded-2xl">
+            <span className="bg-red-500 text-white px-3 py-1 text-sm font-medium uppercase tracking-wide rounded-xl">
               Out of Stock
             </span>
           </div>
@@ -144,7 +151,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         
         <div className="space-y-2">
           <Button 
-            className="w-full production-button-primary"
+            className="w-full production-button-primary rounded-xl"
             disabled={!product.inStock || isLoading}
             onClick={handleBuyNow}
           >
@@ -159,7 +166,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
           </Button>
           
           <Button 
-            className="w-full production-button-secondary flex items-center justify-center space-x-2"
+            className="w-full production-button-secondary flex items-center justify-center space-x-2 rounded-xl"
             disabled={!product.inStock || isLoading}
             onClick={handleAddToCart}
           >
