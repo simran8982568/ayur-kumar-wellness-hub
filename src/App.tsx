@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ShopAll from "./pages/ShopAll";
+import Shop from "./pages/Shop";
 import Checkout from "./pages/Checkout";
 import About from "./pages/About";
 import ProductDetail from "./pages/ProductDetail";
@@ -14,7 +15,11 @@ import BlogDetail from "./pages/BlogDetail";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Account from "./pages/Account";
+import Wishlist from "./pages/account/Wishlist";
 import Policies from "./pages/Policies";
+import MensHealth from "./pages/category/MensHealth";
+import WomensHealth from "./pages/category/WomensHealth";
+import CombosEssentials from "./pages/category/CombosEssentials";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +33,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/shop-all" element={<ShopAll />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/cart" element={<Checkout />} />
           <Route path="/about-us" element={<About />} />
@@ -37,8 +43,11 @@ const App = () => (
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/account/wishlist" element={<Wishlist />} />
           <Route path="/policies" element={<Policies />} />
-          <Route path="/shop" element={<ShopAll />} />
+          <Route path="/category/mens-health" element={<MensHealth />} />
+          <Route path="/category/womens-health" element={<WomensHealth />} />
+          <Route path="/category/combos-essentials" element={<CombosEssentials />} />
           <Route path="/mens-health" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Men's Health - Coming Soon</h1></div>} />
           <Route path="/womens-health" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Women's Health - Coming Soon</h1></div>} />
           <Route path="/immunity" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Immunity - Coming Soon</h1></div>} />

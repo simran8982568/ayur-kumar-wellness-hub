@@ -1,191 +1,156 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Facebook, Instagram, Youtube } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import FeedbackModal from './FeedbackModal';
 
-const Footer: React.FC = () => {
-  const quickLinks = [
-    { name: 'Shop All', href: '/shop-all' },
-    { name: 'About Us', href: '/about-us' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'My Account', href: '/account' },
-    { name: 'FAQs', href: '/faqs' },
-    { name: 'Contact Us', href: '/contact' },
-    { name: 'Feedback', href: '/feedback' }
-  ];
-
-  const categories = [
-    { name: "Men's Health", href: '/mens-health' },
-    { name: "Women's Wellness", href: '/womens-health' },
-    { name: 'Immunity Boosters', href: '/immunity' },
-    { name: 'Digestive Care', href: '/digestion' },
-    { name: 'Stress & Sleep', href: '/stress-sleep' },
-    { name: 'Joint Care', href: '/joint-care' }
-  ];
-
-  const policies = [
-    { name: 'Privacy Policy', href: '/policies' },
-    { name: 'Terms & Conditions', href: '/policies' },
-    { name: 'Return Policy', href: '/policies' },
-    { name: 'Shipping Policy', href: '/policies' }
-  ];
+const Footer = () => {
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   return (
-    <footer className="bg-gray-50 text-gray-700 smooth-transition">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
-        {/* Main Footer Content */}
+    <footer className="bg-gray-50 text-gray-800 py-12 border-t border-gray-200">
+      <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          
-          {/* Company Info with Dr. Kumar's Profile */}
-          <div className="space-y-6">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 flex items-center justify-center">
-                <img 
-                  src="/lovable-uploads/7e676976-4f68-46af-9f33-a2bef69fb911.png"
-                  alt="Dr. Kumar Laboratories"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold">Dr. Kumar Laboratories</h3>
-                <p className="text-xs text-gray-500">Healthcare & Wellness</p>
-              </div>
-            </div>
-
-            {/* Dr. Kumar's Profile - Colored Image */}
-            <div className="flex items-center space-x-3 p-4 bg-white border border-gray-200">
+          {/* Brand Section */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3">
               <img 
                 src="/lovable-uploads/ed6e92d3-776a-4b30-b919-b7a35406bf8f.png"
                 alt="Dr. Kumar"
-                className="w-16 h-16 object-cover border-2 border-gray-300 transition-all duration-300"
+                className="w-16 h-16 rounded-full border-2 border-gray-300 object-cover"
               />
               <div>
-                <p className="text-sm font-semibold text-gray-900">Dr. Kumar</p>
-                <p className="text-xs text-gray-600">Founder & Wellness Expert</p>
-                <p className="text-xs text-gray-500">MBBS, Sexologist ✅</p>
+                <h3 className="font-bold text-lg text-black">Dr. Kumar Laboratories</h3>
+                <p className="text-sm text-gray-600">Healthcare & Wellness</p>
               </div>
             </div>
-
-            {/* Contact Information */}
-            <div className="space-y-3">
-              <div className="flex items-start space-x-3">
-                <MapPin className="w-4 h-4 text-brand-primary mt-1 flex-shrink-0" />
-                <p className="text-sm">
-                  Abhiyank Estate, Near Taste Of Punjab,<br />
-                  Silver Estate Ke Pas, Govindpuri-474011
-                </p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="w-4 h-4 text-brand-primary" />
-                <a href="tel:08128268794" className="text-sm hover:text-brand-primary transition-colors">
-                  08128268794
-                </a>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Mail className="w-4 h-4 text-brand-primary" />
-                <a href="mailto:info@drkumar.com" className="text-sm hover:text-brand-primary transition-colors">
-                  info@drkumar.com
-                </a>
-              </div>
-            </div>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              Dr. Kumar — Founder & Wellness Expert. Providing authentic Ayurvedic solutions for modern health challenges.
+            </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-gray-900">Quick Links</h4>
+            <h4 className="font-semibold text-black mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.href} 
-                    className="text-sm hover:text-brand-primary transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <a href="/shop" className="text-gray-700 hover:text-brand-primary transition-colors">
+                  Shop All
+                </a>
+              </li>
+              <li>
+                <a href="/about-us" className="text-gray-700 hover:text-brand-primary transition-colors">
+                  About Us
+                </a>
+              </li>
+              <li>
+                <a href="/account" className="text-gray-700 hover:text-brand-primary transition-colors">
+                  My Account
+                </a>
+              </li>
+              <li>
+                <a href="/policies" className="text-gray-700 hover:text-brand-primary transition-colors">
+                  Policies
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* Categories */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-gray-900">Shop by Category</h4>
+            <h4 className="font-semibold text-black mb-4">Categories</h4>
             <ul className="space-y-2">
-              {categories.map((category) => (
-                <li key={category.name}>
-                  <Link 
-                    to={category.href} 
-                    className="text-sm hover:text-brand-primary transition-colors"
-                  >
-                    {category.name}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <a href="/category/mens-health" className="text-gray-700 hover:text-brand-primary transition-colors">
+                  Men's Health
+                </a>
+              </li>
+              <li>
+                <a href="/category/womens-health" className="text-gray-700 hover:text-brand-primary transition-colors">
+                  Women's Health
+                </a>
+              </li>
+              <li>
+                <a href="/category/combos-essentials" className="text-gray-700 hover:text-brand-primary transition-colors">
+                  Combos & Essentials
+                </a>
+              </li>
             </ul>
           </div>
 
-          {/* Policies & Social */}
-          <div className="space-y-6">
-            <div>
-              <h4 className="text-lg font-semibold mb-4 text-gray-900">Legal</h4>
-              <ul className="space-y-2">
-                {policies.map((policy) => (
-                  <li key={policy.name}>
-                    <Link 
-                      to={policy.href} 
-                      className="text-sm hover:text-brand-primary transition-colors"
-                    >
-                      {policy.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Social Media */}
-            <div>
-              <h4 className="text-lg font-semibold mb-4 text-gray-900">Follow Us</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="bg-gray-200 hover:bg-brand-primary p-2 transition-colors duration-300">
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a href="#" className="bg-gray-200 hover:bg-brand-primary p-2 transition-colors duration-300">
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a href="#" className="bg-gray-200 hover:bg-brand-primary p-2 transition-colors duration-300">
-                  <Youtube className="w-5 h-5" />
-                </a>
+          {/* Contact Info */}
+          <div>
+            <h4 className="font-semibold text-black mb-4">Contact Us</h4>
+            <div className="space-y-3">
+              <div className="flex items-start space-x-3">
+                <MapPin className="w-4 h-4 text-brand-primary mt-1 flex-shrink-0" />
+                <p className="text-sm text-gray-600">
+                  Abhiyank Estate, Near Taste Of Punjab, Silver Estate Ke Pas, Govindpuri-474011
+                </p>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="w-4 h-4 text-brand-primary" />
+                <p className="text-sm text-gray-600">08128268794</p>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Mail className="w-4 h-4 text-brand-primary" />
+                <p className="text-sm text-gray-600">contact@drkumarlabs.com</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Payment Methods */}
-        <div className="border-t border-gray-200 pt-8 mb-6">
-          <h4 className="text-lg font-semibold mb-4 text-gray-900">Secure Payment Methods</h4>
-          <div className="flex flex-wrap gap-3">
-            {['UPI', 'Visa', 'Mastercard', 'RuPay', 'Paytm', 'Google Pay', 'PhonePe', 'American Express', 'Maestro'].map((method) => (
-              <div 
-                key={method}
-                className="bg-white border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700"
-              >
-                {method}
+        <div className="border-t border-gray-200 pt-6 mb-6">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div>
+              <h4 className="font-semibold text-black mb-2">Payment Methods</h4>
+              <div className="flex items-center space-x-4">
+                <div className="text-2xl">💳</div>
+                <div className="text-2xl">🏦</div>
+                <div className="text-2xl">📱</div>
+                <span className="text-sm text-gray-600">UPI, Cards, Net Banking</span>
               </div>
-            ))}
+            </div>
+            
+            <Button
+              onClick={() => setIsFeedbackOpen(true)}
+              className="bg-brand-primary hover:bg-brand-secondary text-white rounded-lg px-6 py-2"
+            >
+              Share Feedback
+            </Button>
           </div>
         </div>
 
-        {/* Bottom Footer */}
-        <div className="border-t border-gray-200 pt-6 text-center">
-          <p className="text-sm text-gray-500 mb-2">
-            © 2024 Dr. Kumar Laboratories. All rights reserved.
-          </p>
-          <p className="text-xs text-gray-400">
-            Ayurvedic products have not been evaluated by the FDA. These statements have not been evaluated by the Food and Drug Administration. 
-            These products are not intended to diagnose, treat, cure, or prevent any disease.
-          </p>
+        {/* Social Links */}
+        <div className="border-t border-gray-200 pt-6">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="flex items-center space-x-4">
+              <a href="#" className="text-gray-600 hover:text-brand-primary transition-colors">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="#" className="text-gray-600 hover:text-brand-primary transition-colors">
+                <Twitter className="w-5 h-5" />
+              </a>
+              <a href="#" className="text-gray-600 hover:text-brand-primary transition-colors">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="#" className="text-gray-600 hover:text-brand-primary transition-colors">
+                <Youtube className="w-5 h-5" />
+              </a>
+            </div>
+            
+            <p className="text-sm text-gray-600">
+              © 2024 Dr. Kumar Laboratories. All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
+
+      <FeedbackModal 
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
+      />
     </footer>
   );
 };
