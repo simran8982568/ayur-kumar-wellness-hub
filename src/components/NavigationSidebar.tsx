@@ -11,25 +11,38 @@ interface NavigationSidebarProps {
 
 const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Check if user is logged in
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
-  const navigationItems = [
+  const publicNavigationItems = [
     { icon: Store, label: "Shop", href: "/shop-all" },
     { icon: Info, label: "About Us", href: "/about-us" },
     { icon: Users, label: "Men's Health", href: "/mens-health" },
     { icon: Heart, label: "Women's Health", href: "/womens-health" },
     { icon: Package, label: "Combos", href: "/combos" },
     { icon: Leaf, label: "Essentials", href: "/essentials" },
+  ];
+
+  const authNavigationItems = [
+    { icon: User, label: "My Account", href: "/account" },
     { icon: Heart, label: "Wishlist", href: "/wishlist" },
-    { icon: User, label: "Account", href: "/account" },
   ];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Navigate to shop with search query
       window.location.href = `/shop-all?search=${encodeURIComponent(searchQuery)}`;
       onClose();
     }
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+    onClose();
+    window.location.href = '/';
   };
 
   if (!isOpen) return null;
@@ -69,38 +82,65 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c74a1b] focus:border-transparent"
+                aria-label="Search products"
               />
             </div>
           </form>
 
-          {/* Navigation Items */}
+          {/* Public Navigation Items */}
           <nav className="space-y-4">
-            {navigationItems.map((item) => (
+            {publicNavigationItems.map((item) => (
               <Link
                 key={item.href}
                 to={item.href}
                 onClick={onClose}
                 className="flex items-center space-x-3 p-3 border border-transparent hover:border-gray-200 hover:bg-gray-50 transition-colors group rounded-xl"
               >
-                <item.icon className="h-5 w-5 text-brand-primary group-hover:text-brand-secondary transition-colors" />
-                <span className="font-medium text-gray-900 group-hover:text-brand-secondary transition-colors uppercase tracking-wide text-sm">
+                <item.icon className="h-5 w-5 text-[#c74a1b] group-hover:text-[#b8441a] transition-colors" />
+                <span className="font-medium text-gray-900 group-hover:text-[#b8441a] transition-colors uppercase tracking-wide text-sm">
                   {item.label}
                 </span>
               </Link>
             ))}
+
+            {/* Conditional Auth Items */}
+            {isLoggedIn && (
+              <>
+                {/* Divider */}
+                <div className="border-t border-gray-200 my-4"></div>
+                
+                {authNavigationItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={onClose}
+                    className="flex items-center space-x-3 p-3 border border-transparent hover:border-gray-200 hover:bg-gray-50 transition-colors group rounded-xl"
+                  >
+                    <item.icon className="h-5 w-5 text-[#c74a1b] group-hover:text-[#b8441a] transition-colors" />
+                    <span className="font-medium text-gray-900 group-hover:text-[#b8441a] transition-colors uppercase tracking-wide text-sm">
+                      {item.label}
+                    </span>
+                  </Link>
+                ))}
+              </>
+            )}
           </nav>
 
-          {/* Sign Out Button */}
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <Button
-              variant="destructive"
-              className="w-full bg-brand-alert hover:bg-brand-alert/90 text-white font-medium uppercase tracking-wide rounded-xl"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
-            </Button>
-          </div>
+          {/* Sign Out Button - Only show if logged in */}
+          {isLoggedIn && (
+            <div className="mt-8 pt-8 border-t border-gray-200">
+              <Button
+                onClick={handleSignOut}
+                variant="destructive"
+                className="w-full bg-red-500 hover:bg-red-600 text-white font-medium uppercase tracking-wide rounded-xl"
+                aria-label="Sign Out"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </>

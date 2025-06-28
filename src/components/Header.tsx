@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, ShoppingCart, Search, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import NavigationSidebar from './NavigationSidebar';
@@ -13,9 +13,28 @@ const Header: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
-  // Check if user is logged in (in real app, this would come from auth context)
+  // Check if user is logged in
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const userEmail = localStorage.getItem('userEmail');
+
+  // Update cart count on component mount and when cart changes
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const totalItems = cart.reduce((total: number, item: any) => total + (item.quantity || 1), 0);
+      setCartItems(totalItems);
+    };
+
+    updateCartCount();
+
+    // Listen for cart updates
+    const handleCartUpdate = () => updateCartCount();
+    window.addEventListener('cartUpdated', handleCartUpdate);
+
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate);
+    };
+  }, []);
 
   const handleLogoClick = () => {
     navigate('/');
@@ -29,13 +48,8 @@ const Header: React.FC = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/shop-all?search=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery('');
     }
-  };
-
-  const addToCart = (product: any) => {
-    setCartItems(prev => prev + 1);
-    setIsCartOpen(true);
-    setTimeout(() => setIsCartOpen(false), 3000);
   };
 
   return (
@@ -67,10 +81,11 @@ const Header: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder="Search products, categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c74a1b] focus:border-transparent"
+                aria-label="Search products"
               />
             </div>
           </form>
@@ -84,14 +99,16 @@ const Header: React.FC = () => {
                   variant="ghost"
                   size="sm"
                   onClick={() => navigate('/signin')}
-                  className="text-black hover:bg-gray-100 text-sm px-3 py-2 rounded-lg"
+                  className="text-black hover:bg-gray-100 text-sm px-3 py-2 rounded-xl"
+                  aria-label="Sign In"
                 >
                   Sign In
                 </Button>
                 <Button
                   size="sm"
                   onClick={() => navigate('/signup')}
-                  className="bg-[#c74a1b] hover:bg-[#b8441a] text-white text-sm px-3 py-2 rounded-lg"
+                  className="bg-[#c74a1b] hover:bg-[#b8441a] text-white text-sm px-3 py-2 rounded-xl"
+                  aria-label="Sign Up"
                 >
                   Sign Up
                 </Button>
@@ -101,20 +118,20 @@ const Header: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate('/account')}
-                className="text-black hover:bg-gray-100 rounded-lg p-2"
-                aria-label="Account"
+                className="text-black hover:bg-gray-100 rounded-xl p-2"
+                aria-label="My Account"
               >
                 <User className="h-5 w-5" />
               </Button>
             )}
 
-            {/* Cart Icon */}
+            {/* Cart Icon with Badge */}
             <Button
               variant="ghost"
               size="sm"
               onClick={handleCartClick}
-              className="relative text-black hover:bg-gray-100 rounded-lg p-2"
-              aria-label="Shopping cart"
+              className="relative text-black hover:bg-gray-100 rounded-xl p-2"
+              aria-label={`Shopping cart with ${cartItems} items`}
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItems > 0 && (
@@ -130,7 +147,7 @@ const Header: React.FC = () => {
               size="sm"
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               aria-label="Open menu"
-              className="text-black hover:bg-gray-100 rounded-lg p-2"
+              className="text-black hover:bg-gray-100 rounded-xl p-2"
             >
               <Menu className="h-5 w-5" />
             </Button>
@@ -144,10 +161,11 @@ const Header: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder="Search products, categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c74a1b] focus:border-transparent"
+                aria-label="Search products"
               />
             </div>
           </form>

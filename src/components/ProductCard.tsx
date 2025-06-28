@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Star, ShoppingCart } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Star, ShoppingCart, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import WishlistButton from './WishlistButton';
@@ -28,11 +28,31 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNow }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
   const navigate = useNavigate();
   
   const discount = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
+
+  // Check if product is in cart
+  useEffect(() => {
+    const checkCartStatus = () => {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const inCart = cart.some((item: any) => item.id === product.id);
+      setIsInCart(inCart);
+    };
+
+    checkCartStatus();
+    
+    // Listen for cart updates
+    const handleCartUpdate = () => checkCartStatus();
+    window.addEventListener('cartUpdated', handleCartUpdate);
+
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate);
+    };
+  }, [product.id]);
 
   const handleCardClick = () => {
     const slug = product.slug || product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
@@ -44,7 +64,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
     setIsLoading(true);
     
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 300));
     
     // Add to cart in localStorage
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -57,10 +77,30 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
     }
     
     localStorage.setItem('cart', JSON.stringify(cart));
+    setIsInCart(true);
+    
+    // Dispatch custom event to update cart count
+    window.dispatchEvent(new CustomEvent('cartUpdated'));
     
     if (onAddToCart) {
       onAddToCart(product);
     }
+    
+    setIsLoading(false);
+  };
+
+  const handleRemoveFromCart = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLoading(true);
+    
+    // Remove from cart
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const updatedCart = cart.filter((item: any) => item.id !== product.id);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    setIsInCart(false);
+    
+    // Dispatch custom event to update cart count
+    window.dispatchEvent(new CustomEvent('cartUpdated'));
     
     setIsLoading(false);
   };
@@ -70,16 +110,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
     setIsLoading(true);
     
     // Add to cart and redirect to checkout
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existingItem = cart.find((item: any) => item.id === product.id);
-    
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
+    if (!isInCart) {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const existingItem = cart.find((item: any) => item.id === product.id);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
     }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
     
     if (onBuyNow) {
       onBuyNow(product);
@@ -95,6 +138,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      aria-label={`View ${product.name} details`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleCardClick();
+        }
+      }}
     >
       <div className="relative overflow-hidden">
         {product.badge && (
@@ -167,9 +218,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         
         <div className="space-y-2">
           <Button 
-            className="w-full bg-[#c74a1b] hover:bg-[#b8441a] text-white font-medium rounded-lg"
+            className="w-full bg-[#c74a1b] hover:bg-[#b8441a] text-white font-medium rounded-xl"
             disabled={!product.inStock || isLoading}
             onClick={handleBuyNow}
+            aria-label={`Buy ${product.name} now`}
           >
             {isLoading ? (
               <div className="flex items-center space-x-2">
@@ -183,12 +235,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
           
           <Button 
             variant="outline"
-            className="w-full border-[#c74a1b] text-[#c74a1b] hover:bg-[#c74a1b] hover:text-white flex items-center justify-center space-x-2 rounded-lg"
+            className="w-full border-[#c74a1b] text-[#c74a1b] hover:bg-[#c74a1b] hover:text-white flex items-center justify-center space-x-2 rounded-xl"
             disabled={!product.inStock || isLoading}
-            onClick={handleAddToCart}
+            onClick={isInCart ? handleRemoveFromCart : handleAddToCart}
+            aria-label={isInCart ? `Remove ${product.name} from cart` : `Add ${product.name} to cart`}
           >
-            <ShoppingCart className="w-4 h-4" />
-            <span>Add to Cart</span>
+            {isInCart ? <Minus className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
+            <span>{isInCart ? 'Remove' : 'Add to Cart'}</span>
           </Button>
         </div>
       </div>

@@ -1,8 +1,8 @@
 
 import React from 'react';
-import ProductCard from './ProductCard';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import ProductCard from './ProductCard';
+import { Link } from 'react-router-dom';
 
 interface Product {
   id: number;
@@ -15,73 +15,80 @@ interface Product {
   badge?: string;
   inStock: boolean;
   description?: string;
+  slug?: string;
 }
 
-interface ProductSectionProps {
+export interface ProductSectionProps {
   title: string;
   subtitle?: string;
   products: Product[];
+  viewAllLink?: string;
   showViewAll?: boolean;
 }
 
-const ProductSection: React.FC<ProductSectionProps> = ({ 
-  title, 
-  subtitle, 
-  products, 
-  showViewAll = true 
+const ProductSection: React.FC<ProductSectionProps> = ({
+  title,
+  subtitle,
+  products,
+  viewAllLink,
+  showViewAll = false
 }) => {
   const handleAddToCart = (product: Product) => {
-    console.log('Added to cart:', product);
-    // This would typically dispatch to a cart context or state management
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingItem = cart.find((item: any) => item.id === product.id);
+    
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Dispatch custom event to update cart count
+    window.dispatchEvent(new CustomEvent('cartUpdated'));
+  };
+
+  const handleBuyNow = (product: Product) => {
+    handleAddToCart(product);
+    window.location.href = '/checkout';
   };
 
   return (
-    <section className="py-16 px-4 lg:px-8">
+    <section className="py-12 px-4 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-12">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-bold text-black mb-2 tracking-tight">
               {title}
             </h2>
             {subtitle && (
-              <p className="text-gray-600 text-base">
-                {subtitle}
-              </p>
+              <p className="text-gray-600 text-base">{subtitle}</p>
             )}
           </div>
           
-          {showViewAll && (
-            <Button 
-              variant="outline" 
-              className="border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white font-medium hidden md:flex items-center space-x-2 uppercase tracking-wide"
-            >
-              <span>View All</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
+          {showViewAll && viewAllLink && (
+            <Link to={viewAllLink}>
+              <Button 
+                variant="outline" 
+                className="border-[#c74a1b] text-[#c74a1b] hover:bg-[#c74a1b] hover:text-white rounded-xl"
+              >
+                View All
+              </Button>
+            </Link>
           )}
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {products.map((product) => (
-            <ProductCard 
-              key={product.id} 
-              product={product} 
+            <ProductCard
+              key={product.id}
+              product={product}
               onAddToCart={handleAddToCart}
+              onBuyNow={handleBuyNow}
             />
           ))}
         </div>
-        
-        {showViewAll && (
-          <div className="text-center mt-8 md:hidden">
-            <Button 
-              variant="outline" 
-              className="border border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white font-medium flex items-center space-x-2 mx-auto uppercase tracking-wide"
-            >
-              <span>View All Products</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
       </div>
     </section>
   );

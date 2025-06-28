@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface WishlistButtonProps {
   productId: number;
@@ -9,6 +10,7 @@ interface WishlistButtonProps {
 
 const WishlistButton: React.FC<WishlistButtonProps> = ({ productId, className = "" }) => {
   const [isInWishlist, setIsInWishlist] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if product is in wishlist
@@ -19,6 +21,15 @@ const WishlistButton: React.FC<WishlistButtonProps> = ({ productId, className = 
   const toggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+    if (!isLoggedIn) {
+      // Redirect to sign in if not logged in
+      navigate('/signin');
+      return;
+    }
     
     const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
     
@@ -33,15 +44,20 @@ const WishlistButton: React.FC<WishlistButtonProps> = ({ productId, className = 
       localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
       setIsInWishlist(true);
     }
+    
+    // Dispatch custom event for wishlist updates
+    window.dispatchEvent(new CustomEvent('wishlistUpdated'));
   };
 
   return (
     <button 
       onClick={toggleWishlist}
-      className={`absolute top-3 right-3 z-10 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 p-2 smooth-transition hover:bg-gray-50 dark:hover:bg-gray-900 rounded-xl ${className}`}
+      className={`absolute top-3 right-3 z-10 bg-white border border-gray-200 p-2 hover:bg-gray-50 transition-colors rounded-xl ${className}`}
       aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
     >
-      <Heart className={`w-4 h-4 ${isInWishlist ? 'text-red-500 fill-red-500' : 'text-gray-600 dark:text-gray-400'}`} />
+      <Heart className={`w-4 h-4 transition-colors ${
+        isInWishlist ? 'text-red-500 fill-red-500' : 'text-gray-600'
+      }`} />
     </button>
   );
 };

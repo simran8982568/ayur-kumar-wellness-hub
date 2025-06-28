@@ -1,192 +1,98 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Facebook, Instagram, Youtube } from 'lucide-react';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 import FeedbackModal from './FeedbackModal';
 
 const Footer: React.FC = () => {
-  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const location = useLocation();
+  const [isFeedbackOpen, setIsFeedbackOpen] = React.useState(false);
 
-  const quickLinks = [
-    { name: 'Shop All', href: '/shop-all' },
-    { name: 'About Us', href: '/about-us' },
-    { name: 'My Account', href: '/account' },
-    { name: 'FAQs', href: '/faqs' },
-    { name: 'Wishlist', href: '/wishlist' }
-  ];
-
-  const categories = [
-    { name: "Men's Health", href: '/mens-health' },
-    { name: "Women's Wellness", href: '/womens-health' },
-    { name: 'Combos', href: '/combos' },
-    { name: 'Essentials', href: '/essentials' }
-  ];
-
-  const policies = [
-    { name: 'Privacy Policy', href: '/policies' },
-    { name: 'Terms & Conditions', href: '/policies' },
-    { name: 'Return Policy', href: '/policies' },
-    { name: 'Shipping Policy', href: '/policies' }
-  ];
+  // Don't render footer on checkout page
+  if (location.pathname === '/checkout') {
+    return null;
+  }
 
   return (
     <>
-      <footer className="bg-gray-50 text-gray-700 smooth-transition">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
-          {/* Main Footer Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            
-            {/* Company Info with Dr. Kumar's Profile */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-12 h-12 flex items-center justify-center">
+      <footer className="bg-gray-900 text-white py-12 px-4 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Company Info */}
+            <div>
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-10 h-10 flex items-center justify-center">
                   <img 
                     src="/lovable-uploads/7e676976-4f68-46af-9f33-a2bef69fb911.png"
                     alt="Dr. Kumar Laboratories"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain filter invert"
                   />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold">Dr. Kumar Laboratories</h3>
-                  <p className="text-xs text-gray-500">Healthcare & Wellness</p>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide">Healthcare & Wellness</p>
                 </div>
               </div>
-
-              {/* Dr. Kumar's Profile - Colored Image */}
-              <div className="flex items-center space-x-3 p-4 bg-white border border-gray-200 rounded-xl">
-                <img 
-                  src="/lovable-uploads/ed6e92d3-776a-4b30-b919-b7a35406bf8f.png"
-                  alt="Dr. Kumar"
-                  className="w-16 h-16 object-cover border-2 border-gray-300 transition-all duration-300 rounded-xl"
-                />
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">Dr. Kumar</p>
-                  <p className="text-xs text-gray-600">Founder & Wellness Expert</p>
-                  <p className="text-xs text-gray-500">MBBS, Sexologist ✅</p>
-                </div>
-              </div>
-
-              {/* Contact Information */}
-              <div className="space-y-3">
-                <div className="flex items-start space-x-3">
-                  <MapPin className="w-4 h-4 text-brand-primary mt-1 flex-shrink-0" />
-                  <p className="text-sm">
-                    Abhiyank Estate, Near Taste Of Punjab,<br />
-                    Silver Estate Ke Pas, Govindpuri-474011
-                  </p>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Phone className="w-4 h-4 text-brand-primary" />
-                  <a href="tel:08128268794" className="text-sm hover:text-brand-primary transition-colors">
-                    08128268794
-                  </a>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Mail className="w-4 h-4 text-brand-primary" />
-                  <a href="mailto:info@drkumar.com" className="text-sm hover:text-brand-primary transition-colors">
-                    info@drkumar.com
-                  </a>
-                </div>
-              </div>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Your trusted partner in Ayurvedic health and wellness. 
+                Enhancing immunity and promoting holistic well-being through natural solutions.
+              </p>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-semibold mb-4 text-gray-900">Quick Links</h4>
-              <ul className="space-y-2">
-                {quickLinks.map((link) => (
-                  <li key={link.name}>
-                    <Link 
-                      to={link.href} 
-                      className="text-sm hover:text-brand-primary transition-colors"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
+              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="/about-us" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                <li><a href="/shop-all" className="text-gray-400 hover:text-white transition-colors">Shop All</a></li>
+                <li><a href="/mens-health" className="text-gray-400 hover:text-white transition-colors">Men's Health</a></li>
+                <li><a href="/womens-health" className="text-gray-400 hover:text-white transition-colors">Women's Health</a></li>
+                <li><a href="/combos" className="text-gray-400 hover:text-white transition-colors">Health Combos</a></li>
               </ul>
             </div>
 
-            {/* Categories */}
+            {/* Customer Support */}
             <div>
-              <h4 className="text-lg font-semibold mb-4 text-gray-900">Shop by Category</h4>
-              <ul className="space-y-2">
-                {categories.map((category) => (
-                  <li key={category.name}>
-                    <Link 
-                      to={category.href} 
-                      className="text-sm hover:text-brand-primary transition-colors"
-                    >
-                      {category.name}
-                    </Link>
-                  </li>
-                ))}
+              <h4 className="text-lg font-semibold mb-4">Customer Support</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="/policies" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                <li><a href="/policies" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+                <li><a href="/policies" className="text-gray-400 hover:text-white transition-colors">Return Policy</a></li>
+                <li><a href="/policies" className="text-gray-400 hover:text-white transition-colors">Shipping Info</a></li>
               </ul>
             </div>
 
-            {/* Policies & Social */}
-            <div className="space-y-6">
-              <div>
-                <h4 className="text-lg font-semibold mb-4 text-gray-900">Legal</h4>
-                <ul className="space-y-2">
-                  {policies.map((policy) => (
-                    <li key={policy.name}>
-                      <Link 
-                        to={policy.href} 
-                        className="text-sm hover:text-brand-primary transition-colors"
-                      >
-                        {policy.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+            {/* Contact & Feedback */}
+            <div>
+              <h4 className="text-lg font-semibold mb-4">Get in Touch</h4>
+              <div className="space-y-2 text-sm text-gray-400 mb-4">
+                <p>📧 support@drkumarlabs.com</p>
+                <p>📞 +91 9876543210</p>
+                <p>🕒 Mon-Sat: 9AM-6PM</p>
               </div>
-
-              {/* Social Media */}
-              <div>
-                <h4 className="text-lg font-semibold mb-4 text-gray-900">Follow Us</h4>
-                <div className="flex space-x-4">
-                  <a href="#" className="bg-gray-200 hover:bg-brand-primary p-2 transition-colors duration-300 rounded-xl">
-                    <Facebook className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="bg-gray-200 hover:bg-brand-primary p-2 transition-colors duration-300 rounded-xl">
-                    <Instagram className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="bg-gray-200 hover:bg-brand-primary p-2 transition-colors duration-300 rounded-xl">
-                    <Youtube className="w-5 h-5" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Feedback Button */}
-              <div>
-                <button
-                  onClick={() => setIsFeedbackModalOpen(true)}
-                  className="bg-brand-primary text-white px-6 py-3 rounded-xl font-medium hover:bg-brand-secondary transition-colors duration-300 w-full"
-                >
-                  Feedback
-                </button>
-              </div>
+              
+              <Button
+                onClick={() => setIsFeedbackOpen(true)}
+                className="bg-[#c74a1b] hover:bg-[#b8441a] text-white font-medium rounded-xl w-full"
+                aria-label="Send Feedback"
+              >
+                Send Feedback
+              </Button>
             </div>
           </div>
 
-          {/* Bottom Footer */}
-          <div className="border-t border-gray-200 pt-6 text-center">
-            <p className="text-sm text-gray-500 mb-2">
-              © 2024 Dr. Kumar Laboratories. All rights reserved.
-            </p>
-            <p className="text-xs text-gray-400">
-              Ayurvedic products have not been evaluated by the FDA. These statements have not been evaluated by the Food and Drug Administration. 
-              These products are not intended to diagnose, treat, cure, or prevent any disease.
+          {/* Bottom Bar */}
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center">
+            <p className="text-gray-400 text-sm">
+              © {new Date().getFullYear()} Dr. Kumar Laboratories. All rights reserved.
             </p>
           </div>
         </div>
       </footer>
 
-      {/* Feedback Modal */}
-      <FeedbackModal
-        isOpen={isFeedbackModalOpen}
-        onClose={() => setIsFeedbackModalOpen(false)}
+      <FeedbackModal 
+        isOpen={isFeedbackOpen} 
+        onClose={() => setIsFeedbackOpen(false)} 
       />
     </>
   );
