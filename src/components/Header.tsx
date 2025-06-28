@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Menu, ShoppingCart } from 'lucide-react';
+import { Menu, ShoppingCart, Search, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import NavigationSidebar from './NavigationSidebar';
 import CartPopup from './CartPopup';
@@ -10,106 +10,115 @@ const Header: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+
+  // Check if user is logged in (in real app, this would come from auth context)
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const userEmail = localStorage.getItem('userEmail');
 
   const handleLogoClick = () => {
     navigate('/');
-  };
-
-  const handleShopClick = () => {
-    navigate('/shop-all');
   };
 
   const handleCartClick = () => {
     navigate('/checkout');
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/shop-all?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   const addToCart = (product: any) => {
     setCartItems(prev => prev + 1);
     setIsCartOpen(true);
-    
-    setTimeout(() => {
-      setIsCartOpen(false);
-    }, 3000);
+    setTimeout(() => setIsCartOpen(false), 3000);
   };
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-white border-b border-gray-200 smooth-transition">
+      <header className="sticky top-0 z-40 w-full bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Logo - Clickable to home */}
+          {/* Logo */}
           <div 
-            className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity duration-300"
+            className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:opacity-80 transition-opacity duration-300"
             onClick={handleLogoClick}
           >
-            <div className="w-12 h-12 flex items-center justify-center">
+            <div className="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
               <img 
                 src="/lovable-uploads/7e676976-4f68-46af-9f33-a2bef69fb911.png"
                 alt="Dr. Kumar Laboratories"
-                className="w-full h-full object-contain transition-all duration-300"
+                className="w-full h-full object-contain"
                 loading="eager"
               />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-black tracking-tight">Dr. Kumar Laboratories</h1>
+              <h1 className="text-lg sm:text-xl font-bold text-black">Dr. Kumar Laboratories</h1>
               <p className="text-xs text-gray-600 uppercase tracking-wide">Healthcare & Wellness</p>
             </div>
           </div>
 
-          {/* Navigation Links - Desktop */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <button 
-              onClick={handleShopClick}
-              className="text-gray-700 hover:text-brand-primary font-medium transition-colors duration-300"
-            >
-              Shop
-            </button>
-            <button 
-              onClick={() => navigate('/about-us')}
-              className="text-gray-700 hover:text-brand-primary font-medium transition-colors duration-300"
-            >
-              About Us
-            </button>
-            <button 
-              onClick={() => navigate('/blog')}
-              className="text-gray-700 hover:text-brand-primary font-medium transition-colors duration-300"
-            >
-              Blog
-            </button>
-          </nav>
+          {/* Search Bar - Desktop */}
+          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-8">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c74a1b] focus:border-transparent"
+              />
+            </div>
+          </form>
 
           {/* Right side controls */}
           <div className="flex items-center space-x-2">
-            {/* Sign In / Sign Up */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/signin')}
-              className="text-black hover:bg-gray-100 smooth-transition"
-            >
-              Sign In
-            </Button>
-            
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate('/signup')}
-              className="text-brand-primary border-brand-primary hover:bg-brand-primary hover:text-white smooth-transition"
-            >
-              Sign Up
-            </Button>
+            {/* Authentication Buttons or User Menu */}
+            {!isLoggedIn ? (
+              <>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate('/signin')}
+                  className="text-black hover:bg-gray-100 text-sm px-3 py-2 rounded-lg"
+                >
+                  Sign In
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => navigate('/signup')}
+                  className="bg-[#c74a1b] hover:bg-[#b8441a] text-white text-sm px-3 py-2 rounded-lg"
+                >
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/account')}
+                className="text-black hover:bg-gray-100 rounded-lg p-2"
+                aria-label="Account"
+              >
+                <User className="h-5 w-5" />
+              </Button>
+            )}
 
             {/* Cart Icon */}
             <Button
               variant="ghost"
               size="sm"
               onClick={handleCartClick}
-              className="relative text-black hover:bg-gray-100 smooth-transition"
+              className="relative text-black hover:bg-gray-100 rounded-lg p-2"
               aria-label="Shopping cart"
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-brand-secondary text-white text-xs h-5 w-5 flex items-center justify-center font-medium">
+                <span className="absolute -top-1 -right-1 bg-[#c74a1b] text-white text-xs h-5 w-5 flex items-center justify-center rounded-full font-medium">
                   {cartItems}
                 </span>
               )}
@@ -121,21 +130,35 @@ const Header: React.FC = () => {
               size="sm"
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               aria-label="Open menu"
-              className="text-black hover:bg-gray-100 smooth-transition"
+              className="text-black hover:bg-gray-100 rounded-lg p-2"
             >
               <Menu className="h-5 w-5" />
             </Button>
           </div>
         </div>
+
+        {/* Mobile Search Bar */}
+        <div className="md:hidden px-4 pb-3">
+          <form onSubmit={handleSearch}>
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c74a1b] focus:border-transparent"
+              />
+            </div>
+          </form>
+        </div>
       </header>
 
-      {/* Navigation Sidebar */}
       <NavigationSidebar 
         isOpen={isSidebarOpen} 
         onClose={() => setIsSidebarOpen(false)} 
       />
 
-      {/* Cart Popup */}
       {isCartOpen && (
         <CartPopup 
           onClose={() => setIsCartOpen(false)}

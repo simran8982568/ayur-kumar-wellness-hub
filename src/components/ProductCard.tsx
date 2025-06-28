@@ -46,12 +46,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    onAddToCart?.(product);
+    // Add to cart in localStorage
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingItem = cart.find((item: any) => item.id === product.id);
     
-    // Add to recently viewed (localStorage)
-    const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
-    const updatedViewed = [product, ...recentlyViewed.filter((p: Product) => p.id !== product.id)].slice(0, 10);
-    localStorage.setItem('recentlyViewed', JSON.stringify(updatedViewed));
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    if (onAddToCart) {
+      onAddToCart(product);
+    }
     
     setIsLoading(false);
   };
@@ -60,29 +69,36 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
     e.stopPropagation();
     setIsLoading(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 300));
+    // Add to cart and redirect to checkout
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingItem = cart.find((item: any) => item.id === product.id);
     
-    onBuyNow?.(product);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
     
-    // Add to recently viewed (localStorage)
-    const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
-    const updatedViewed = [product, ...recentlyViewed.filter((p: Product) => p.id !== product.id)].slice(0, 10);
-    localStorage.setItem('recentlyViewed', JSON.stringify(updatedViewed));
+    localStorage.setItem('cart', JSON.stringify(cart));
     
+    if (onBuyNow) {
+      onBuyNow(product);
+    }
+    
+    navigate('/checkout');
     setIsLoading(false);
   };
 
   return (
     <div 
-      className="production-card card-hover h-full flex flex-col cursor-pointer rounded-2xl overflow-hidden"
+      className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleCardClick}
     >
-      <div className="relative overflow-hidden mb-4">
+      <div className="relative overflow-hidden">
         {product.badge && (
-          <div className="absolute top-3 left-3 z-10 bg-black text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-xl">
+          <div className="absolute top-3 left-3 z-10 bg-black text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-lg">
             {product.badge}
           </div>
         )}
@@ -90,7 +106,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         <WishlistButton productId={product.id} />
 
         {discount > 0 && (
-          <div className="absolute top-3 right-12 z-10 bg-brand-accent text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-xl">
+          <div className="absolute top-3 right-12 z-10 bg-[#c74a1b] text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-lg">
             -{discount}%
           </div>
         )}
@@ -98,15 +114,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         <img 
           src={product.image} 
           alt={product.name}
-          className={`w-full h-48 object-cover smooth-transition ${
+          className={`w-full h-48 sm:h-56 object-cover transition-transform duration-300 ${
             isHovered ? 'scale-110' : 'scale-100'
           }`}
           loading="lazy"
         />
         
         {!product.inStock && (
-          <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center rounded-2xl">
-            <span className="bg-red-500 text-white px-3 py-1 text-sm font-medium uppercase tracking-wide rounded-xl">
+          <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center">
+            <span className="bg-red-500 text-white px-3 py-1 text-sm font-medium uppercase tracking-wide rounded-lg">
               Out of Stock
             </span>
           </div>
@@ -114,12 +130,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
       </div>
       
       <div className="p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-brand-primary smooth-transition tracking-tight line-clamp-2">
+        <h3 className="font-semibold text-gray-900 mb-2 hover:text-[#c74a1b] transition-colors line-clamp-2 text-sm sm:text-base">
           {product.name}
         </h3>
         
         {product.description && (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
             {product.description}
           </p>
         )}
@@ -127,22 +143,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         <div className="flex items-center mb-3">
           <div className="flex items-center">
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm font-medium text-gray-900 dark:text-white ml-1">
+            <span className="text-sm font-medium text-gray-900 ml-1">
               {product.rating}
             </span>
           </div>
-          <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
+          <span className="text-xs sm:text-sm text-gray-500 ml-2">
             ({product.reviews} reviews)
           </span>
         </div>
         
         <div className="flex items-center justify-between mb-4 mt-auto">
           <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-gray-900 dark:text-white">
+            <span className="text-lg sm:text-xl font-bold text-gray-900">
               ₹{product.price}
             </span>
             {product.originalPrice && (
-              <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
+              <span className="text-sm text-gray-500 line-through">
                 ₹{product.originalPrice}
               </span>
             )}
@@ -151,7 +167,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         
         <div className="space-y-2">
           <Button 
-            className="w-full production-button-primary rounded-xl"
+            className="w-full bg-[#c74a1b] hover:bg-[#b8441a] text-white font-medium rounded-lg"
             disabled={!product.inStock || isLoading}
             onClick={handleBuyNow}
           >
@@ -166,7 +182,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
           </Button>
           
           <Button 
-            className="w-full production-button-secondary flex items-center justify-center space-x-2 rounded-xl"
+            variant="outline"
+            className="w-full border-[#c74a1b] text-[#c74a1b] hover:bg-[#c74a1b] hover:text-white flex items-center justify-center space-x-2 rounded-lg"
             disabled={!product.inStock || isLoading}
             onClick={handleAddToCart}
           >

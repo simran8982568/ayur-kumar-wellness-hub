@@ -14,6 +14,7 @@ import Account from "./pages/Account";
 import Policies from "./pages/Policies";
 import NotFound from "./pages/NotFound";
 import Wishlist from "./pages/Wishlist";
+import ViewAll from "./pages/ViewAll";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/policies" element={<Policies />} />
           <Route path="/shop" element={<ShopAll />} />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/view-all/:category" element={<ViewAll />} />
           <Route path="/mens-health" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Men's Health - Coming Soon</h1></div>} />
           <Route path="/womens-health" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Women's Health - Coming Soon</h1></div>} />
           <Route path="/immunity" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Immunity - Coming Soon</h1></div>} />

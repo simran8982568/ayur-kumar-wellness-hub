@@ -5,130 +5,163 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Eye, EyeOff } from 'lucide-react';
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-  const [showPassword, setShowPassword] = useState(false);
+  const [step, setStep] = useState(1); // 1: Email/Phone, 2: OTP
+  const [contact, setContact] = useState('');
+  const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<any>({});
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // For demo purposes, any email/password combination works
-    if (formData.email && formData.password) {
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('userEmail', formData.email);
-      navigate('/account');
+    if (!contact.trim()) {
+      setErrors({ contact: 'Email or phone is required' });
+      return;
     }
     
+    setIsLoading(true);
+    
+    // Simulate API call to check if user exists
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // For demo, any email/phone works
+    setStep(2);
     setIsLoading(false);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleOTPSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    // Simulate OTP verification
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    if (otp === '1234') { // Demo OTP
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', contact);
+      navigate('/account');
+    } else {
+      setErrors({ otp: 'Invalid OTP. Try 1234' });
+    }
+    
+    setIsLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-white">
       <Header />
       
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-8 sm:py-12">
         <div className="max-w-md mx-auto">
-          <div className="bg-white border border-gray-200 p-8 shadow-lg">
-            {/* Header */}
-            <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold text-black mb-2">Welcome Back</h1>
-              <p className="text-gray-600">Sign in to your Dr. Kumar Laboratories account</p>
-            </div>
+          <div className="bg-white border border-gray-200 p-6 sm:p-8 shadow-lg rounded-xl">
+            {step === 1 ? (
+              <>
+                <div className="text-center mb-8">
+                  <h1 className="text-2xl font-bold text-black mb-2">Welcome Back</h1>
+                  <p className="text-gray-600">Sign in to your Dr. Kumar Laboratories account</p>
+                </div>
 
-            {/* Sign In Form */}
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
-                </label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full"
-                  placeholder="Enter your email"
-                />
-              </div>
+                <form onSubmit={handleSendOTP} className="space-y-6">
+                  <div>
+                    <label htmlFor="contact" className="block text-sm font-medium text-gray-700 mb-2">
+                      Email or Phone Number
+                    </label>
+                    <Input
+                      id="contact"
+                      type="text"
+                      required
+                      value={contact}
+                      onChange={(e) => setContact(e.target.value)}
+                      className="w-full rounded-lg"
+                      placeholder="Enter your email or phone"
+                    />
+                    {errors.contact && <p className="text-red-500 text-xs mt-1">{errors.contact}</p>}
+                  </div>
 
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                  Password
-                </label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    name="password"
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="w-full pr-10"
-                    placeholder="Enter your password"
-                  />
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full bg-[#c74a1b] hover:bg-[#b8441a] text-white rounded-lg"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center justify-center">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Sending OTP...
+                      </div>
+                    ) : (
+                      'Send OTP'
+                    )}
+                  </Button>
+                </form>
+              </>
+            ) : (
+              <>
+                <div className="text-center mb-8">
+                  <h1 className="text-2xl font-bold text-black mb-2">Enter OTP</h1>
+                  <p className="text-gray-600">OTP sent to {contact}</p>
+                </div>
+
+                <form onSubmit={handleOTPSubmit} className="space-y-6">
+                  <div>
+                    <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-2">
+                      Enter OTP
+                    </label>
+                    <Input
+                      id="otp"
+                      type="text"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      className="w-full text-center text-2xl tracking-wider rounded-lg"
+                      placeholder="1234"
+                      maxLength={4}
+                    />
+                    {errors.otp && <p className="text-red-500 text-xs mt-1">{errors.otp}</p>}
+                    <p className="text-xs text-gray-500 mt-2">Demo: Use 1234 as OTP</p>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full bg-[#c74a1b] hover:bg-[#b8441a] text-white rounded-lg"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center justify-center">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Verifying...
+                      </div>
+                    ) : (
+                      'Sign In'
+                    )}
+                  </Button>
+
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    onClick={() => setStep(1)}
+                    className="w-full text-[#c74a1b] hover:underline text-sm"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    Back
                   </button>
-                </div>
-              </div>
+                </form>
+              </>
+            )}
 
-              <div className="flex items-center justify-between">
-                <label className="flex items-center">
-                  <input type="checkbox" className="mr-2" />
-                  <span className="text-sm text-gray-600">Remember me</span>
-                </label>
-                <Link to="/forgot-password" className="text-sm text-brand-primary hover:underline">
-                  Forgot password?
-                </Link>
-              </div>
-
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-brand-primary hover:bg-brand-secondary text-white"
-              >
-                {isLoading ? (
-                  <div className="flex items-center justify-center">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Signing In...
-                  </div>
-                ) : (
-                  'Sign In'
-                )}
-              </Button>
-            </form>
-
-            {/* Footer */}
             <div className="mt-6 text-center">
               <p className="text-gray-600">
-                Don't have an account?{' '}
-                <Link to="/signup" className="text-brand-primary hover:underline font-medium">
-                  Sign up here
-                </Link>
+                {step === 1 ? (
+                  <>
+                    Don't have an account?{' '}
+                    <Link to="/signup" className="text-[#c74a1b] hover:underline font-medium">
+                      Sign up here
+                    </Link>
+                  </>
+                ) : (
+                  <Link to="/forgot-password" className="text-[#c74a1b] hover:underline text-sm">
+                    Forgot password?
+                  </Link>
+                )}
               </p>
             </div>
           </div>
