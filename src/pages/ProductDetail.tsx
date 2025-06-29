@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Star, Heart, ShoppingCart, Minus, Plus, ChevronDown, ChevronRight } from 'lucide-react';
@@ -7,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
+import CustomerReviews from '@/components/CustomerReviews';
 
 // Dummy product data - in production this would come from API
 const dummyProduct = {
@@ -303,6 +303,9 @@ const ProductDetail: React.FC = () => {
             </AccordionItem>
           </Accordion>
         </div>
+
+        {/* Customer Reviews Section */}
+        <CustomerReviews />
 
         {/* Related Products */}
         <div>

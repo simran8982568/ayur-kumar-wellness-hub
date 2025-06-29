@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
@@ -19,6 +20,13 @@ import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import Policies from './pages/Policies';
 import NotFound from './pages/NotFound';
+import ConsultationBooking from './pages/ConsultationBooking';
+import VerifyNumber from './pages/auth/VerifyNumber';
+import AuthSignUp from './pages/auth/SignUp';
+import AuthSignIn from './pages/auth/SignIn';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import TwoStepVerification from './pages/auth/TwoStepVerification';
+
 const queryClient = new QueryClient();
 
 import PenisEnlargementPage from './pages/PenisEnlargementPage';
@@ -37,15 +45,22 @@ function App() {
             <Route path="/shop-all" element={<ShopAll />} />
             <Route path="/category/:category" element={<CategoryPage />} />
             <Route path="/category/penis-enlargement" element={<PenisEnlargementPage />} />
+            <Route path="/category/hormonal-imbalance" element={<CategoryPage />} />
             <Route path="/new-arrivals" element={<NewArrivalsPage />} />
             <Route path="/best-sellers" element={<BestSellersPage />} />
             <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/cart-page" element={<CartPage />} />
             <Route path="/consultations" element={<Consultations />} />
+            <Route path="/consultation-booking" element={<ConsultationBooking />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/account" element={<Account />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/auth/verify-number" element={<VerifyNumber />} />
+            <Route path="/auth/signup" element={<AuthSignUp />} />
+            <Route path="/auth/signin" element={<AuthSignIn />} />
+            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+            <Route path="/auth/two-step-verification" element={<TwoStepVerification />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/policies" element={<Policies />} />
