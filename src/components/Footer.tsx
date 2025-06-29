@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
               <div className="flex items-start space-x-4 mb-6">
                 <div className="w-20 h-20 flex-shrink-0">
                   <img 
-                    src="/lovable-uploads/70a2227a-b00e-42b6-b69e-aae3adc489c8.png"
+                    src="/lovable-uploads/08923cd5-1858-4f27-b273-d544781b51f0.png"
                     alt="Dr. Kumar"
                     className="w-full h-full object-cover rounded-full border-2 border-[#c74a1b] dark:border-blue-600"
                   />

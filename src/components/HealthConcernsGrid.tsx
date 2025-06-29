@@ -1,12 +1,23 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ChevronRight, ChevronUp } from 'lucide-react';
 import { healthConcerns } from '@/data/healthConcerns';
 
 const HealthConcernsGrid: React.FC = () => {
   const [showAll, setShowAll] = useState(false);
+  const navigate = useNavigate();
   const displayedConcerns = showAll ? healthConcerns : healthConcerns.slice(0, 3);
+
+  const handleConcernClick = (concern: any) => {
+    if (concern.slug === 'consultations') {
+      navigate('/consultations');
+    } else if (concern.slug === 'penis-enlargement') {
+      navigate('/category/penis-enlargement');
+    } else {
+      navigate(`/category/${concern.slug}`);
+    }
+  };
 
   return (
     <section className="py-12 px-4 lg:px-8 bg-white dark:bg-black transition-colors duration-300">
@@ -22,12 +33,12 @@ const HealthConcernsGrid: React.FC = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {displayedConcerns.map((concern) => (
-            <Link
+            <div
               key={concern.id}
-              to={concern.slug === 'consultations' ? '/consultations' : `/category/${concern.slug}`}
-              className="group"
+              className="group cursor-pointer"
+              onClick={() => handleConcernClick(concern)}
             >
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer h-full flex flex-col">
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:scale-105 h-full flex flex-col">
                 <div className="text-center mb-4">
                   <div className="text-4xl mb-3">{concern.icon}</div>
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-lg">
@@ -44,7 +55,7 @@ const HealthConcernsGrid: React.FC = () => {
                   </button>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
 
