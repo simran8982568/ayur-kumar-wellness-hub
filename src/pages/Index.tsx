@@ -24,7 +24,7 @@ const Index = () => {
           title="Men's Health"
           subtitle="Boost vitality and performance naturally"
           products={mensHealthProducts.slice(0, 4)}
-          viewAllLink="/category/mens-health"
+          viewAllLink="/category/mens-sexual-health"
           showViewAll={true}
         />
         
@@ -32,15 +32,15 @@ const Index = () => {
           title="Women's Health"
           subtitle="Hormonal balance and feminine wellness"
           products={womensHealthProducts.slice(0, 4)}
-          viewAllLink="/category/womens-health"
+          viewAllLink="/category/womens-sexual-health"
           showViewAll={true}
         />
         
         <ProductSection 
-          title="Women's Wellness"
+          title="New Arrivals"
           subtitle="Latest additions to our wellness collection"
           products={newArrivals.slice(0, 4)}
-          viewAllLink="/category/womens-wellness"
+          viewAllLink="/category/new-arrivals"
           showViewAll={true}
         />
         

@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { X, Users, Heart, Package, Leaf, User, LogOut, Search, Store, Info, Calendar } from 'lucide-react';
+import { X, ChevronDown, ChevronRight, Home, ShoppingCart, Heart, User, Info, Stethoscope } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 
 interface NavigationSidebarProps {
   isOpen: boolean;
@@ -10,206 +10,174 @@ interface NavigationSidebarProps {
 }
 
 const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [expandedCategory, setExpandedCategory] = useState(false);
-  
-  // Check if user is logged in
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
-  const categoryItems = [
-    { label: "Men's Sexual Health", href: "/category/mens-sexual-health" },
-    { label: "Women's Sexual Health", href: "/category/womens-sexual-health" },
-    { label: "Erectile Dysfunction", href: "/category/erectile-dysfunction" },
-    { label: "Infertility Support", href: "/category/infertility-support" },
-    { label: "Libido Boosters", href: "/category/libido-boosters" },
-    { label: "Nightfall / PE", href: "/category/nightfall-pe" },
-    { label: "Penis Enlargement", href: "/category/penis-enlargement" },
-    { label: "Combos & Kits", href: "/category/combos-kits" },
-    { label: "Unani / Homeopathy", href: "/category/unani-homeopathy" },
-  ];
-
-  const publicNavigationItems = [
-    { icon: Store, label: "Shop All", href: "/shop-all" },
-    { icon: Info, label: "About Us", href: "/about-us" },
-    { icon: Calendar, label: "Consultations", href: "/consultations" },
-  ];
-
-  const authNavigationItems = [
-    { icon: User, label: "My Account", href: "/account" },
-    { icon: Heart, label: "Wishlist", href: "/wishlist" },
-  ];
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      window.location.href = `/shop-all?search=${encodeURIComponent(searchQuery)}`;
-      onClose();
-    }
+  const toggleSection = (section: string) => {
+    setExpandedSection(expandedSection === section ? null : section);
   };
 
   const handleSignOut = () => {
     localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userEmail');
     localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    navigate('/');
     onClose();
-    window.location.href = '/';
+    window.dispatchEvent(new CustomEvent('authStateChanged'));
   };
+
+  const categories = [
+    { name: "Men's Sexual Health", slug: 'mens-sexual-health' },
+    { name: "Women's Sexual Health", slug: 'womens-sexual-health' },
+    { name: 'Erectile Dysfunction', slug: 'erectile-dysfunction' },
+    { name: 'Nightfall & PE', slug: 'nightfall-pe' },
+    { name: 'Infertility Support', slug: 'infertility-support' },
+    { name: 'Hormonal Imbalance', slug: 'hormonal-imbalance' },
+    { name: 'Loss of Libido', slug: 'libido-boosters' },
+    { name: 'Penis Enlargement', slug: 'penis-enlargement' },
+    { name: 'Sexual Wellness Combos', slug: 'combos-kits' },
+    { name: 'Unani & Homeopathic', slug: 'unani-homeopathy' }
+  ];
 
   if (!isOpen) return null;
 
   return (
     <>
-      {/* Overlay */}
+      {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/50 z-50 transition-opacity"
+        className="fixed inset-0 bg-black/50 z-40 lg:hidden"
         onClick={onClose}
-        aria-hidden="true"
       />
       
       {/* Sidebar */}
-      <div className="fixed right-0 top-0 h-full w-80 max-w-[90vw] bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 z-50 transform transition-all duration-300 animate-slide-in-right">
-        <div className="p-6 h-full overflow-y-auto">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-semibold text-black dark:text-white tracking-tight">Menu</h2>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              aria-label="Close menu"
-              className="rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800"
+      <div className={`fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-900 shadow-xl z-50 transform transition-transform duration-300 overflow-y-auto ${
+        isOpen ? 'translate-x-0' : 'translate-x-full'
+      }`}>
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold text-black dark:text-white">Menu</h2>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
+            <X className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+          </Button>
+        </div>
+
+        {/* Navigation */}
+        <nav className="p-4 space-y-2">
+          {/* Home */}
+          <Link
+            to="/"
+            onClick={onClose}
+            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
+          >
+            <Home className="h-5 w-5" />
+            <span>Home</span>
+          </Link>
+
+          {/* Shop by Category */}
+          <div>
+            <button
+              onClick={() => toggleSection('categories')}
+              className="flex items-center justify-between w-full px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
             >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-
-          {/* Search Bar */}
-          <form onSubmit={handleSearch} className="mb-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 focus:border-transparent transition-colors duration-200"
-                aria-label="Search products"
-              />
-            </div>
-          </form>
-
-          {/* Navigation */}
-          <nav className="space-y-4">
-            {/* Home */}
-            <Link
-              to="/"
-              onClick={onClose}
-              className="flex items-center space-x-3 p-3 border border-transparent hover:border-gray-200 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group rounded-xl"
-            >
-              <Store className="h-5 w-5 text-[#c74a1b] dark:text-blue-400 group-hover:text-[#b8441a] dark:group-hover:text-blue-300 transition-colors" />
-              <span className="font-medium text-black dark:text-white group-hover:text-[#b8441a] dark:group-hover:text-blue-300 transition-colors uppercase tracking-wide text-sm">
-                Home
-              </span>
-            </Link>
-
-            {/* Shop by Category - Expandable */}
-            <div className="space-y-2">
-              <button
-                onClick={() => setExpandedCategory(!expandedCategory)}
-                className="w-full flex items-center justify-between p-3 border border-transparent hover:border-gray-200 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group rounded-xl"
-              >
-                <div className="flex items-center space-x-3">
-                  <Package className="h-5 w-5 text-[#c74a1b] dark:text-blue-400 group-hover:text-[#b8441a] dark:group-hover:text-blue-300 transition-colors" />
-                  <span className="font-medium text-black dark:text-white group-hover:text-[#b8441a] dark:group-hover:text-blue-300 transition-colors uppercase tracking-wide text-sm">
-                    Shop by Category
-                  </span>
-                </div>
-                <span className={`text-gray-400 transition-transform duration-200 ${expandedCategory ? 'rotate-180' : ''}`}>
-                  ▼
-                </span>
-              </button>
-              
-              {expandedCategory && (
-                <div className="ml-8 space-y-2">
-                  {categoryItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      onClick={onClose}
-                      className="block p-2 text-sm text-gray-600 dark:text-gray-300 hover:text-[#c74a1b] dark:hover:text-blue-400 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
+              <div className="flex items-center space-x-3">
+                <ShoppingCart className="h-5 w-5" />
+                <span>Shop by Category</span>
+              </div>
+              {expandedSection === 'categories' ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
               )}
-            </div>
-
-            {/* Public Navigation Items */}
-            {publicNavigationItems.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                onClick={onClose}
-                className="flex items-center space-x-3 p-3 border border-transparent hover:border-gray-200 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group rounded-xl"
-              >
-                <item.icon className="h-5 w-5 text-[#c74a1b] dark:text-blue-400 group-hover:text-[#b8441a] dark:group-hover:text-blue-300 transition-colors" />
-                <span className="font-medium text-black dark:text-white group-hover:text-[#b8441a] dark:group-hover:text-blue-300 transition-colors uppercase tracking-wide text-sm">
-                  {item.label}
-                </span>
-              </Link>
-            ))}
-
-            {/* Conditional Auth Items */}
-            {isLoggedIn && (
-              <>
-                {/* Divider */}
-                <div className="border-t border-gray-200 dark:border-gray-700 my-4"></div>
-                
-                {authNavigationItems.map((item) => (
+            </button>
+            
+            {expandedSection === 'categories' && (
+              <div className="ml-8 mt-2 space-y-1">
+                {categories.map((category) => (
                   <Link
-                    key={item.href}
-                    to={item.href}
+                    key={category.slug}
+                    to={`/category/${category.slug}`}
                     onClick={onClose}
-                    className="flex items-center space-x-3 p-3 border border-transparent hover:border-gray-200 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group rounded-xl"
+                    className="block px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#c74a1b] dark:hover:text-blue-400 rounded-lg transition-colors"
                   >
-                    <item.icon className="h-5 w-5 text-[#c74a1b] dark:text-blue-400 group-hover:text-[#b8441a] dark:group-hover:text-blue-300 transition-colors" />
-                    <span className="font-medium text-black dark:text-white group-hover:text-[#b8441a] dark:group-hover:text-blue-300 transition-colors uppercase tracking-wide text-sm">
-                      {item.label}
-                    </span>
+                    {category.name}
                   </Link>
                 ))}
-              </>
+              </div>
             )}
+          </div>
 
-            {/* Cart Link */}
-            <Link
-              to="/cart-page"
-              onClick={onClose}
-              className="flex items-center space-x-3 p-3 border border-transparent hover:border-gray-200 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group rounded-xl"
-            >
-              <Package className="h-5 w-5 text-[#c74a1b] dark:text-blue-400 group-hover:text-[#b8441a] dark:group-hover:text-blue-300 transition-colors" />
-              <span className="font-medium text-black dark:text-white group-hover:text-[#b8441a] dark:group-hover:text-blue-300 transition-colors uppercase tracking-wide text-sm">
-                Cart
-              </span>
-            </Link>
-          </nav>
+          {/* Consultations */}
+          <Link
+            to="/consultations"
+            onClick={onClose}
+            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
+          >
+            <Stethoscope className="h-5 w-5" />
+            <span>Consultations</span>
+          </Link>
 
-          {/* Sign Out Button - Only show if logged in */}
+          {/* Conditional Auth-based Links */}
           {isLoggedIn && (
-            <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-              <Button
-                onClick={handleSignOut}
-                variant="destructive"
-                className="w-full bg-red-500 hover:bg-red-600 text-white font-medium uppercase tracking-wide rounded-xl"
-                aria-label="Sign Out"
+            <>
+              <Link
+                to="/wishlist"
+                onClick={onClose}
+                className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
               >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
-              </Button>
-            </div>
+                <Heart className="h-5 w-5" />
+                <span>Wishlist</span>
+              </Link>
+
+              <Link
+                to="/account"
+                onClick={onClose}
+                className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
+              >
+                <User className="h-5 w-5" />
+                <span>My Account</span>
+              </Link>
+            </>
           )}
-        </div>
+
+          {/* About Us */}
+          <Link
+            to="/about-us"
+            onClick={onClose}
+            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
+          >
+            <Info className="h-5 w-5" />
+            <span>About Us</span>
+          </Link>
+
+          {/* Cart */}
+          <Link
+            to="/cart-page"
+            onClick={onClose}
+            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
+          >
+            <ShoppingCart className="h-5 w-5" />
+            <span>Cart</span>
+          </Link>
+        </nav>
+
+        {/* Sign Out Button (only if logged in) */}
+        {isLoggedIn && (
+          <div className="absolute bottom-4 left-4 right-4">
+            <Button
+              onClick={handleSignOut}
+              variant="outline"
+              className="w-full border-red-500 text-red-500 hover:bg-red-500 hover:text-white rounded-lg"
+            >
+              Sign Out
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );

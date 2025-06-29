@@ -10,6 +10,7 @@ const Header: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [cartItems, setCartItems] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isDark, setIsDark] = useState(false);
   const navigate = useNavigate();
 
   // Check if user is logged in
@@ -32,6 +33,24 @@ const Header: React.FC = () => {
     return () => {
       window.removeEventListener('cartUpdated', handleCartUpdate);
     };
+  }, []);
+
+  // Check theme on mount
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    
+    checkTheme();
+    
+    // Listen for theme changes
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   const handleLogoClick = () => {
@@ -61,9 +80,9 @@ const Header: React.FC = () => {
           >
             <div className="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
               <img 
-                src="/lovable-uploads/7e676976-4f68-46af-9f33-a2bef69fb911.png"
+                src={isDark ? "/lovable-uploads/5d254827-a0b5-4204-b492-02c4f52346f1.png" : "/lovable-uploads/7e676976-4f68-46af-9f33-a2bef69fb911.png"}
                 alt="Dr. Kumar Laboratories"
-                className="w-full h-full object-contain"
+                className={`w-full h-full object-contain ${isDark ? '' : ''}`}
                 loading="eager"
               />
             </div>
