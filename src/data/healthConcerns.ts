@@ -10,58 +10,79 @@ export interface HealthConcern {
 export const healthConcerns: HealthConcern[] = [
   { 
     id: 'hc1', 
-    title: 'Immunity Boosters', 
-    slug: 'immunity',
-    icon: '🛡️',
-    description: 'Natural Defense'
+    title: "Men's Sexual Health", 
+    slug: 'mens-sexual-health',
+    icon: '💪',
+    description: 'Boost vitality and performance naturally'
   },
   { 
     id: 'hc2', 
-    title: 'Liver Health', 
-    slug: 'liver',
-    icon: '🫁',
-    description: 'Detox & Cleanse'
+    title: "Women's Sexual Health", 
+    slug: 'womens-sexual-health',
+    icon: '🌸',
+    description: 'Hormonal balance and feminine wellness'
   },
   { 
     id: 'hc3', 
-    title: "Men's Wellness", 
-    slug: 'mens-health',
-    icon: '👨‍⚕️',
-    description: 'Vitality & Performance'
+    title: 'Erectile Dysfunction', 
+    slug: 'erectile-dysfunction',
+    icon: '🎯',
+    description: 'Natural ED solutions and treatments'
   },
   { 
     id: 'hc4', 
-    title: "Women's Wellness", 
-    slug: 'womens-health',
-    icon: '🌸',
-    description: 'Hormonal Balance'
+    title: 'Nightfall & Premature Ejaculation', 
+    slug: 'nightfall-pe',
+    icon: '🌙',
+    description: 'Control and confidence enhancement'
   },
   { 
     id: 'hc5', 
-    title: 'Digestion', 
-    slug: 'digestion',
-    icon: '🌿',
-    description: 'Gut Health'
+    title: 'Infertility Support', 
+    slug: 'infertility-support',
+    icon: '👶',
+    description: 'Reproductive health for couples'
   },
   { 
     id: 'hc6', 
-    title: 'Stress & Sleep', 
-    slug: 'stress-sleep',
-    icon: '😴',
-    description: 'Mental Wellness'
+    title: 'Hormonal Imbalance', 
+    slug: 'hormonal-imbalance',
+    icon: '⚖️',
+    description: 'Natural hormone regulation'
   },
   { 
     id: 'hc7', 
-    title: 'Skin & Hair', 
-    slug: 'skin-hair',
-    icon: '✨',
-    description: 'Beauty Care'
+    title: 'Loss of Libido', 
+    slug: 'libido-boosters',
+    icon: '❤️',
+    description: 'Reignite passion and desire'
   },
   { 
     id: 'hc8', 
-    title: 'Weight Management', 
-    slug: 'weight',
-    icon: '⚖️',
-    description: 'Healthy Balance'
+    title: 'Penis Enlargement', 
+    slug: 'penis-enlargement',
+    icon: '📏',
+    description: 'Natural enhancement solutions'
+  },
+  { 
+    id: 'hc9', 
+    title: 'Sexual Wellness Combos', 
+    slug: 'combos-kits',
+    icon: '🎁',
+    description: 'Complete wellness packages'
+  },
+  { 
+    id: 'hc10', 
+    title: 'Unani & Homeopathic Care', 
+    slug: 'unani-homeopathy',
+    icon: '🌿',
+    description: 'Traditional alternative medicine'
+  },
+  { 
+    id: 'hc11', 
+    title: 'Online Consultations', 
+    slug: 'consultations',
+    icon: '👨‍⚕️',
+    description: 'Expert guidance from specialists'
   }
 ];

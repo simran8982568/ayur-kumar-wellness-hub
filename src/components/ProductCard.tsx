@@ -109,7 +109,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
     e.stopPropagation();
     setIsLoading(true);
     
-    // Add to cart and redirect to checkout
+    // Add to cart and redirect to cart page
     if (!isInCart) {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       const existingItem = cart.find((item: any) => item.id === product.id);
@@ -128,13 +128,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
       onBuyNow(product);
     }
     
-    navigate('/checkout');
+    navigate('/cart-page');
     setIsLoading(false);
   };
 
   return (
     <div 
-      className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer h-full flex flex-col"
+      className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleCardClick}
@@ -157,7 +157,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         <WishlistButton productId={product.id} />
 
         {discount > 0 && (
-          <div className="absolute top-3 right-12 z-10 bg-[#c74a1b] text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-lg">
+          <div className="absolute top-3 right-12 z-10 bg-[#c74a1b] dark:bg-blue-600 text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-lg">
             -{discount}%
           </div>
         )}
@@ -181,12 +181,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
       </div>
       
       <div className="p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-gray-900 mb-2 hover:text-[#c74a1b] transition-colors line-clamp-2 text-sm sm:text-base">
+        <h3 className="font-semibold text-black dark:text-white mb-2 hover:text-[#c74a1b] dark:hover:text-blue-400 transition-colors line-clamp-2 text-sm sm:text-base">
           {product.name}
         </h3>
         
         {product.description && (
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
             {product.description}
           </p>
         )}
@@ -194,22 +194,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         <div className="flex items-center mb-3">
           <div className="flex items-center">
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm font-medium text-gray-900 ml-1">
+            <span className="text-sm font-medium text-black dark:text-white ml-1">
               {product.rating}
             </span>
           </div>
-          <span className="text-xs sm:text-sm text-gray-500 ml-2">
+          <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 ml-2">
             ({product.reviews} reviews)
           </span>
         </div>
         
         <div className="flex items-center justify-between mb-4 mt-auto">
           <div className="flex items-center space-x-2">
-            <span className="text-lg sm:text-xl font-bold text-gray-900">
+            <span className="text-lg sm:text-xl font-bold text-black dark:text-white">
               ₹{product.price}
             </span>
             {product.originalPrice && (
-              <span className="text-sm text-gray-500 line-through">
+              <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
                 ₹{product.originalPrice}
               </span>
             )}
@@ -218,7 +218,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         
         <div className="space-y-2">
           <Button 
-            className="w-full bg-[#c74a1b] hover:bg-[#b8441a] text-white font-medium rounded-xl"
+            className="w-full bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white font-medium rounded-xl"
             disabled={!product.inStock || isLoading}
             onClick={handleBuyNow}
             aria-label={`Buy ${product.name} now`}
@@ -235,7 +235,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
           
           <Button 
             variant="outline"
-            className="w-full border-[#c74a1b] text-[#c74a1b] hover:bg-[#c74a1b] hover:text-white flex items-center justify-center space-x-2 rounded-xl"
+            className="w-full border-[#c74a1b] dark:border-blue-600 text-[#c74a1b] dark:text-blue-600 hover:bg-[#c74a1b] dark:hover:bg-blue-600 hover:text-white flex items-center justify-center space-x-2 rounded-xl"
             disabled={!product.inStock || isLoading}
             onClick={isInCart ? handleRemoveFromCart : handleAddToCart}
             aria-label={isInCart ? `Remove ${product.name} from cart` : `Add ${product.name} to cart`}

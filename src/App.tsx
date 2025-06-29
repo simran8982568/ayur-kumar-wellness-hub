@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -5,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ShopAll from "./pages/ShopAll";
-import Checkout from "./pages/Checkout";
+import CartPage from "./pages/CartPage";
 import About from "./pages/About";
 import ProductDetail from "./pages/ProductDetail";
 import SignIn from "./pages/SignIn";
@@ -14,7 +15,8 @@ import Account from "./pages/Account";
 import Policies from "./pages/Policies";
 import NotFound from "./pages/NotFound";
 import Wishlist from "./pages/Wishlist";
-import ViewAll from "./pages/ViewAll";
+import CategoryPage from "./pages/CategoryPage";
+import Consultations from "./pages/Consultations";
 
 const queryClient = new QueryClient();
 
@@ -27,8 +29,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/shop-all" element={<ShopAll />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/cart" element={<Checkout />} />
+          <Route path="/cart-page" element={<CartPage />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/signin" element={<SignIn />} />
@@ -37,18 +38,8 @@ const App = () => (
           <Route path="/policies" element={<Policies />} />
           <Route path="/shop" element={<ShopAll />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/view-all/:category" element={<ViewAll />} />
-          <Route path="/mens-health" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Men's Health - Coming Soon</h1></div>} />
-          <Route path="/womens-health" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Women's Health - Coming Soon</h1></div>} />
-          <Route path="/immunity" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Immunity - Coming Soon</h1></div>} />
-          <Route path="/stress-sleep" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Stress & Sleep - Coming Soon</h1></div>} />
-          <Route path="/skin-hair" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Skin & Hair - Coming Soon</h1></div>} />
-          <Route path="/weight" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Weight Management - Coming Soon</h1></div>} />
-          <Route path="/combos" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Combos - Coming Soon</h1></div>} />
-          <Route path="/essentials" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Essentials - Coming Soon</h1></div>} />
-          <Route path="/consult" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Consultation - Coming Soon</h1></div>} />
-          <Route path="/feedback" element={<div className="min-h-screen flex items-center justify-center"><h1 className="text-2xl">Feedback - Coming Soon</h1></div>} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/consultations" element={<Consultations />} />
+          <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
