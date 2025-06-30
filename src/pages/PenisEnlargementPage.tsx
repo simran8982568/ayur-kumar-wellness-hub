@@ -24,7 +24,8 @@ const PenisEnlargementPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.5,
       reviews: 128,
-      description: "Premium Shilajit with Gold for enhanced male vitality and size enhancement"
+      description: "Premium Shilajit with Gold for enhanced male vitality and size enhancement",
+      inStock: true
     },
     {
       id: 2,
@@ -34,7 +35,8 @@ const PenisEnlargementPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.3,
       reviews: 89,
-      description: "Natural testosterone booster and size enhancement supplement"
+      description: "Natural testosterone booster and size enhancement supplement",
+      inStock: true
     },
     {
       id: 3,
@@ -44,7 +46,8 @@ const PenisEnlargementPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.4,
       reviews: 156,
-      description: "Stress relief and natural enhancement formula"
+      description: "Stress relief and natural enhancement formula",
+      inStock: true
     },
     {
       id: 4,
@@ -54,7 +57,8 @@ const PenisEnlargementPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.6,
       reviews: 203,
-      description: "Complete enhancement solution with multiple herbs"
+      description: "Complete enhancement solution with multiple herbs",
+      inStock: true
     },
     {
       id: 5,
@@ -64,7 +68,8 @@ const PenisEnlargementPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.2,
       reviews: 67,
-      description: "Natural libido and size enhancement supplement"
+      description: "Natural libido and size enhancement supplement",
+      inStock: true
     },
     {
       id: 6,
@@ -74,7 +79,8 @@ const PenisEnlargementPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.4,
       reviews: 94,
-      description: "Traditional Ayurvedic formula for male enhancement"
+      description: "Traditional Ayurvedic formula for male enhancement",
+      inStock: true
     }
   ];
 

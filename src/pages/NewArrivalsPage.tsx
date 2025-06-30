@@ -19,7 +19,8 @@ const NewArrivalsPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.8,
       reviews: 245,
-      description: "Pure Himalayan Shilajit for enhanced vitality and energy"
+      description: "Pure Himalayan Shilajit for enhanced vitality and energy",
+      inStock: true
     },
     {
       id: 2,
@@ -29,7 +30,8 @@ const NewArrivalsPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.7,
       reviews: 189,
-      description: "Clinically proven Ashwagandha for stress relief and strength"
+      description: "Clinically proven Ashwagandha for stress relief and strength",
+      inStock: true
     },
     {
       id: 3,
@@ -39,7 +41,8 @@ const NewArrivalsPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.6,
       reviews: 156,
-      description: "Natural hormone support for women's wellness"
+      description: "Natural hormone support for women's wellness",
+      inStock: true
     },
     {
       id: 4,
@@ -49,7 +52,8 @@ const NewArrivalsPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.5,
       reviews: 298,
-      description: "Complete immunity support with 12 natural herbs"
+      description: "Complete immunity support with 12 natural herbs",
+      inStock: true
     },
     {
       id: 5,
@@ -59,7 +63,8 @@ const NewArrivalsPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.4,
       reviews: 123,
-      description: "Natural liver cleansing and detoxification support"
+      description: "Natural liver cleansing and detoxification support",
+      inStock: true
     },
     {
       id: 6,
@@ -69,7 +74,8 @@ const NewArrivalsPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.6,
       reviews: 167,
-      description: "Complete joint health and mobility support"
+      description: "Complete joint health and mobility support",
+      inStock: true
     },
     {
       id: 7,
@@ -79,7 +85,8 @@ const NewArrivalsPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.3,
       reviews: 89,
-      description: "Comprehensive digestive system support"
+      description: "Comprehensive digestive system support",
+      inStock: true
     },
     {
       id: 8,
@@ -89,7 +96,8 @@ const NewArrivalsPage: React.FC = () => {
       image: "/api/placeholder/300/300",
       rating: 4.5,
       reviews: 134,
-      description: "Natural sleep enhancement and relaxation formula"
+      description: "Natural sleep enhancement and relaxation formula",
+      inStock: true
     }
   ];
 

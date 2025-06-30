@@ -13,83 +13,69 @@ const BestSellersPage: React.FC = () => {
   const bestSellerProducts = [
     {
       id: 1,
-      name: "Ultimate Vitality Combo",
-      price: 2499,
-      originalPrice: 3999,
+      name: "Complete Sexual Health Combo",
+      price: 2199,
+      originalPrice: 3299,
       image: "/api/placeholder/300/300",
       rating: 4.9,
-      reviews: 567,
-      description: "Complete wellness package with Shilajit, Ashwagandha & Safed Musli"
+      reviews: 456,
+      description: "Ultimate package for male sexual wellness and vitality",
+      inStock: true
     },
     {
       id: 2,
-      name: "Men's Power Pack",
+      name: "Women's Wellness Kit",
       price: 1899,
-      originalPrice: 2899,
+      originalPrice: 2799,
       image: "/api/placeholder/300/300",
       rating: 4.8,
-      reviews: 423,
-      description: "Comprehensive male enhancement and vitality solution"
+      reviews: 234,
+      description: "Complete hormonal balance and feminine wellness solution",
+      inStock: true
     },
     {
       id: 3,
-      name: "Women's Wellness Bundle",
-      price: 1699,
-      originalPrice: 2599,
+      name: "Vitality Booster Pack",
+      price: 1599,
+      originalPrice: 2299,
       image: "/api/placeholder/300/300",
       rating: 4.7,
       reviews: 389,
-      description: "Complete women's health support with hormone balance"
+      description: "Natural energy and stamina enhancement bundle",
+      inStock: true
     },
     {
       id: 4,
-      name: "Immunity Shield Max",
+      name: "Immunity Shield Combo",
       price: 1299,
       originalPrice: 1899,
       image: "/api/placeholder/300/300",
-      rating: 4.8,
-      reviews: 612,
-      description: "Advanced immunity booster with 15 powerful herbs"
+      rating: 4.6,
+      reviews: 567,
+      description: "Complete immune system support package",
+      inStock: true
     },
     {
       id: 5,
-      name: "Stress Relief Combo",
-      price: 1499,
-      originalPrice: 2199,
-      image: "/api/placeholder/300/300",
-      rating: 4.6,
-      reviews: 298,
-      description: "Natural stress management and mental wellness support"
-    },
-    {
-      id: 6,
-      name: "Joint & Bone Health Kit",
-      price: 1799,
-      originalPrice: 2699,
-      image: "/api/placeholder/300/300",
-      rating: 4.7,
-      reviews: 234,
-      description: "Complete joint care and bone strength solution"
-    },
-    {
-      id: 7,
-      name: "Digestive Wellness Set",
-      price: 1199,
-      originalPrice: 1799,
-      image: "/api/placeholder/300/300",
-      rating: 4.5,
-      reviews: 345,
-      description: "Comprehensive digestive health and gut support"
-    },
-    {
-      id: 8,
-      name: "Energy & Stamina Booster",
+      name: "Stress Relief Bundle",
       price: 999,
       originalPrice: 1499,
       image: "/api/placeholder/300/300",
-      rating: 4.6,
-      reviews: 456,
-      description: "Natural energy enhancement and stamina building formula"
+      rating: 4.5,
+      reviews: 298,
+      description: "Natural stress management and mental wellness kit",
+      inStock: true
+    },
+    {
+      id: 6,
+      name: "Detox Master Pack",
+      price: 1199,
+      originalPrice: 1799,
+      image: "/api/placeholder/300/300",
+      rating: 4.4,
+      reviews: 178,
+      description: "Complete body detoxification and cleansing solution",
+      inStock: true
     }
   ];
 
@@ -134,12 +120,12 @@ const BestSellersPage: React.FC = () => {
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-black dark:text-white mb-4">Best Sellers</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">Our most popular and trusted wellness solutions</p>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">Our most popular wellness combinations</p>
           <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              These are our top-rated and most trusted products, chosen by thousands of satisfied customers. 
-              Each best-seller has been proven effective through customer reviews and consistent results, 
-              making them the perfect choice for your wellness journey.
+              Discover our top-selling product combinations that have helped thousands of customers achieve their wellness goals. 
+              These carefully curated bundles offer comprehensive solutions at great value, combining the power of multiple 
+              Ayurvedic formulations for maximum effectiveness.
             </p>
           </div>
         </div>

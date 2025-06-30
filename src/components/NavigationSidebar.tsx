@@ -114,7 +114,7 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
 
           {/* Consultations */}
           <Link
-            to="/consultations"
+            to="/consultation-booking"
             onClick={onClose}
             className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
           >

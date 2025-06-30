@@ -11,7 +11,6 @@ import ShopAll from './pages/ShopAll';
 import CategoryPage from './pages/CategoryPage';
 import ProductDetail from './pages/ProductDetail';
 import CartPage from './pages/CartPage';
-import Consultations from './pages/Consultations';
 import Wishlist from './pages/Wishlist';
 import Account from './pages/Account';
 import SignIn from './pages/SignIn';
@@ -50,7 +49,6 @@ function App() {
             <Route path="/best-sellers" element={<BestSellersPage />} />
             <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/cart-page" element={<CartPage />} />
-            <Route path="/consultations" element={<Consultations />} />
             <Route path="/consultation-booking" element={<ConsultationBooking />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/account" element={<Account />} />

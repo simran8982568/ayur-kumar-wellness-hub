@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface FeedbackModalProps {
   isOpen: boolean;
@@ -10,140 +11,183 @@ interface FeedbackModalProps {
 
 const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
-    name: '',
+    fullName: '',
     email: '',
-    message: ''
+    type: '',
+    subject: '',
+    message: '',
+    priority: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Save feedback to localStorage (simulating backend)
+    const existingFeedback = JSON.parse(localStorage.getItem('feedback') || '[]');
+    const newFeedback = {
+      ...formData,
+      progress: 'Pending',
+      date: new Date().toISOString().split('T')[0],
+      id: Date.now()
+    };
+    existingFeedback.push(newFeedback);
+    localStorage.setItem('feedback', JSON.stringify(existingFeedback));
     
-    // Here you would typically send the feedback to your backend
-    console.log('Feedback submitted:', formData);
+    toast({
+      title: "Thank you!",
+      description: "Your feedback has been submitted successfully.",
+    });
     
     // Reset form and close modal
-    setFormData({ name: '', email: '', message: '' });
-    setIsSubmitting(false);
+    setFormData({
+      fullName: '',
+      email: '',
+      type: '',
+      subject: '',
+      message: '',
+      priority: ''
+    });
     onClose();
-    
-    // Show success message (you could use a toast notification here)
-    alert('Thank you for your feedback! We will get back to you soon.');
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value
-    }));
+    });
   };
 
   if (!isOpen) return null;
 
   return (
-    <>
-      {/* Overlay */}
-      <div 
-        className="fixed inset-0 bg-black/50 z-50 transition-opacity"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-      
-      {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl w-full max-w-md mx-auto">
-          <div className="p-6">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">Send Feedback</h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-                className="rounded-xl"
-                aria-label="Close feedback form"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                  placeholder="Your name"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent resize-none"
-                  placeholder="Please share your feedback..."
-                />
-              </div>
-
-              <div className="flex space-x-3 pt-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={onClose}
-                  className="flex-1 rounded-xl"
-                  disabled={isSubmitting}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  className="flex-1 rounded-xl"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Sending...' : 'Submit'}
-                </Button>
-              </div>
-            </form>
-          </div>
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-black dark:text-white">Customer Feedback</h2>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+          >
+            <X className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+          </Button>
         </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              Full Name *
+            </label>
+            <input
+              type="text"
+              name="fullName"
+              required
+              value={formData.fullName}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              Email Address *
+            </label>
+            <input
+              type="email"
+              name="email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              Type of Feedback *
+            </label>
+            <select
+              name="type"
+              required
+              value={formData.type}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
+            >
+              <option value="">Select type</option>
+              <option value="Complaint">Complaint</option>
+              <option value="Feedback">Feedback</option>
+              <option value="Suggestion">Suggestion</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              Subject *
+            </label>
+            <input
+              type="text"
+              name="subject"
+              required
+              value={formData.subject}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
+              placeholder="Brief title of your feedback"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              Priority *
+            </label>
+            <select
+              name="priority"
+              required
+              value={formData.priority}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
+            >
+              <option value="">Select priority</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              Detailed Message
+            </label>
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              rows={4}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
+              placeholder="Please provide detailed information about your feedback..."
+            />
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <Button
+              type="button"
+              onClick={onClose}
+              variant="outline"
+              className="flex-1 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors duration-300"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="flex-1 bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-md transition-colors duration-300"
+            >
+              Submit Feedback
+            </Button>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 

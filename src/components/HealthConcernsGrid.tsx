@@ -11,7 +11,7 @@ const HealthConcernsGrid: React.FC = () => {
 
   const handleConcernClick = (concern: any) => {
     if (concern.slug === 'consultations') {
-      navigate('/consultations');
+      navigate('/consultation-booking');
     } else if (concern.slug === 'penis-enlargement') {
       navigate('/category/penis-enlargement');
     } else {
