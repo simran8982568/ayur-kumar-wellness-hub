@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
 interface FeedbackModalProps {
@@ -10,112 +11,125 @@ interface FeedbackModalProps {
 }
 
 const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     type: '',
     subject: '',
-    message: '',
-    priority: ''
+    message: ''
   });
-  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Save feedback to localStorage (simulating backend)
-    const existingFeedback = JSON.parse(localStorage.getItem('feedback') || '[]');
+    setIsSubmitting(true);
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Save to localStorage (mock backend)
+    const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
     const newFeedback = {
+      id: Date.now(),
       ...formData,
       progress: 'Pending',
       date: new Date().toISOString().split('T')[0],
-      id: Date.now()
+      timestamp: new Date().toISOString()
     };
-    existingFeedback.push(newFeedback);
-    localStorage.setItem('feedback', JSON.stringify(existingFeedback));
     
+    feedbacks.push(newFeedback);
+    localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
+
     toast({
-      title: "Thank you!",
-      description: "Your feedback has been submitted successfully.",
+      title: "Thank you! Your feedback has been submitted.",
+      description: "We'll review your feedback and get back to you soon.",
     });
-    
-    // Reset form and close modal
+
+    // Reset form
     setFormData({
       fullName: '',
       email: '',
       type: '',
       subject: '',
-      message: '',
-      priority: ''
+      message: ''
     });
-    onClose();
-  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setIsSubmitting(false);
+    onClose();
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md p-6 transition-colors duration-300">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-black dark:text-white">Customer Feedback</h2>
+          <h2 className="text-xl font-semibold text-black dark:text-white">Customer Feedback</h2>
           <Button
             variant="ghost"
             size="sm"
             onClick={onClose}
             className="rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <X className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <X className="h-5 w-5 text-gray-600 dark:text-gray-300" />
           </Button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Full Name *
             </label>
-            <input
-              type="text"
+            <Input
+              id="fullName"
               name="fullName"
+              type="text"
               required
               value={formData.fullName}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
+              className="w-full rounded-lg"
+              placeholder="Enter your full name"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Email Address *
             </label>
-            <input
-              type="email"
+            <Input
+              id="email"
               name="email"
+              type="email"
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
+              className="w-full rounded-lg"
+              placeholder="Enter your email"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+            <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Type of Feedback *
             </label>
             <select
+              id="type"
               name="type"
               required
               value={formData.type}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
+              className="w-full p-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
             >
-              <option value="">Select type</option>
+              <option value="">Select feedback type</option>
               <option value="Complaint">Complaint</option>
               <option value="Feedback">Feedback</option>
               <option value="Suggestion">Suggestion</option>
@@ -123,66 +137,51 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+            <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Subject *
             </label>
-            <input
-              type="text"
+            <Input
+              id="subject"
               name="subject"
+              type="text"
               required
               value={formData.subject}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
+              className="w-full rounded-lg"
               placeholder="Brief title of your feedback"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-black dark:text-white mb-2">
-              Priority *
-            </label>
-            <select
-              name="priority"
-              required
-              value={formData.priority}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
-            >
-              <option value="">Select priority</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-black dark:text-white mb-2">
+            <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Detailed Message
             </label>
             <textarea
+              id="message"
               name="message"
+              rows={4}
               value={formData.message}
               onChange={handleChange}
-              rows={4}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 transition-colors duration-300"
-              placeholder="Please provide detailed information about your feedback..."
+              className="w-full p-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+              placeholder="Please provide detailed feedback..."
             />
           </div>
 
-          <div className="flex gap-3 pt-4">
-            <Button
-              type="button"
-              onClick={onClose}
-              variant="outline"
-              className="flex-1 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors duration-300"
-            >
-              Cancel
-            </Button>
+          <div className="flex space-x-3 pt-4">
             <Button
               type="submit"
-              className="flex-1 bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-md transition-colors duration-300"
+              disabled={isSubmitting}
+              className="flex-1 bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-lg"
             >
-              Submit Feedback
+              {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              className="flex-1 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg"
+            >
+              Cancel
             </Button>
           </div>
         </form>

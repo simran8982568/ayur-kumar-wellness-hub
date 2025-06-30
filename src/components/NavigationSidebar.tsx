@@ -150,6 +150,16 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
                 <User className="h-5 w-5" />
                 <span>My Account</span>
               </Link>
+
+              {/* Feedback link only for authenticated users */}
+              <Link
+                to="/feedback"
+                onClick={onClose}
+                className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
+              >
+                <Info className="h-5 w-5" />
+                <span>Feedback</span>
+              </Link>
             </>
           )}
 

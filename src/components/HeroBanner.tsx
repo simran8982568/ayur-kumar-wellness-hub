@@ -62,7 +62,7 @@ const HeroBanner: React.FC = () => {
 
   const handleSlideClick = (slide: typeof slides[0]) => {
     if (slide.cta === "Consult Now") {
-      navigate('/consultations');
+      navigate('/consultation-booking');
     } else {
       navigate(`/product/${slide.productSlug}`);
     }
@@ -70,7 +70,7 @@ const HeroBanner: React.FC = () => {
 
   const handleCtaClick = (slide: typeof slides[0]) => {
     if (slide.cta === "Consult Now") {
-      navigate('/consultations');
+      navigate('/consultation-booking');
     } else {
       navigate(`/product/${slide.productSlug}`);
     }
@@ -114,7 +114,7 @@ const HeroBanner: React.FC = () => {
                         e.stopPropagation();
                         handleCtaClick(slide);
                       }}
-                      className="bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white text-base px-8 py-3 rounded-xl font-medium uppercase tracking-wide"
+                      className="bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white text-base px-6 py-2 rounded-full font-medium uppercase tracking-wide transition-all duration-300 hover:bg-primary/80"
                     >
                       {slide.cta}
                     </Button>
@@ -124,7 +124,7 @@ const HeroBanner: React.FC = () => {
                         e.stopPropagation();
                         navigate('/about-us');
                       }}
-                      className="border border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-black px-8 py-3 font-medium uppercase tracking-wide rounded-xl"
+                      className="border border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-black px-6 py-2 font-medium uppercase tracking-wide rounded-full transition-all duration-300"
                     >
                       Learn More
                     </Button>

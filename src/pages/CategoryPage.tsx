@@ -7,6 +7,14 @@ import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Search, Filter, X } from 'lucide-react';
 import { 
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { 
   mensHealthProducts, 
   womensHealthProducts, 
   comboProducts, 
@@ -19,6 +27,8 @@ const CategoryPage: React.FC = () => {
   const [sortBy, setSortBy] = useState('name');
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 9;
 
   // Category content mapping
   const categoryContent: Record<string, { title: string; description: string; content: string }> = {
@@ -61,6 +71,11 @@ const CategoryPage: React.FC = () => {
       title: 'Unani & Homeopathic Care',
       description: 'Traditional alternative medicine approaches',
       content: 'Explore the healing power of Unani and Homeopathic medicine with our specialized collection. These gentle yet effective treatments from alternative medical traditions offer safe, natural solutions with minimal side effects for various sexual health concerns.'
+    },
+    'hormonal-imbalance': {
+      title: 'Hormonal Imbalance Solutions',
+      description: 'Natural hormone regulation and balance',
+      content: 'Address hormonal imbalances naturally with our specialized Ayurvedic formulations. Our products help regulate hormone production, support endocrine function, and promote overall hormonal harmony for both men and women.'
     }
   };
 
@@ -100,6 +115,7 @@ const CategoryPage: React.FC = () => {
     });
 
     setFilteredProducts(products);
+    setCurrentPage(1); // Reset to first page when filters change
   }, [category, sortBy, searchQuery]);
 
   const currentCategory = categoryContent[category || ''];
@@ -110,6 +126,17 @@ const CategoryPage: React.FC = () => {
     { value: 'price-high', label: 'Price: High to Low' },
     { value: 'rating', label: 'Highest Rated' }
   ];
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const endIndex = startIndex + productsPerPage;
+  const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleAddToCart = (product: any) => {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -199,12 +226,12 @@ const CategoryPage: React.FC = () => {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-gray-600 dark:text-gray-300">
-            Showing {filteredProducts.length} products
+            Showing {startIndex + 1}-{Math.min(endIndex, filteredProducts.length)} of {filteredProducts.length} products
           </p>
         </div>
 
         {/* Products Grid */}
-        {filteredProducts.length === 0 ? (
+        {currentProducts.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-400 mb-4">
               <Search className="w-16 h-16 mx-auto mb-4" />
@@ -213,8 +240,8 @@ const CategoryPage: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {currentProducts.map((product) => (
               <ProductCard
                 key={`${product.category}-${product.id}`}
                 product={product}
@@ -222,6 +249,42 @@ const CategoryPage: React.FC = () => {
                 onBuyNow={handleBuyNow}
               />
             ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-12 mb-8">
+            <Pagination>
+              <PaginationContent>
+                {currentPage > 1 && (
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    />
+                  </PaginationItem>
+                )}
+                
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      onClick={() => handlePageChange(page)}
+                      isActive={currentPage === page}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                
+                {currentPage < totalPages && (
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
           </div>
         )}
       </main>
