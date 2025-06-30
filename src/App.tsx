@@ -27,6 +27,9 @@ import AuthSignUp from './pages/auth/SignUp';
 import AuthSignIn from './pages/auth/SignIn';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import TwoStepVerification from './pages/auth/TwoStepVerification';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import Terms from './pages/Terms';
+import ShippingInfo from './pages/ShippingInfo';
 
 const queryClient = new QueryClient();
 
@@ -66,6 +69,10 @@ function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/policies" element={<Policies />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/return-policy" element={<Policies />} />
+            <Route path="/shipping-info" element={<ShippingInfo />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

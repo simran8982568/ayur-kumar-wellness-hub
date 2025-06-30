@@ -3,14 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { Menu, ShoppingCart, Search, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import NavigationSidebar from './NavigationSidebar';
-import ThemeToggle from './ThemeToggle';
+import CartSidebar from './CartSidebar';
+import CheckoutSidebar from './CheckoutSidebar';
 import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [cartItems, setCartItems] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isDark, setIsDark] = useState(false);
   const navigate = useNavigate();
 
   // Check if user is logged in
@@ -36,31 +38,13 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  // Check theme on mount
-  useEffect(() => {
-    const checkTheme = () => {
-      setIsDark(document.documentElement.classList.contains('dark'));
-    };
-    
-    checkTheme();
-    
-    // Listen for theme changes
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   const handleLogoClick = () => {
     navigate('/');
   };
 
   const handleCartClick = () => {
     if (isLoggedIn) {
-      navigate('/cart-page');
+      setIsCartOpen(true);
     } else {
       navigate('/missing-cart');
     }
@@ -76,7 +60,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
+      <header className="sticky top-0 z-40 w-full bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
           <div 
@@ -85,15 +69,15 @@ const Header: React.FC = () => {
           >
             <div className="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
               <img 
-                src={isDark ? "/lovable-uploads/5d254827-a0b5-4204-b492-02c4f52346f1.png" : "/lovable-uploads/7e676976-4f68-46af-9f33-a2bef69fb911.png"}
+                src="/lovable-uploads/7e676976-4f68-46af-9f33-a2bef69fb911.png"
                 alt="Dr. Kumar Laboratories"
-                className={`w-full h-full object-contain ${isDark ? '' : ''}`}
+                className="w-full h-full object-contain"
                 loading="eager"
               />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg sm:text-xl font-bold text-black dark:text-white">Dr. Kumar Laboratories</h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">Healthcare & Wellness</p>
+              <h1 className="text-lg sm:text-xl font-bold text-[#1C1C2D]">Dr. Kumar Laboratories</h1>
+              <p className="text-xs text-gray-600 uppercase tracking-wide">Healthcare & Wellness</p>
             </div>
           </div>
 
@@ -106,7 +90,7 @@ const Header: React.FC = () => {
                 placeholder="Search products, categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 focus:border-transparent transition-colors duration-200"
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 bg-white text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E5002B] focus:border-transparent transition-colors duration-200"
                 aria-label="Search products"
               />
             </div>
@@ -114,14 +98,11 @@ const Header: React.FC = () => {
 
           {/* Right side controls */}
           <div className="flex items-center space-x-2">
-            {/* Theme Toggle */}
-            <ThemeToggle />
-
             {/* Authentication Buttons or User Menu */}
             {!isLoggedIn ? (
               <Button
                 onClick={() => navigate('/sign-in')}
-                className="bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-xl"
+                className="bg-[#E5002B] hover:bg-[#E5002B]/90 text-white text-sm px-4 py-2 rounded-xl"
                 aria-label="Login"
               >
                 Login
@@ -131,7 +112,7 @@ const Header: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate('/account')}
-                className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl p-2"
+                className="text-[#1C1C2D] hover:bg-gray-100 rounded-xl p-2"
                 aria-label="My Account"
               >
                 <User className="h-5 w-5" />
@@ -144,12 +125,12 @@ const Header: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={handleCartClick}
-              className="relative text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl p-2"
+              className="relative text-[#1C1C2D] hover:bg-gray-100 rounded-xl p-2"
               aria-label={`Shopping cart with ${cartItems} items`}
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#c74a1b] dark:bg-blue-600 text-white text-xs h-5 w-5 flex items-center justify-center rounded-full font-medium">
+                <span className="absolute -top-1 -right-1 bg-[#E5002B] text-white text-xs h-5 w-5 flex items-center justify-center rounded-full font-medium">
                   {cartItems}
                 </span>
               )}
@@ -161,7 +142,7 @@ const Header: React.FC = () => {
               size="sm"
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               aria-label="Open menu"
-              className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl p-2"
+              className="text-[#1C1C2D] hover:bg-gray-100 rounded-xl p-2"
             >
               <Menu className="h-5 w-5" />
             </Button>
@@ -178,7 +159,7 @@ const Header: React.FC = () => {
                 placeholder="Search products, categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 focus:border-transparent transition-colors duration-200"
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 bg-white text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E5002B] focus:border-transparent transition-colors duration-200"
                 aria-label="Search products"
               />
             </div>
@@ -189,6 +170,20 @@ const Header: React.FC = () => {
       <NavigationSidebar 
         isOpen={isSidebarOpen} 
         onClose={() => setIsSidebarOpen(false)} 
+      />
+      
+      <CartSidebar 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)}
+        onCheckout={() => {
+          setIsCartOpen(false);
+          setIsCheckoutOpen(true);
+        }}
+      />
+      
+      <CheckoutSidebar 
+        isOpen={isCheckoutOpen} 
+        onClose={() => setIsCheckoutOpen(false)}
       />
     </>
   );
