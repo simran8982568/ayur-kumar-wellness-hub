@@ -20,8 +20,7 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
 
   const handleSignOut = () => {
     localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userEmail');
+    localStorage.removeItem('currentUser');
     navigate('/');
     onClose();
     window.dispatchEvent(new CustomEvent('authStateChanged'));
@@ -112,7 +111,7 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
             )}
           </div>
 
-          {/* Consultations */}
+          {/* Consultations - Fixed link */}
           <Link
             to="/consultation-booking"
             onClick={onClose}
@@ -123,7 +122,16 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
           </Link>
 
           {/* Conditional Auth-based Links */}
-          {isLoggedIn && (
+          {!isLoggedIn ? (
+            <Link
+              to="/sign-in"
+              onClick={onClose}
+              className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
+            >
+              <User className="h-5 w-5" />
+              <span>Login</span>
+            </Link>
+          ) : (
             <>
               <Link
                 to="/wishlist"
@@ -157,7 +165,7 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
 
           {/* Cart */}
           <Link
-            to="/cart-page"
+            to={isLoggedIn ? "/cart-page" : "/missing-cart"}
             onClick={onClose}
             className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
           >

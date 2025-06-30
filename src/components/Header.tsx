@@ -15,6 +15,7 @@ const Header: React.FC = () => {
 
   // Check if user is logged in
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
   // Update cart count on component mount and when cart changes
   useEffect(() => {
@@ -58,7 +59,11 @@ const Header: React.FC = () => {
   };
 
   const handleCartClick = () => {
-    navigate('/cart-page');
+    if (isLoggedIn) {
+      navigate('/cart-page');
+    } else {
+      navigate('/missing-cart');
+    }
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -114,25 +119,13 @@ const Header: React.FC = () => {
 
             {/* Authentication Buttons or User Menu */}
             {!isLoggedIn ? (
-              <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => navigate('/signin')}
-                  className="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 text-sm px-3 py-2 rounded-xl"
-                  aria-label="Sign In"
-                >
-                  Sign In
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => navigate('/signup')}
-                  className="bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white text-sm px-3 py-2 rounded-xl"
-                  aria-label="Sign Up"
-                >
-                  Sign Up
-                </Button>
-              </>
+              <Button
+                onClick={() => navigate('/sign-in')}
+                className="bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-xl"
+                aria-label="Login"
+              >
+                Login
+              </Button>
             ) : (
               <Button
                 variant="ghost"
@@ -142,6 +135,7 @@ const Header: React.FC = () => {
                 aria-label="My Account"
               >
                 <User className="h-5 w-5" />
+                <span className="hidden sm:inline ml-2">{currentUser.firstName || 'Account'}</span>
               </Button>
             )}
 

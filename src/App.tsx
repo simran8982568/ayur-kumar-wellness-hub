@@ -15,6 +15,8 @@ import Wishlist from './pages/Wishlist';
 import Account from './pages/Account';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import VerifyOTP from './pages/VerifyOTP';
+import MissingCart from './pages/MissingCart';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import Policies from './pages/Policies';
@@ -54,6 +56,8 @@ function App() {
             <Route path="/account" element={<Account />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/verify-otp" element={<VerifyOTP />} />
+            <Route path="/missing-cart" element={<MissingCart />} />
             <Route path="/auth/verify-number" element={<VerifyNumber />} />
             <Route path="/auth/signup" element={<AuthSignUp />} />
             <Route path="/auth/signin" element={<AuthSignIn />} />
