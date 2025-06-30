@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronRight, ChevronUp } from 'lucide-react';
-import { healthConcerns } from '@/data/healthConcerns';
+import { healthConcerns, HealthConcern } from '@/data/healthConcerns';
+import { Button } from '@/components/ui/button';
 
 const HealthConcernsGrid: React.FC = () => {
   const [showAll, setShowAll] = useState(false);
