@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { Star, MessageCircle } from 'lucide-react';
+import { Star, MessageCircle, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 interface Review {
   id: number;
@@ -14,8 +14,16 @@ interface Review {
 }
 
 const CustomerReviews: React.FC = () => {
-  const navigate = useNavigate();
+  const { toast } = useToast();
   const [sortBy, setSortBy] = useState('most-recent');
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewForm, setReviewForm] = useState({
+    name: '',
+    email: '',
+    rating: 5,
+    title: '',
+    reviewText: ''
+  });
 
   const reviews: Review[] = [
     {
@@ -79,6 +87,20 @@ const CustomerReviews: React.FC = () => {
     { stars: 1, percentage: 2, count: 37 }
   ];
 
+  // Filter reviews based on selected filter
+  const filteredReviews = React.useMemo(() => {
+    let filtered = [...reviews];
+    switch (sortBy) {
+      case 'top-rated':
+        return filtered.sort((a, b) => b.rating - a.rating);
+      case 'lowest-rated':
+        return filtered.sort((a, b) => a.rating - b.rating);
+      case 'most-recent':
+      default:
+        return filtered;
+    }
+  }, [sortBy]);
+
   const renderStars = (rating: number, size: 'sm' | 'md' = 'sm') => {
     const sizeClass = size === 'sm' ? 'w-4 h-4' : 'w-5 h-5';
     
@@ -90,7 +112,7 @@ const CustomerReviews: React.FC = () => {
             className={`${sizeClass} ${
               star <= rating 
                 ? 'fill-yellow-400 text-yellow-400' 
-                : 'text-gray-300 dark:text-gray-600'
+                : 'text-gray-300'
             }`}
           />
         ))}
@@ -99,39 +121,54 @@ const CustomerReviews: React.FC = () => {
   };
 
   const handleWriteReview = () => {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      // Open review modal (simplified for demo)
-      alert('Review modal would open here');
-    } else {
-      navigate('/auth/verify-number');
-    }
+    setShowReviewModal(true);
   };
 
-  const handleAskExperts = () => {
-    navigate('/consultations');
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate inputs
+    if (!reviewForm.name || !reviewForm.email || !reviewForm.title || !reviewForm.reviewText) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Mock save review data
+    console.log('Review submitted:', reviewForm);
+    
+    toast({
+      title: "Success",
+      description: "Review submitted successfully!",
+    });
+
+    // Reset form and close modal
+    setReviewForm({
+      name: '',
+      email: '',
+      rating: 5,
+      title: '',
+      reviewText: ''
+    });
+    setShowReviewModal(false);
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-8">
+    <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-black dark:text-white">
+        <h2 className="text-2xl font-bold text-[#1C1C2D]">
           Customer Reviews
         </h2>
         <div className="flex gap-3">
           <Button
             onClick={handleWriteReview}
-            className="bg-green-600 hover:bg-green-700 text-white rounded-lg px-4 py-2"
+            className="bg-[#111111] hover:bg-[#111111]/90 text-white rounded-lg px-4 py-2"
           >
             Write a Review
-          </Button>
-          <Button
-            onClick={handleAskExperts}
-            variant="outline"
-            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg px-4 py-2"
-          >
-            Ask Our Experts
           </Button>
         </div>
       </div>
@@ -142,11 +179,11 @@ const CustomerReviews: React.FC = () => {
         <div>
           <div className="flex items-center mb-4">
             {renderStars(Math.floor(averageRating), 'md')}
-            <span className="ml-2 text-2xl font-bold text-black dark:text-white">
+            <span className="ml-2 text-2xl font-bold text-[#1C1C2D]">
               {averageRating}
             </span>
           </div>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
+          <p className="text-gray-600 mb-4">
             Based on {totalReviews.toLocaleString()} reviews
           </p>
 
@@ -156,18 +193,18 @@ const CustomerReviews: React.FC = () => {
               <div key={item.stars} className="flex items-center space-x-3">
                 <div className="flex items-center space-x-1 w-12">
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-300">{item.stars}</span>
+                  <span className="text-sm text-gray-600">{item.stars}</span>
                 </div>
-                <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div className="flex-1 bg-gray-200 rounded-full h-2">
                   <div
                     className="bg-yellow-400 h-2 rounded-full"
                     style={{ width: `${item.percentage}%` }}
                   />
                 </div>
-                <span className="text-sm text-gray-600 dark:text-gray-300 w-12">
+                <span className="text-sm text-gray-600 w-12">
                   {item.percentage}%
                 </span>
-                <span className="text-sm text-gray-500 dark:text-gray-400 w-16">
+                <span className="text-sm text-gray-500 w-16">
                   ({item.count})
                 </span>
               </div>
@@ -178,19 +215,16 @@ const CustomerReviews: React.FC = () => {
         {/* Right: Filters */}
         <div className="flex flex-col justify-start">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex border-b border-gray-200 dark:border-gray-700">
-              <button className="px-4 py-2 text-black dark:text-white border-b-2 border-black dark:border-white font-medium">
+            <div className="flex border-b border-gray-200">
+              <button className="px-4 py-2 text-[#1C1C2D] border-b-2 border-[#1C1C2D] font-medium">
                 Reviews ({totalReviews})
-              </button>
-              <button className="px-4 py-2 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
-                Questions (266)
               </button>
             </div>
             
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-2 bg-gray-100 dark:bg-gray-700 text-black dark:text-white rounded-lg text-sm border border-gray-300 dark:border-gray-600"
+              className="px-3 py-2 bg-gray-100 text-[#1C1C2D] rounded-lg text-sm border border-gray-300"
             >
               <option value="most-recent">Most Recent</option>
               <option value="top-rated">Top Rated</option>
@@ -202,33 +236,33 @@ const CustomerReviews: React.FC = () => {
 
       {/* Reviews Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {reviews.map((review) => (
+        {filteredReviews.map((review) => (
           <div
             key={review.id}
-            className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700"
+            className="bg-gray-50 rounded-lg p-4 border border-gray-200"
           >
             {/* User Info */}
             <div className="mb-3">
               <div className="flex items-center justify-between mb-2">
-                <h4 className="font-medium text-black dark:text-white">
+                <h4 className="font-medium text-[#1C1C2D]">
                   {review.username}
                 </h4>
                 {review.verified && (
-                  <span className="bg-black text-white text-xs px-2 py-1 rounded">
+                  <span className="bg-[#111111] text-white text-xs px-2 py-1 rounded">
                     Verified
                   </span>
                 )}
               </div>
               <div className="flex items-center justify-between">
                 {renderStars(review.rating)}
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="text-xs text-gray-500">
                   {review.timeAgo}
                 </span>
               </div>
             </div>
 
             {/* Review Text */}
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+            <p className="text-sm text-gray-700 leading-relaxed">
               {review.comment}
             </p>
           </div>
@@ -238,12 +272,122 @@ const CustomerReviews: React.FC = () => {
       {/* Load More */}
       <div className="text-center mt-8">
         <Button
-          variant="outline"
-          className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg"
+          className="bg-[#111111] hover:bg-[#111111]/90 text-white rounded-lg"
         >
           Load More Reviews
         </Button>
       </div>
+
+      {/* Review Modal */}
+      {showReviewModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-[#1C1C2D]">Write a Review</h3>
+              <button
+                onClick={() => setShowReviewModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmitReview} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-[#1C1C2D] mb-1">
+                  Name *
+                </label>
+                <input
+                  type="text"
+                  value={reviewForm.name}
+                  onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-[#1C1C2D]"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[#1C1C2D] mb-1">
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  value={reviewForm.email}
+                  onChange={(e) => setReviewForm({...reviewForm, email: e.target.value})}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-[#1C1C2D]"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[#1C1C2D] mb-1">
+                  Rating *
+                </label>
+                <div className="flex space-x-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setReviewForm({...reviewForm, rating: star})}
+                      className="focus:outline-none"
+                    >
+                      <Star
+                        className={`w-6 h-6 ${
+                          star <= reviewForm.rating
+                            ? 'fill-yellow-400 text-yellow-400'
+                            : 'text-gray-300'
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[#1C1C2D] mb-1">
+                  Title *
+                </label>
+                <input
+                  type="text"
+                  value={reviewForm.title}
+                  onChange={(e) => setReviewForm({...reviewForm, title: e.target.value})}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-[#1C1C2D]"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[#1C1C2D] mb-1">
+                  Review Text *
+                </label>
+                <textarea
+                  value={reviewForm.reviewText}
+                  onChange={(e) => setReviewForm({...reviewForm, reviewText: e.target.value})}
+                  rows={4}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-[#1C1C2D]"
+                  required
+                />
+              </div>
+
+              <div className="flex space-x-3 pt-4">
+                <Button
+                  type="button"
+                  onClick={() => setShowReviewModal(false)}
+                  className="flex-1 bg-gray-300 hover:bg-gray-400 text-[#1C1C2D]"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-[#111111] hover:bg-[#111111]/90 text-white"
+                >
+                  Submit Review
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

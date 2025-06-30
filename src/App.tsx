@@ -49,7 +49,6 @@ function App() {
             <Route path="/shop-all" element={<ShopAll />} />
             <Route path="/category/:category" element={<CategoryPage />} />
             <Route path="/category/penis-enlargement" element={<PenisEnlargementPage />} />
-            <Route path="/category/hormonal-imbalance" element={<CategoryPage />} />
             <Route path="/new-arrivals" element={<NewArrivalsPage />} />
             <Route path="/best-sellers" element={<BestSellersPage />} />
             <Route path="/product/:slug" element={<ProductDetail />} />

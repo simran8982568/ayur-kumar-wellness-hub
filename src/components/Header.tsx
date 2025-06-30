@@ -62,7 +62,7 @@ const Header: React.FC = () => {
     <>
       <header className="sticky top-0 z-40 w-full bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo - Now clickable */}
           <div 
             className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:opacity-80 transition-opacity duration-300"
             onClick={handleLogoClick}
@@ -90,7 +90,7 @@ const Header: React.FC = () => {
                 placeholder="Search products, categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 bg-white text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E5002B] focus:border-transparent transition-colors duration-200"
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 bg-white text-[#1C1C2D] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E5002B] focus:border-transparent transition-colors duration-200"
                 aria-label="Search products"
               />
             </div>
@@ -102,7 +102,7 @@ const Header: React.FC = () => {
             {!isLoggedIn ? (
               <Button
                 onClick={() => navigate('/sign-in')}
-                className="bg-[#E5002B] hover:bg-[#E5002B]/90 text-white text-sm px-4 py-2 rounded-xl"
+                className="bg-[#111111] hover:bg-[#111111]/90 text-white text-sm px-4 py-2 rounded-xl"
                 aria-label="Login"
               >
                 Login
@@ -159,7 +159,7 @@ const Header: React.FC = () => {
                 placeholder="Search products, categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 bg-white text-black rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E5002B] focus:border-transparent transition-colors duration-200"
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 bg-white text-[#1C1C2D] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E5002B] focus:border-transparent transition-colors duration-200"
                 aria-label="Search products"
               />
             </div>

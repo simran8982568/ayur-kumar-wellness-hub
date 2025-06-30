@@ -10,6 +10,7 @@ import TestimonialSection from '@/components/TestimonialSection';
 import TrustBadges from '@/components/TrustBadges';
 import FAQSection from '@/components/FAQSection';
 import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
 import { mensHealthProducts, womensHealthProducts, comboProducts, newArrivals } from '@/data/products';
 
 const Index = () => {
@@ -20,12 +21,24 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
+    <div className="min-h-screen bg-white transition-colors duration-300">
       <Header />
       
       <main className="relative">
         <HeroBanner />
         <HealthConcernsGrid />
+        
+        {/* Start Your Journey Button Section */}
+        <section className="py-8 bg-white">
+          <div className="container mx-auto px-4 text-center">
+            <Button
+              onClick={handleStartJourney}
+              className="mx-auto block text-center text-white bg-[#111111] hover:bg-[#111111]/90 px-6 py-3 rounded-xl font-medium transition-all duration-300"
+            >
+              Start Your Journey
+            </Button>
+          </div>
+        </section>
         
         <ProductSection 
           title="Men's Health"

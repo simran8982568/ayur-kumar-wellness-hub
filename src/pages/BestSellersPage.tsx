@@ -4,10 +4,20 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import { PageLoadingSkeleton } from '@/components/LoadingSkeleton';
+import { 
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const BestSellersPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 9;
 
   // Dummy best seller products
   const bestSellerProducts = [
@@ -76,7 +86,19 @@ const BestSellersPage: React.FC = () => {
       reviews: 178,
       description: "Complete body detoxification and cleansing solution",
       inStock: true
-    }
+    },
+    // Add more products to test pagination
+    ...Array.from({ length: 12 }, (_, i) => ({
+      id: 7 + i,
+      name: `Best Seller Product ${7 + i}`,
+      price: 899 + (i * 100),
+      originalPrice: 1299 + (i * 150),
+      image: "/api/placeholder/300/300",
+      rating: 4.0 + (Math.random() * 1),
+      reviews: 100 + Math.floor(Math.random() * 400),
+      description: `Premium wellness solution for health concern ${7 + i}`,
+      inStock: true
+    }))
   ];
 
   useEffect(() => {
@@ -108,21 +130,32 @@ const BestSellersPage: React.FC = () => {
     window.location.href = '/cart-page';
   };
 
+  // Pagination logic
+  const totalPages = Math.ceil(products.length / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const endIndex = startIndex + productsPerPage;
+  const currentProducts = products.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (loading) {
     return <PageLoadingSkeleton />;
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
+    <div className="min-h-screen bg-white transition-colors duration-300">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-black dark:text-white mb-4">Best Sellers</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">Our most popular wellness combinations</p>
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+          <h1 className="text-3xl font-bold text-[#1C1C2D] mb-4">Best Sellers</h1>
+          <p className="text-lg text-gray-600 mb-6">Our most popular wellness combinations</p>
+          <div className="bg-gray-50 rounded-xl p-6">
+            <p className="text-gray-700 leading-relaxed">
               Discover our top-selling product combinations that have helped thousands of customers achieve their wellness goals. 
               These carefully curated bundles offer comprehensive solutions at great value, combining the power of multiple 
               Ayurvedic formulations for maximum effectiveness.
@@ -132,14 +165,14 @@ const BestSellersPage: React.FC = () => {
 
         {/* Products Count */}
         <div className="mb-6">
-          <p className="text-gray-600 dark:text-gray-300">
-            Showing {products.length} best-selling products
+          <p className="text-gray-600">
+            Showing {startIndex + 1}-{Math.min(endIndex, products.length)} of {products.length} best-selling products
           </p>
         </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products.map((product) => (
+        {/* Products Grid - Mobile: 2 per row, Desktop: 3 per row */}
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+          {currentProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -148,6 +181,43 @@ const BestSellersPage: React.FC = () => {
             />
           ))}
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-12 mb-8">
+            <Pagination>
+              <PaginationContent>
+                {currentPage > 1 && (
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    />
+                  </PaginationItem>
+                )}
+                
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      onClick={() => handlePageChange(page)}
+                      isActive={currentPage === page}
+                      className={currentPage === page ? "bg-olive/20 rounded-full px-3 py-1" : ""}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                
+                {currentPage < totalPages && (
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
       </main>
       
       <Footer />

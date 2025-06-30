@@ -134,7 +134,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
 
   return (
     <div 
-      className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer h-full flex flex-col"
+      className="w-full rounded-xl shadow p-2 bg-white hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer h-full flex flex-col border border-gray-200"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleCardClick}
@@ -149,7 +149,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
     >
       <div className="relative overflow-hidden">
         {product.badge && (
-          <div className="absolute top-3 left-3 z-10 bg-black text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-lg">
+          <div className="absolute top-2 left-2 z-10 bg-[#111111] text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-lg">
             {product.badge}
           </div>
         )}
@@ -157,7 +157,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         <WishlistButton productId={product.id} />
 
         {discount > 0 && (
-          <div className="absolute top-3 right-12 z-10 bg-[#c74a1b] dark:bg-blue-600 text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-lg">
+          <div className="absolute top-2 right-10 z-10 bg-[#E5002B] text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-lg">
             -{discount}%
           </div>
         )}
@@ -165,7 +165,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         <img 
           src={product.image} 
           alt={product.name}
-          className={`w-full h-48 sm:h-56 object-cover transition-transform duration-300 ${
+          className={`w-full h-32 sm:h-48 object-cover transition-transform duration-300 ${
             isHovered ? 'scale-110' : 'scale-100'
           }`}
           loading="lazy"
@@ -173,43 +173,43 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         
         {!product.inStock && (
           <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center">
-            <span className="bg-red-500 text-white px-3 py-1 text-sm font-medium uppercase tracking-wide rounded-lg">
+            <span className="bg-red-500 text-white px-2 py-1 text-xs font-medium uppercase tracking-wide rounded-lg">
               Out of Stock
             </span>
           </div>
         )}
       </div>
       
-      <div className="p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-black dark:text-white mb-2 hover:text-[#c74a1b] dark:hover:text-blue-400 transition-colors line-clamp-2 text-sm sm:text-base">
+      <div className="p-2 sm:p-4 flex-1 flex flex-col">
+        <h3 className="font-semibold text-[#1C1C2D] mb-2 hover:text-[#E5002B] transition-colors line-clamp-2 text-xs sm:text-base">
           {product.name}
         </h3>
         
         {product.description && (
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
+          <p className="text-xs text-gray-600 mb-2 line-clamp-2">
             {product.description}
           </p>
         )}
         
-        <div className="flex items-center mb-3">
+        <div className="flex items-center mb-2">
           <div className="flex items-center">
-            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm font-medium text-black dark:text-white ml-1">
+            <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-yellow-400 text-yellow-400" />
+            <span className="text-xs font-medium text-[#1C1C2D] ml-1">
               {product.rating}
             </span>
           </div>
-          <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 ml-2">
-            ({product.reviews} reviews)
+          <span className="text-xs text-gray-500 ml-2">
+            ({product.reviews})
           </span>
         </div>
         
-        <div className="flex items-center justify-between mb-4 mt-auto">
-          <div className="flex items-center space-x-2">
-            <span className="text-lg sm:text-xl font-bold text-black dark:text-white">
+        <div className="flex items-center justify-between mb-3 mt-auto">
+          <div className="flex items-center space-x-1">
+            <span className="text-sm sm:text-lg font-bold text-[#1C1C2D]">
               ₹{product.price}
             </span>
             {product.originalPrice && (
-              <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
+              <span className="text-xs text-gray-500 line-through">
                 ₹{product.originalPrice}
               </span>
             )}
@@ -218,14 +218,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
         
         <div className="space-y-2">
           <Button 
-            className="w-full bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white font-medium rounded-xl"
+            className="w-full bg-[#111111] hover:bg-[#111111]/90 text-white font-medium rounded-xl text-xs py-2"
             disabled={!product.inStock || isLoading}
             onClick={handleBuyNow}
             aria-label={`Buy ${product.name} now`}
           >
             {isLoading ? (
               <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
                 <span>Processing...</span>
               </div>
             ) : (
@@ -235,12 +235,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
           
           <Button 
             variant="outline"
-            className="w-full border-[#c74a1b] dark:border-blue-600 text-[#c74a1b] dark:text-blue-600 hover:bg-[#c74a1b] dark:hover:bg-blue-600 hover:text-white flex items-center justify-center space-x-2 rounded-xl"
+            className="w-full border-[#111111] text-[#111111] hover:bg-[#111111] hover:text-white flex items-center justify-center space-x-1 rounded-xl text-xs py-2"
             disabled={!product.inStock || isLoading}
             onClick={isInCart ? handleRemoveFromCart : handleAddToCart}
             aria-label={isInCart ? `Remove ${product.name} from cart` : `Add ${product.name} to cart`}
           >
-            {isInCart ? <Minus className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
+            {isInCart ? <Minus className="w-3 h-3" /> : <ShoppingCart className="w-3 h-3" />}
             <span>{isInCart ? 'Remove' : 'Add to Cart'}</span>
           </Button>
         </div>
