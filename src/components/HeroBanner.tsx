@@ -114,7 +114,7 @@ const HeroBanner: React.FC = () => {
                         e.stopPropagation();
                         handleCtaClick(slide);
                       }}
-                      className="bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white text-base px-6 py-2 rounded-full font-medium uppercase tracking-wide transition-all duration-300 hover:bg-primary/80"
+                      className="bg-[#111111] dark:bg-gray-700 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white text-base px-6 py-2 rounded-full font-medium uppercase tracking-wide transition-all duration-300 hover:bg-primary/80"
                     >
                       {slide.cta}
                     </Button>
@@ -181,7 +181,7 @@ const HeroBanner: React.FC = () => {
             }}
             className={`h-3 transition-all duration-300 rounded-full ${
               index === currentSlide 
-                ? 'bg-[#c74a1b] dark:bg-blue-600 w-8' 
+                ? 'bg-[#111111] dark:bg-blue-600 w-8' 
                 : 'bg-gray-400 hover:bg-gray-600 w-3'
             }`}
           />

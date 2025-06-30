@@ -290,7 +290,7 @@ const ConsultationBooking: React.FC = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-4 pt-4">
+              <div className="flex gap-4 pt-4  ">
                 <Button
                   type="submit"
                   className="flex-1 bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
