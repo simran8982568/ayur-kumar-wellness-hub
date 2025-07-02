@@ -94,7 +94,7 @@ const VerifyOTP = () => {
               <p className="text-gray-600 dark:text-gray-300 mb-4">
                 Enter the 6-digit code sent to
               </p>
-              <p className="text-[#c74a1b] dark:text-blue-400 font-medium">
+              <p className="text-[#111111] dark:text-blue-400 font-medium">
                 {phoneNumber}
               </p>
             </div>
@@ -125,7 +125,7 @@ const VerifyOTP = () => {
                   <button
                     type="button"
                     onClick={handleResendOTP}
-                    className="text-[#c74a1b] dark:text-blue-400 hover:underline text-sm font-medium"
+                    className="text-[#111111] dark:text-blue-400 hover:underline text-sm font-medium"
                   >
                     Resend OTP
                   </button>
@@ -133,7 +133,7 @@ const VerifyOTP = () => {
                   <button
                     type="button"
                     onClick={handleResendOTP}
-                    className="text-gray-400 hover:text-[#c74a1b] dark:hover:text-blue-400 text-sm"
+                    className="text-gray-400 hover:text-[#111111] dark:hover:text-blue-400 text-sm"
                   >
                     Resend OTP
                   </button>
@@ -143,7 +143,7 @@ const VerifyOTP = () => {
               <Button
                 type="submit"
                 disabled={isLoading || otp.length !== 6}
-                className="w-full bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#111111] dark:bg-blue-600 hover:bg-[#302e2e] dark:hover:bg-blue-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
@@ -160,7 +160,7 @@ const VerifyOTP = () => {
               <button
                 type="button"
                 onClick={() => navigate('/sign-in')}
-                className="text-gray-500 dark:text-gray-400 hover:text-[#c74a1b] dark:hover:text-blue-400 text-sm"
+                className="text-gray-500 dark:text-gray-400 hover:text-[#111111] dark:hover:text-blue-400 text-sm"
               >
                 Change phone number
               </button>

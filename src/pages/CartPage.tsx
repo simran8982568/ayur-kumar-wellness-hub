@@ -1,12 +1,21 @@
-
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Minus, Plus, Trash2, ShoppingBag, CreditCard, Smartphone, Wallet, Building, Banknote } from 'lucide-react';
-import { CartLoadingSkeleton } from '@/components/LoadingSkeleton';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Minus,
+  Plus,
+  Trash2,
+  ShoppingBag,
+  CreditCard,
+  Smartphone,
+  Wallet,
+  Building,
+  Banknote,
+} from "lucide-react";
+import { CartLoadingSkeleton } from "@/components/LoadingSkeleton";
 
 interface CartItem {
   id: number;
@@ -25,29 +34,62 @@ const CartPage: React.FC = () => {
 
   // Form states
   const [contactInfo, setContactInfo] = useState({
-    phone: '',
-    email: '',
-    fullName: '',
+    phone: "",
+    email: "",
+    fullName: "",
   });
 
   const [deliveryAddress, setDeliveryAddress] = useState({
-    address: '',
-    pincode: '',
-    city: '',
-    state: '',
+    address: "",
+    pincode: "",
+    city: "",
+    state: "",
     billingIsSame: true,
     getUpdates: false,
   });
 
-  const [paymentMethod, setPaymentMethod] = useState('upi');
-  const [upiId, setUpiId] = useState('');
-  const [couponCode, setCouponCode] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState("upi");
+  const [upiId, setUpiId] = useState("");
+  const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+
+  const paymentOptions = [
+    {
+      id: "upi",
+      name: "UPI",
+      icon: Smartphone,
+      description: "Pay using UPI ID",
+    },
+    {
+      id: "card",
+      name: "Credit/Debit Card",
+      icon: CreditCard,
+      description: "Visa, Mastercard, RuPay",
+    },
+    {
+      id: "wallet",
+      name: "Wallets",
+      icon: Wallet,
+      description: "Paytm, PhonePe, Google Pay",
+    },
+    {
+      id: "netbanking",
+      name: "Net Banking",
+      icon: Building,
+      description: "All major banks",
+    },
+    {
+      id: "cod",
+      name: "Cash on Delivery",
+      icon: Banknote,
+      description: "Pay when you receive",
+    },
+  ];
 
   useEffect(() => {
     // Simulate loading delay
     const timer = setTimeout(() => {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       setCartItems(cart);
       setLoading(false);
     }, 1000);
@@ -57,28 +99,35 @@ const CartPage: React.FC = () => {
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
-    
-    const updatedCart = cartItems.map(item => 
+
+    const updatedCart = cartItems.map((item) =>
       item.id === id ? { ...item, quantity: newQuantity } : item
     );
     setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    window.dispatchEvent(new CustomEvent("cartUpdated"));
   };
 
   const removeFromCart = (id: number) => {
-    const updatedCart = cartItems.filter(item => item.id !== id);
+    const updatedCart = cartItems.filter((item) => item.id !== id);
     setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    window.dispatchEvent(new CustomEvent("cartUpdated"));
   };
 
   const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
   };
 
   const calculateMRP = () => {
-    return cartItems.reduce((total, item) => total + ((item.originalPrice || item.price) * item.quantity), 0);
+    return cartItems.reduce(
+      (total, item) =>
+        total + (item.originalPrice || item.price) * item.quantity,
+      0
+    );
   };
 
   const getDiscount = () => {
@@ -86,13 +135,15 @@ const CartPage: React.FC = () => {
   };
 
   const getCouponDiscount = () => {
-    if (appliedCoupon === 'SAVE5') return Math.floor(calculateSubtotal() * 0.05);
-    if (appliedCoupon === 'PAYDAY15') return Math.floor(calculateSubtotal() * 0.15);
+    if (appliedCoupon === "SAVE5")
+      return Math.floor(calculateSubtotal() * 0.05);
+    if (appliedCoupon === "PAYDAY15")
+      return Math.floor(calculateSubtotal() * 0.15);
     return 0;
   };
 
   const getOnlineDiscount = () => {
-    return paymentMethod !== 'cod' ? Math.floor(calculateSubtotal() * 0.05) : 0;
+    return paymentMethod !== "cod" ? Math.floor(calculateSubtotal() * 0.05) : 0;
   };
 
   const getShippingFee = () => {
@@ -112,36 +163,45 @@ const CartPage: React.FC = () => {
   };
 
   const applyCoupon = () => {
-    if (couponCode === 'SAVE5' || couponCode === 'PAYDAY15') {
+    if (couponCode === "SAVE5" || couponCode === "PAYDAY15") {
       setAppliedCoupon(couponCode);
-      setCouponCode('');
+      setCouponCode("");
     }
   };
 
   const validateForm = () => {
-    return contactInfo.phone && contactInfo.email && contactInfo.fullName &&
-           deliveryAddress.address && deliveryAddress.pincode && deliveryAddress.city && deliveryAddress.state;
+    return (
+      contactInfo.phone &&
+      contactInfo.email &&
+      contactInfo.fullName &&
+      deliveryAddress.address &&
+      deliveryAddress.pincode &&
+      deliveryAddress.city &&
+      deliveryAddress.state
+    );
   };
 
   const handlePlaceOrder = async () => {
     if (!validateForm()) {
-      alert('Please fill in all required delivery details to proceed');
+      alert("Please fill in all required delivery details to proceed");
       return;
     }
 
     if (cartItems.length === 0) return;
-    
+
     setSubmitting(true);
-    
+
     // Simulate order processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     // Clear cart
-    localStorage.removeItem('cart');
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
-    
-    alert('Order placed successfully! You will receive a confirmation email shortly.');
-    navigate('/');
+    localStorage.removeItem("cart");
+    window.dispatchEvent(new CustomEvent("cartUpdated"));
+
+    alert(
+      "Order placed successfully! You will receive a confirmation email shortly."
+    );
+    navigate("/");
     setSubmitting(false);
   };
 
@@ -162,10 +222,14 @@ const CartPage: React.FC = () => {
         <Header />
         <div className="container mx-auto px-4 py-8 text-center">
           <ShoppingBag className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-black dark:text-white mb-2">Your Cart is Empty</h1>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">Add some products to get started</p>
+          <h1 className="text-2xl font-bold text-black dark:text-white mb-2">
+            Your Cart is Empty
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            Add some products to get started
+          </p>
           <Button
-            onClick={() => navigate('/shop-all')}
+            onClick={() => navigate("/shop-all")}
             className="bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-xl"
           >
             Continue Shopping
@@ -175,27 +239,67 @@ const CartPage: React.FC = () => {
     );
   }
 
-  const paymentOptions = [
-    { id: 'upi', name: 'UPI', icon: Smartphone, description: 'Pay using UPI ID' },
-    { id: 'card', name: 'Credit/Debit Card', icon: CreditCard, description: 'Visa, Mastercard, RuPay' },
-    { id: 'wallet', name: 'Wallets', icon: Wallet, description: 'Paytm, PhonePe, Google Pay' },
-    { id: 'netbanking', name: 'Net Banking', icon: Building, description: 'All major banks' },
-    { id: 'cod', name: 'Cash on Delivery', icon: Banknote, description: 'Pay when you receive' },
-  ];
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <Header />
-      
+
       <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-8">Checkout</h1>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-black dark:text-white mb-8">
+          Checkout
+        </h1>
+
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          {/* Mobile Order Summary - Visible only on mobile */}
+          <div className="lg:hidden bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-black dark:text-white">Order summary</h3>
+              <div className="flex items-center space-x-2">
+                <ShoppingBag className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <span className="text-sm font-medium text-black dark:text-white">
+                  {cartItems.length} item{cartItems.length !== 1 ? 's' : ''}
+                </span>
+                <span className="text-md font-bold text-black dark:text-white">₹{calculateTotal()}</span>
+              </div>
+            </div>
+
+            <div className="space-y-3 max-h-48 overflow-y-auto">
+              {cartItems.map((item) => (
+                <div key={item.id} className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-12 h-12 object-cover rounded-lg flex-shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-medium text-black dark:text-white truncate">{item.name}</h4>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">
+                      Qty: {item.quantity} • ₹{item.price * item.quantity}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-3 pt-2 border-t border-gray-200 dark:border-gray-600">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-black dark:text-white">Total Amount</span>
+                <span className="text-md font-bold text-black dark:text-white">₹{calculateTotal()}</span>
+              </div>
+              {getTotalSavings() > 0 && (
+                <p className="text-green-600 text-xs mt-1">
+                  You'll save ₹{getTotalSavings()} on this order
+                </p>
+              )}
+            </div>
+          </div>
+
           {/* Left Column - Forms */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-3 space-y-6">
             {/* Contact Details */}
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-black dark:text-white mb-4">Contact Details</h2>
+              <h2 className="text-xl font-semibold text-black dark:text-white mb-4">
+                Contact Details
+              </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-black dark:text-white mb-2">
@@ -204,7 +308,12 @@ const CartPage: React.FC = () => {
                   <Input
                     type="tel"
                     value={contactInfo.phone}
-                    onChange={(e) => setContactInfo(prev => ({ ...prev, phone: e.target.value }))}
+                    onChange={(e) =>
+                      setContactInfo((prev) => ({
+                        ...prev,
+                        phone: e.target.value,
+                      }))
+                    }
                     placeholder="Enter phone number"
                     className="rounded-lg"
                     required
@@ -217,7 +326,12 @@ const CartPage: React.FC = () => {
                   <Input
                     type="email"
                     value={contactInfo.email}
-                    onChange={(e) => setContactInfo(prev => ({ ...prev, email: e.target.value }))}
+                    onChange={(e) =>
+                      setContactInfo((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                     placeholder="Enter email"
                     className="rounded-lg"
                     required
@@ -229,7 +343,12 @@ const CartPage: React.FC = () => {
                   </label>
                   <Input
                     value={contactInfo.fullName}
-                    onChange={(e) => setContactInfo(prev => ({ ...prev, fullName: e.target.value }))}
+                    onChange={(e) =>
+                      setContactInfo((prev) => ({
+                        ...prev,
+                        fullName: e.target.value,
+                      }))
+                    }
                     placeholder="Enter full name"
                     className="rounded-lg"
                     required
@@ -240,7 +359,9 @@ const CartPage: React.FC = () => {
 
             {/* Delivery Address */}
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-black dark:text-white mb-4">Delivery Address</h2>
+              <h2 className="text-xl font-semibold text-black dark:text-white mb-4">
+                Delivery Address
+              </h2>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-black dark:text-white mb-2">
@@ -248,7 +369,12 @@ const CartPage: React.FC = () => {
                   </label>
                   <Input
                     value={deliveryAddress.address}
-                    onChange={(e) => setDeliveryAddress(prev => ({ ...prev, address: e.target.value }))}
+                    onChange={(e) =>
+                      setDeliveryAddress((prev) => ({
+                        ...prev,
+                        address: e.target.value,
+                      }))
+                    }
                     placeholder="Enter complete address"
                     className="rounded-lg"
                     required
@@ -261,7 +387,12 @@ const CartPage: React.FC = () => {
                     </label>
                     <Input
                       value={deliveryAddress.pincode}
-                      onChange={(e) => setDeliveryAddress(prev => ({ ...prev, pincode: e.target.value }))}
+                      onChange={(e) =>
+                        setDeliveryAddress((prev) => ({
+                          ...prev,
+                          pincode: e.target.value,
+                        }))
+                      }
                       placeholder="PIN code"
                       className="rounded-lg"
                       required
@@ -273,7 +404,12 @@ const CartPage: React.FC = () => {
                     </label>
                     <Input
                       value={deliveryAddress.city}
-                      onChange={(e) => setDeliveryAddress(prev => ({ ...prev, city: e.target.value }))}
+                      onChange={(e) =>
+                        setDeliveryAddress((prev) => ({
+                          ...prev,
+                          city: e.target.value,
+                        }))
+                      }
                       placeholder="City"
                       className="rounded-lg"
                       required
@@ -285,7 +421,12 @@ const CartPage: React.FC = () => {
                     </label>
                     <Input
                       value={deliveryAddress.state}
-                      onChange={(e) => setDeliveryAddress(prev => ({ ...prev, state: e.target.value }))}
+                      onChange={(e) =>
+                        setDeliveryAddress((prev) => ({
+                          ...prev,
+                          state: e.target.value,
+                        }))
+                      }
                       placeholder="State"
                       className="rounded-lg"
                       required
@@ -297,19 +438,33 @@ const CartPage: React.FC = () => {
                     <input
                       type="checkbox"
                       checked={deliveryAddress.billingIsSame}
-                      onChange={(e) => setDeliveryAddress(prev => ({ ...prev, billingIsSame: e.target.checked }))}
+                      onChange={(e) =>
+                        setDeliveryAddress((prev) => ({
+                          ...prev,
+                          billingIsSame: e.target.checked,
+                        }))
+                      }
                       className="rounded"
                     />
-                    <span className="text-sm text-black dark:text-white">My billing address is the same as delivery address</span>
+                    <span className="text-sm text-black dark:text-white">
+                      My billing address is the same as delivery address
+                    </span>
                   </label>
                   <label className="flex items-center space-x-2">
                     <input
                       type="checkbox"
                       checked={deliveryAddress.getUpdates}
-                      onChange={(e) => setDeliveryAddress(prev => ({ ...prev, getUpdates: e.target.checked }))}
+                      onChange={(e) =>
+                        setDeliveryAddress((prev) => ({
+                          ...prev,
+                          getUpdates: e.target.checked,
+                        }))
+                      }
                       className="rounded"
                     />
-                    <span className="text-sm text-black dark:text-white">Get shipping updates via WhatsApp/SMS</span>
+                    <span className="text-sm text-black dark:text-white">
+                      Get shipping updates via WhatsApp/SMS
+                    </span>
                   </label>
                 </div>
               </div>
@@ -317,7 +472,9 @@ const CartPage: React.FC = () => {
 
             {/* Payment Method */}
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-black dark:text-white mb-4">Payment Method</h2>
+              <h2 className="text-xl font-semibold text-black dark:text-white mb-4">
+                Payment Method
+              </h2>
               <div className="space-y-3">
                 {paymentOptions.map((option) => {
                   const IconComponent = option.icon;
@@ -326,8 +483,8 @@ const CartPage: React.FC = () => {
                       key={option.id}
                       className={`flex items-center p-4 border rounded-lg cursor-pointer transition-colors ${
                         paymentMethod === option.id
-                          ? 'border-[#c74a1b] dark:border-blue-600 bg-[#c74a1b]/5 dark:bg-blue-600/5'
-                          : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                          ? "border-[#c74a1b] dark:border-blue-600 bg-[#c74a1b]/5 dark:bg-blue-600/5"
+                          : "border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500"
                       }`}
                     >
                       <input
@@ -340,15 +497,19 @@ const CartPage: React.FC = () => {
                       />
                       <IconComponent className="h-5 w-5 mr-3 text-gray-600 dark:text-gray-300" />
                       <div>
-                        <div className="font-medium text-black dark:text-white">{option.name}</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">{option.description}</div>
+                        <div className="font-medium text-black dark:text-white">
+                          {option.name}
+                        </div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">
+                          {option.description}
+                        </div>
                       </div>
                     </label>
                   );
                 })}
               </div>
-              
-              {paymentMethod === 'upi' && (
+
+              {paymentMethod === "upi" && (
                 <div className="mt-4">
                   <label className="block text-sm font-medium text-black dark:text-white mb-2">
                     UPI ID
@@ -362,7 +523,7 @@ const CartPage: React.FC = () => {
                 </div>
               )}
 
-              {paymentMethod !== 'cod' && (
+              {paymentMethod !== "cod" && (
                 <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
                   <p className="text-sm text-green-800 dark:text-green-200">
                     🎉 Get extra 5% discount on online payment
@@ -373,7 +534,9 @@ const CartPage: React.FC = () => {
 
             {/* Coupon Code */}
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-black dark:text-white mb-4">Coupon Code</h2>
+              <h2 className="text-xl font-semibold text-black dark:text-white mb-4">
+                Coupon Code
+              </h2>
               <div className="flex space-x-2 mb-4">
                 <Input
                   value={couponCode}
@@ -383,123 +546,180 @@ const CartPage: React.FC = () => {
                 />
                 <Button
                   onClick={applyCoupon}
-                  className="bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-lg px-6"
+                  className="bg-[#111111] dark:bg-blue-600 hover:bg-[#302e2e] dark:hover:bg-blue-700 text-white rounded-lg px-6"
                 >
                   Apply
                 </Button>
               </div>
-              
+
               <div className="space-y-2">
                 <button
-                  onClick={() => { setCouponCode('PAYDAY15'); applyCoupon(); }}
+                  onClick={() => {
+                    setCouponCode("PAYDAY15");
+                    applyCoupon();
+                  }}
                   className="block w-full text-left p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
-                  <div className="font-medium text-black dark:text-white">15% Off</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-300">Code: PAYDAY15 — Tap to Apply</div>
+                  <div className="font-medium text-black dark:text-white">
+                    15% Off
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300">
+                    Code: PAYDAY15 — Tap to Apply
+                  </div>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Right Column - Order Summary */}
-          <div className="space-y-6">
+          {/* Right Column - Order Summary - Hidden on mobile */}
+          <div className="hidden lg:block lg:col-span-2 space-y-6">
             {/* Order Summary */}
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 sticky top-4">
-              <h2 className="text-xl font-semibold text-black dark:text-white mb-4">Order Summary</h2>
-              
-              <div className="space-y-4 mb-6 max-h-60 overflow-y-auto">
+              {/* Header Section */}
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200 dark:border-gray-600">
+                <h2 className="text-xl font-semibold text-black dark:text-white">Order summary</h2>
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
+                    <ShoppingBag className="w-5 h-5" />
+                    <span className="text-sm font-medium">
+                      {cartItems.length} item{cartItems.length !== 1 ? 's' : ''}
+                    </span>
+                  </div>
+                  <span className="text-xl font-bold text-black dark:text-white">₹{calculateTotal()}</span>
+                </div>
+              </div>
+
+              {/* Product List */}
+              <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
                 {cartItems.map((item) => (
-                  <div key={item.id} className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg">
-                    <img 
-                      src={item.image} 
-                      alt={item.name}
-                      className="w-12 h-12 object-cover rounded-lg"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-medium text-black dark:text-white truncate">{item.name}</h4>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg font-bold text-black dark:text-white">₹{item.price}</span>
-                        {item.originalPrice && item.originalPrice > item.price && (
-                          <span className="text-sm text-gray-500 dark:text-gray-400 line-through">₹{item.originalPrice}</span>
-                        )}
+                  <div key={item.id} className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
+                    <div className="flex items-start space-x-4">
+                      {/* Product Image */}
+                      <div className="flex-shrink-0">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
+                        />
                       </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-8 h-8 p-0 rounded-full"
-                      >
-                        <Minus className="w-3 h-3" />
-                      </Button>
-                      <span className="w-8 text-center text-sm font-medium text-black dark:text-white">{item.quantity}</span>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-8 h-8 p-0 rounded-full"
-                      >
-                        <Plus className="w-3 h-3" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => removeFromCart(item.id)}
-                        className="w-8 h-8 p-0 rounded-full ml-2"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
+
+                      {/* Product Details */}
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-semibold text-black dark:text-white mb-2 line-clamp-2 leading-tight">
+                          {item.name}
+                        </h4>
+
+                        <div className="space-y-1 mb-3">
+                          <div className="text-xs text-gray-600 dark:text-gray-400">
+                            <span className="font-medium">Size:</span> ONE SIZE
+                          </div>
+                          <div className="text-xs text-gray-600 dark:text-gray-400">
+                            <span className="font-medium">Quantity:</span> {item.quantity}
+                          </div>
+                        </div>
+
+                        {/* Price and Controls */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-lg font-bold text-black dark:text-white">
+                              ₹{(item.price * item.quantity).toLocaleString()}
+                            </span>
+                            {item.originalPrice && item.originalPrice > item.price && (
+                              <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
+                                ₹{(item.originalPrice * item.quantity).toLocaleString()}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Quantity Controls */}
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              className="w-8 h-8 p-0 rounded-full border-gray-300 dark:border-gray-600"
+                              disabled={item.quantity <= 1}
+                            >
+                              <Minus className="w-3 h-3" />
+                            </Button>
+                            <span className="w-8 text-center text-sm font-medium text-black dark:text-white">
+                              {item.quantity}
+                            </span>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              className="w-8 h-8 p-0 rounded-full border-gray-300 dark:border-gray-600"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => removeFromCart(item.id)}
+                              className="w-8 h-8 p-0 rounded-full ml-2"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
               {/* Price Summary */}
-              <div className="space-y-2 text-sm border-t pt-4">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-300">Total MRP</span>
-                  <span className="text-black dark:text-white">₹{calculateMRP()}</span>
-                </div>
-                {getDiscount() > 0 && (
+              <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
+                <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Discount on MRP</span>
-                    <span className="text-green-600">-₹{getDiscount()}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Total MRP</span>
+                    <span className="text-black dark:text-white font-medium">₹{calculateMRP().toLocaleString()}</span>
                   </div>
-                )}
-                {appliedCoupon && (
+                  {getDiscount() > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Discount on MRP</span>
+                      <span className="text-green-600 font-medium">-₹{getDiscount().toLocaleString()}</span>
+                    </div>
+                  )}
+                  {appliedCoupon && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Coupon Discount ({appliedCoupon})</span>
+                      <span className="text-green-600 font-medium">-₹{getCouponDiscount().toLocaleString()}</span>
+                    </div>
+                  )}
+                  {getOnlineDiscount() > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Online Payment Discount</span>
+                      <span className="text-green-600 font-medium">-₹{getOnlineDiscount().toLocaleString()}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Coupon Discount ({appliedCoupon})</span>
-                    <span className="text-green-600">-₹{getCouponDiscount()}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Shipping Fee</span>
+                    <span className={getShippingFee() === 0 ? "text-green-600 font-medium" : "text-black dark:text-white font-medium"}>
+                      {getShippingFee() === 0 ? 'FREE' : `₹${getShippingFee()}`}
+                    </span>
                   </div>
-                )}
-                {getOnlineDiscount() > 0 && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-300">Online Payment Discount</span>
-                    <span className="text-green-600">-₹{getOnlineDiscount()}</span>
+                </div>
+
+                <div className="border-t border-gray-200 dark:border-gray-600 mt-4 pt-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-semibold text-black dark:text-white">Total Amount</span>
+                    <span className="text-xl font-bold text-black dark:text-white">₹{calculateTotal().toLocaleString()}</span>
                   </div>
-                )}
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-300">Shipping Fee</span>
-                  <span className={getShippingFee() === 0 ? "text-green-600" : "text-black dark:text-white"}>
-                    {getShippingFee() === 0 ? 'FREE' : `₹${getShippingFee()}`}
-                  </span>
+                  {getTotalSavings() > 0 && (
+                    <p className="text-green-600 text-sm font-medium mt-2">
+                      You'll save ₹{getTotalSavings().toLocaleString()} on this order
+                    </p>
+                  )}
                 </div>
-                <div className="flex justify-between text-base font-bold pt-2 border-t">
-                  <span className="text-black dark:text-white">Grand Total</span>
-                  <span className="text-black dark:text-white">₹{calculateTotal()}</span>
-                </div>
-                {getTotalSavings() > 0 && (
-                  <p className="text-green-600 text-sm font-medium">
-                    You'll save ₹{getTotalSavings()} on this order
-                  </p>
-                )}
               </div>
 
+              {/* Place Order Button */}
               <Button
                 onClick={handlePlaceOrder}
                 disabled={submitting || !validateForm()}
-                className="w-full mt-6 bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white font-medium rounded-xl py-3"
+                className="w-full mt-6 bg-[#111111] hover:bg-[#302e2e] text-white font-semibold rounded-xl py-4 text-base"
               >
                 {submitting ? (
                   <div className="flex items-center space-x-2">
@@ -507,20 +727,55 @@ const CartPage: React.FC = () => {
                     <span>Processing Order...</span>
                   </div>
                 ) : (
-                  `Place Order - ₹${calculateTotal()}`
+                  `Place Order • ₹${calculateTotal().toLocaleString()}`
                 )}
               </Button>
 
               {!validateForm() && (
-                <p className="text-red-500 text-sm mt-2 text-center">
+                <p className="text-red-500 text-sm mt-3 text-center">
                   Please fill your delivery details to proceed
                 </p>
               )}
             </div>
           </div>
         </div>
+
+        {/* Mobile Sticky Bottom Bar */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 z-50">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Total Amount</div>
+              <div className="text-xl font-bold text-black dark:text-white">₹{calculateTotal()}</div>
+              {getTotalSavings() > 0 && (
+                <div className="text-xs text-green-600">You save ₹{getTotalSavings()}</div>
+              )}
+            </div>
+            <Button
+              onClick={handlePlaceOrder}
+              disabled={submitting || !validateForm()}
+              className="bg-[#111111] hover:bg-[#302e2e] text-white font-medium rounded-xl px-8 py-3"
+            >
+              {submitting ? (
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Processing...</span>
+                </div>
+              ) : (
+                'Place Order'
+              )}
+            </Button>
+          </div>
+          {!validateForm() && (
+            <p className="text-red-500 text-xs text-center">
+              Please fill your delivery details to proceed
+            </p>
+          )}
+        </div>
+
+        {/* Add bottom padding for mobile sticky bar */}
+        <div className="lg:hidden h-24"></div>
       </div>
-      
+
       <Footer />
     </div>
   );

@@ -204,7 +204,7 @@ const ForgotPassword: React.FC = () => {
 
                 <Button
                   type="submit"
-                  className="w-full bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
+                  className="w-full bg-[#111111] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
                 >
                   Reset Password
                 </Button>

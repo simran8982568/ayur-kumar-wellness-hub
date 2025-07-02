@@ -77,13 +77,40 @@ const ProductDetail: React.FC = () => {
   const handleAddToCart = async () => {
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 1000));
+
     // Add to cart logic
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingItem = cart.find((item: any) => item.id === dummyProduct.id);
+
+    if (existingItem) {
+      existingItem.quantity += (quantity * 2); // Use selected quantity * 2
+    } else {
+      cart.push({ ...dummyProduct, quantity: quantity * 2 });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.dispatchEvent(new CustomEvent('cartUpdated'));
+
     setIsLoading(false);
   };
 
   const handleBuyNow = async () => {
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Add to cart first
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingItem = cart.find((item: any) => item.id === dummyProduct.id);
+
+    if (existingItem) {
+      existingItem.quantity += (quantity * 2);
+    } else {
+      cart.push({ ...dummyProduct, quantity: quantity * 2 });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.dispatchEvent(new CustomEvent('cartUpdated'));
+
     navigate('/checkout');
     setIsLoading(false);
   };

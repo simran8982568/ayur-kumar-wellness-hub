@@ -74,7 +74,7 @@ const TwoStepVerification: React.FC = () => {
               <p className="text-gray-600 dark:text-gray-300 mb-4">
                 We've sent a 6-digit verification code to
               </p>
-              <p className="text-[#c74a1b] dark:text-blue-400 font-medium">
+              <p className="text-[#111111] dark:text-blue-400 font-medium">
                 {phoneNumber}
               </p>
             </div>
@@ -88,7 +88,7 @@ const TwoStepVerification: React.FC = () => {
                   type="text"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  className="w-full px-4 py-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600 text-center text-2xl tracking-widest font-mono"
+                  className="w-full px-4 py-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600 text-center text-2xl tracking-widest font-mono"
                   placeholder="000000"
                   maxLength={6}
                   required
@@ -97,14 +97,14 @@ const TwoStepVerification: React.FC = () => {
 
               <div className="text-center">
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                  Code expires in: <span className="font-medium text-[#c74a1b] dark:text-blue-400">{formatTime(timeLeft)}</span>
+                  Code expires in: <span className="font-medium text-[#111111] dark:text-blue-400">{formatTime(timeLeft)}</span>
                 </p>
                 
                 {timeLeft === 0 ? (
                   <button
                     type="button"
                     onClick={handleResendOTP}
-                    className="text-[#c74a1b] dark:text-blue-400 hover:underline text-sm font-medium"
+                    className="text-[#111111] dark:text-blue-400 hover:underline text-sm font-medium"
                   >
                     Resend OTP
                   </button>
@@ -112,7 +112,7 @@ const TwoStepVerification: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleResendOTP}
-                    className="text-gray-400 hover:text-[#c74a1b] dark:hover:text-blue-400 text-sm"
+                    className="text-gray-400 hover:text-[#111111] dark:hover:text-blue-400 text-sm"
                   >
                     Resend OTP
                   </button>
@@ -122,7 +122,7 @@ const TwoStepVerification: React.FC = () => {
               <Button
                 type="submit"
                 disabled={otp.length !== 6}
-                className="w-full bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#111111] dark:bg-blue-600 hover:bg-[#302e2e] dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Verify Code
               </Button>
@@ -132,7 +132,7 @@ const TwoStepVerification: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/auth/verify-number')}
-                className="text-gray-500 dark:text-gray-400 hover:text-[#c74a1b] dark:hover:text-blue-400 text-sm"
+                className="text-gray-500 dark:text-gray-400 hover:text-[#111111] dark:hover:text-blue-400 text-sm"
               >
                 Change phone number
               </button>

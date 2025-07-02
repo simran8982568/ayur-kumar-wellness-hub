@@ -273,7 +273,7 @@ const Checkout: React.FC = () => {
             <Button
               onClick={handlePlaceOrder}
               disabled={loading || cartItems.length === 0}
-              className="w-full mt-6 bg-[#c74a1b] hover:bg-[#b8441a] text-white font-medium rounded-xl"
+              className="w-full mt-6 bg-[#111111] hover:bg-[#302e2e] text-white font-medium rounded-xl"
             >
               {loading ? (
                 <div className="flex items-center space-x-2">

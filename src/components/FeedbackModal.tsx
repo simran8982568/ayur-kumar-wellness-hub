@@ -171,7 +171,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose }) => {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-lg"
+              className="flex-1 bg-[#111111] dark:bg-blue-600 hover:bg-[#302e2e] dark:hover:bg-blue-700 text-white rounded-lg"
             >
               {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
             </Button>

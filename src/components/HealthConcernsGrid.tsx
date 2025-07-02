@@ -45,8 +45,8 @@ const HealthConcernsGrid: React.FC = () => {
           </p>
         </div>
 
-        {/* Mobile: 2 cards per row, Desktop: 4 cards per row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+        {/* Responsive grid: 1 col on xs, 2 on sm, 3 on md, 4 on lg+ */}
+        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 justify-items-center">
           {displayedConcerns.map((concern) => (
             <div
               key={concern.id}
@@ -54,10 +54,10 @@ const HealthConcernsGrid: React.FC = () => {
               className="w-full rounded-xl shadow p-2 bg-white hover:shadow-lg transition-all duration-300 cursor-pointer group border border-gray-200"
             >
               <div className="text-center">
-                <div className="w-8 h-8 md:w-12 md:h-12 mx-auto mb-2 md:mb-3 flex items-center justify-center bg-[#E5002B]/10 rounded-full group-hover:bg-[#E5002B]/20 transition-colors">
+                <div className="w-8 h-8 md:w-12 md:h-12 mx-auto mb-2 md:mb-3 flex items-center justify-center bg-[#111111]/10 rounded-full group-hover:bg-[#111111]/20 transition-colors">
                   <span className="text-lg md:text-2xl">{concern.icon}</span>
                 </div>
-                <h3 className="font-semibold text-[#1C1C2D] text-xs md:text-sm mb-1 md:mb-2 group-hover:text-[#E5002B] transition-colors">
+                <h3 className="font-semibold text-[#1C1C2D] text-xs md:text-sm mb-1 md:mb-2 group-hover:text-[#111111] transition-colors">
                   {concern.title}
                 </h3>
                 <p className="text-gray-600 text-xs leading-relaxed">
@@ -72,7 +72,7 @@ const HealthConcernsGrid: React.FC = () => {
           <div className="text-center mt-8">
             <Button
               onClick={() => setShowAll(true)}
-              className="bg-[#111111] text-white hover:bg-[#111111]/90 rounded-full px-6 py-2 font-medium transition-all duration-300"
+              className="bg-[#111111] text-white hover:bg-[#302e2e] rounded-full px-6 py-2 font-medium transition-all duration-300"
             >
               View All Health Concerns
             </Button>

@@ -72,7 +72,7 @@ const SignIn = () => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-lg"
+                className="w-full bg-[#111111] dark:bg-blue-600 hover:bg-[#302e2e] dark:hover:bg-blue-700 text-white rounded-lg"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">

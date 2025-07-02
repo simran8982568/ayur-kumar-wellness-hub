@@ -53,7 +53,7 @@ const VerifyNumber: React.FC = () => {
                   type="tel"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600"
                   placeholder="Enter your 10-digit phone number"
                   pattern="[0-9]{10}"
                   required
@@ -63,7 +63,7 @@ const VerifyNumber: React.FC = () => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
+                className="w-full bg-[#111111] dark:bg-blue-600 hover:bg-[#302e2e] dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
               >
                 {isLoading ? 'Checking...' : 'Continue'}
               </Button>

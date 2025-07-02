@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Play, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const TestimonialSection: React.FC = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const navigate = useNavigate();
 
   const testimonials = [
     {
@@ -126,8 +128,11 @@ const TestimonialSection: React.FC = () => {
                         </div>
                       </div>
                       
-                      <Button className="ayurvedic-button">
-                        Start Your Journey
+                      <Button
+                        className="bg-[#111111] hover:bg-[#302e2e] text-white px-6 py-2 rounded-full font-medium uppercase tracking-wide transition-all duration-300"
+                        onClick={() => navigate('/shop-all')}
+                      >
+                        Start your journey
                       </Button>
                     </div>
                   </div>

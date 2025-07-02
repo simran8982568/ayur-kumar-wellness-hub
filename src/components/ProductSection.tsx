@@ -32,25 +32,9 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   viewAllLink,
   showViewAll = false,
 }) => {
-  const handleAddToCart = (product: Product) => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const existingItem = cart.find((item: any) => item.id === product.id);
-
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    // Dispatch custom event to update cart count
-    window.dispatchEvent(new CustomEvent("cartUpdated"));
-  };
-
   const handleBuyNow = (product: Product) => {
-    handleAddToCart(product);
-    window.location.href = "/checkout";
+    // ProductCard will handle adding to cart internally
+    window.location.href = "/cart-page";
   };
 
   return (
@@ -81,7 +65,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({
             <ProductCard
               key={product.id}
               product={product}
-              onAddToCart={handleAddToCart}
               onBuyNow={handleBuyNow}
             />
           ))}

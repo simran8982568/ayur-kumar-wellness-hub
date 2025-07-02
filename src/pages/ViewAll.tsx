@@ -34,22 +34,8 @@ const ViewAll: React.FC = () => {
 
   const { products, title, subtitle } = getProductsAndTitle();
 
-  const handleAddToCart = (product: any) => {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existingItem = cart.find((item: any) => item.id === product.id);
-    
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    console.log('Added to cart:', product.name);
-  };
-
   const handleBuyNow = (product: any) => {
-    handleAddToCart(product);
+    // ProductCard will handle adding to cart internally
     window.location.href = '/checkout';
   };
 
@@ -73,7 +59,6 @@ const ViewAll: React.FC = () => {
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={handleAddToCart}
                 onBuyNow={handleBuyNow}
               />
             ))}

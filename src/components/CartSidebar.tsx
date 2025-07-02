@@ -82,7 +82,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose, onCheckout }
                   
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium text-gray-900 text-sm truncate">{item.name}</h3>
-                    <p className="text-[#E5002B] font-semibold">₹{item.price}</p>
+                    <p className="text-[#111111] font-semibold">₹{item.price}</p>
                   </div>
                   
                   <div className="flex items-center space-x-2">
@@ -128,7 +128,7 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose, onCheckout }
             </div>
             <Button
               onClick={onCheckout}
-              className="w-full bg-[#E5002B] hover:bg-[#E5002B]/90 text-white rounded-xl"
+              className="w-full bg-[#111111] hover:bg-[#302e2e] text-white rounded-xl"
             >
               Checkout
             </Button>

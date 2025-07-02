@@ -74,7 +74,7 @@ const AuthSignIn: React.FC = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600"
                   required
                 />
               </div>
@@ -88,7 +88,7 @@ const AuthSignIn: React.FC = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600"
                   required
                 />
               </div>
@@ -97,7 +97,7 @@ const AuthSignIn: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/auth/forgot-password')}
-                  className="text-[#c74a1b] dark:text-blue-400 hover:underline text-sm"
+                  className="text-[#111111] dark:text-blue-400 hover:underline text-sm"
                 >
                   Forgot password?
                 </button>
@@ -105,7 +105,7 @@ const AuthSignIn: React.FC = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
+                className="w-full bg-[#111111] dark:bg-blue-600 hover:bg-[#302e2e] dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
               >
                 Sign In
               </Button>

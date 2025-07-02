@@ -131,6 +131,7 @@ const CheckoutSidebar: React.FC<CheckoutSidebarProps> = ({ isOpen, onClose }) =>
             <h3 className="text-md font-semibold text-[#1C1C2D] mb-3">Payment Method</h3>
             <div className="p-3 border border-gray-200 rounded-xl bg-gray-50">
               <p className="text-sm text-gray-600">Cash on Delivery (COD)</p>
+              
             </div>
           </div>
 

@@ -99,8 +99,8 @@ const Policies = () => {
               onClick={() => setActiveTab('return-request')}
               className={`pb-2 px-4 font-medium transition-colors duration-200 ${
                 activeTab === 'return-request'
-                  ? 'text-[#c74a1b] dark:text-blue-400 border-b-2 border-[#c74a1b] dark:border-blue-400'
-                  : 'text-gray-600 dark:text-gray-300 hover:text-[#c74a1b] dark:hover:text-blue-400'
+                  ? 'text-[#111111] dark:text-blue-400 border-b-2 border-[#111111] dark:border-blue-400'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-[#111111] dark:hover:text-blue-400'
               }`}
             >
               Return Request
@@ -109,8 +109,8 @@ const Policies = () => {
               onClick={() => setActiveTab('track-return')}
               className={`pb-2 px-4 font-medium transition-colors duration-200 ${
                 activeTab === 'track-return'
-                  ? 'text-[#c74a1b] dark:text-blue-400 border-b-2 border-[#c74a1b] dark:border-blue-400'
-                  : 'text-gray-600 dark:text-gray-300 hover:text-[#c74a1b] dark:hover:text-blue-400'
+                  ? 'text-[#111111] dark:text-blue-400 border-b-2 border-[#111111] dark:border-blue-400'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-[#111111] dark:hover:text-blue-400'
               }`}
             >
               Track Return Status
@@ -239,7 +239,7 @@ const Policies = () => {
                     required
                     value={returnForm.reason}
                     onChange={handleReturnFormChange}
-                    className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+                    className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600"
                   >
                     <option value="">Select reason</option>
                     <option value="Defective product">Defective product</option>
@@ -251,7 +251,7 @@ const Policies = () => {
 
                 <Button
                   type="submit"
-                  className="w-full bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-full hover:opacity-90 transition-all duration-300"
+                  className="w-full bg-[#111111] dark:bg-blue-600 hover:bg-[#302e2e] dark:hover:bg-blue-700 text-white rounded-full hover:opacity-90 transition-all duration-300"
                 >
                   Submit Request
                 </Button>
@@ -281,7 +281,7 @@ const Policies = () => {
                     />
                     <Button
                       onClick={handleTrackReturn}
-                      className="bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-md px-6"
+                      className="bg-[#111111] dark:bg-blue-600 hover:bg-[#302e2e] dark:hover:bg-blue-700 text-white rounded-md px-6"
                     >
                       Check Status
                     </Button>

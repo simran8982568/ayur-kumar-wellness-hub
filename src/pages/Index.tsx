@@ -28,17 +28,7 @@ const Index = () => {
         <HeroBanner />
         <HealthConcernsGrid />
         
-        {/* Start Your Journey Button Section */}
-        <section className="py-8 bg-white">
-          <div className="container mx-auto px-4 text-center">
-            <Button
-              onClick={handleStartJourney}
-              className="mx-auto block text-center text-white bg-[#111111] hover:bg-[#111111]/90 px-6 py-3 rounded-xl font-medium transition-all duration-300"
-            >
-              Start Your Journey
-            </Button>
-          </div>
-        </section>
+        
         
         <ProductSection 
           title="Men's Health"

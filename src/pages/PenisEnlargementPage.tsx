@@ -127,22 +127,8 @@ const PenisEnlargementPage: React.FC = () => {
     { value: 'rating', label: 'Highest Rated' }
   ];
 
-  const handleAddToCart = (product: any) => {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existingItem = cart.find((item: any) => item.id === product.id);
-    
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
-  };
-
   const handleBuyNow = (product: any) => {
-    handleAddToCart(product);
+    // ProductCard will handle adding to cart internally
     window.location.href = '/cart-page';
   };
 
@@ -174,7 +160,7 @@ const PenisEnlargementPage: React.FC = () => {
             <Button
               onClick={() => setShowFilters(!showFilters)}
               variant="outline"
-              className="border-[#c74a1b] dark:border-blue-600 text-[#c74a1b] dark:text-blue-600 hover:bg-[#c74a1b] dark:hover:bg-blue-600 hover:text-white rounded-lg"
+              className="border-[#111111] dark:border-blue-600 text-[#111111] dark:text-blue-600 hover:bg-[#111111] dark:hover:bg-blue-600 hover:text-white rounded-lg"
             >
               <Filter className="w-4 h-4 mr-2" />
               Filters
@@ -197,7 +183,7 @@ const PenisEnlargementPage: React.FC = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full p-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+              className="w-full p-2 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600"
             >
               {sortOptions.map(option => (
                 <option key={option.value} value={option.value}>
@@ -230,7 +216,6 @@ const PenisEnlargementPage: React.FC = () => {
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={handleAddToCart}
                 onBuyNow={handleBuyNow}
               />
             ))}

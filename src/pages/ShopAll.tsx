@@ -92,22 +92,8 @@ const ShopAll: React.FC = () => {
     { value: 'rating', label: 'Highest Rated' }
   ];
 
-  const handleAddToCart = (product: any) => {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existingItem = cart.find((item: any) => item.id === product.id);
-    
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
-  };
-
   const handleBuyNow = (product: any) => {
-    handleAddToCart(product);
+    // ProductCard will handle adding to cart internally
     window.location.href = '/checkout';
   };
 
@@ -215,7 +201,6 @@ const ShopAll: React.FC = () => {
               <ProductCard
                 key={`${product.category}-${product.id}`}
                 product={product}
-                onAddToCart={handleAddToCart}
                 onBuyNow={handleBuyNow}
               />
             ))}
