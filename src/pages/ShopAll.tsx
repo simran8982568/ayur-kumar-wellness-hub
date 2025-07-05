@@ -6,13 +6,7 @@ import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Search, Filter, X } from 'lucide-react';
-import { 
-  mensHealthProducts, 
-  womensHealthProducts, 
-  comboProducts, 
-  essentialProducts, 
-  newArrivals 
-} from '@/data/products';
+import { mensHealthProducts } from '@/data/products';
 
 const ShopAll: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -22,14 +16,8 @@ const ShopAll: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
 
-  // Combine all products
-  const allProducts = [
-    ...newArrivals.map(p => ({ ...p, category: 'new-arrivals' })),
-    ...mensHealthProducts.map(p => ({ ...p, category: 'mens-health' })),
-    ...womensHealthProducts.map(p => ({ ...p, category: 'womens-health' })),
-    ...comboProducts.map(p => ({ ...p, category: 'combos' })),
-    ...essentialProducts.map(p => ({ ...p, category: 'essentials' }))
-  ];
+  // Only use mens health products since we removed other categories
+  const allProducts = [...mensHealthProducts];
 
   useEffect(() => {
     // Get search query from URL params
@@ -43,9 +31,11 @@ const ShopAll: React.FC = () => {
   useEffect(() => {
     let products = [...allProducts];
 
-    // Filter by category
-    if (selectedCategory !== 'all') {
-      products = products.filter(product => product.category === selectedCategory);
+    // Filter by category - since we only have mens-sexual-health now
+    if (selectedCategory !== 'all' && selectedCategory !== 'mens-sexual-health') {
+      products = [];
+    } else if (selectedCategory === 'mens-sexual-health') {
+      products = products.filter(product => product.category === 'mens-sexual-health');
     }
 
     // Filter by search query
@@ -78,11 +68,7 @@ const ShopAll: React.FC = () => {
 
   const categories = [
     { value: 'all', label: 'All Products' },
-    { value: 'new-arrivals', label: 'New Arrivals' },
-    { value: 'mens-health', label: "Men's Health" },
-    { value: 'womens-health', label: "Women's Health" },
-    { value: 'combos', label: 'Health Combos' },
-    { value: 'essentials', label: 'Daily Essentials' }
+    { value: 'mens-sexual-health', label: "Men's Sexual Health" }
   ];
 
   const sortOptions = [
