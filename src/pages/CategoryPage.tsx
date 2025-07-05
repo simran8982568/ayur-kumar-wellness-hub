@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
@@ -13,18 +14,14 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  mensHealthProducts,
-  womensHealthProducts,
-  comboProducts,
-  essentialProducts,
-} from "@/data/products";
+import { mensHealthProducts } from "@/data/products";
 
 const CategoryPage: React.FC = () => {
   const { category } = useParams<{ category: string }>();
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [sortBy, setSortBy] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
@@ -36,70 +33,25 @@ const CategoryPage: React.FC = () => {
   > = {
     "mens-sexual-health": {
       title: "Men's Sexual Health",
-      description: "Natural solutions for male vitality and performance",
+      description: "Complete wellness solutions for male health and vitality",
       content:
         "Discover our comprehensive range of Ayurvedic products designed specifically for men's sexual wellness. Our formulations include powerful herbs like Ashwagandha, Shilajit, and Safed Musli that have been used for centuries to enhance male vitality, boost energy levels, and improve overall sexual health naturally.",
     },
-    "womens-sexual-health": {
-      title: "Women's Sexual Health",
-      description: "Hormonal balance and feminine wellness solutions",
-      content:
-        "Our women's health collection focuses on hormone support, menstrual balance, and overall reproductive wellness. Featuring time-tested ingredients like Shatavari and natural formulations that support feminine health, boost immunity, and promote hormonal harmony throughout different life stages.",
-    },
-    "erectile-dysfunction": {
-      title: "Erectile Dysfunction Solutions",
-      description: "Natural treatments for ED and performance enhancement",
-      content:
-        "Address erectile dysfunction naturally with our specialized Ayurvedic formulations. Unlike synthetic medications, our natural treatments work to strengthen the root causes while promoting overall sexual wellness, nerve toning, and improved blood circulation without harmful side effects.",
-    },
-    "nightfall-pe": {
-      title: "Nightfall & Premature Ejaculation",
-      description: "Control and confidence enhancement treatments",
-      content:
-        "Our specialized treatments for nightfall and premature ejaculation focus on nerve toning, reducing involuntary discharge, and building sexual confidence. These natural formulations help men gain better control while supporting overall reproductive health.",
-    },
-    "libido-boosters": {
-      title: "Libido Enhancement",
-      description: "Natural aphrodisiacs and desire enhancers",
-      content:
-        "Reignite passion and desire with our collection of natural aphrodisiacs and libido boosters. These carefully crafted formulations use traditional herbs known for their ability to enhance sexual desire, improve mood, and boost overall sexual wellness for both men and women.",
-    },
-    "infertility-support": {
-      title: "Infertility Support",
-      description: "Reproductive health solutions for couples",
-      content:
-        "Support your journey to parenthood with our reproductive health tonics designed for both partners. Our infertility support products combine ancient wisdom with modern understanding to promote reproductive wellness, improve fertility, and support conception naturally.",
-    },
-    "combos-kits": {
-      title: "Sexual Wellness Combos",
-      description: "Complete wellness packages for comprehensive care",
-      content:
-        "Our combo packages offer comprehensive solutions that address multiple aspects of sexual wellness. These carefully curated bundles provide better value while ensuring you have everything needed for complete sexual health support and enhancement.",
-    },
-    "unani-homeopathy": {
-      title: "Unani & Homeopathic Care",
-      description: "Traditional alternative medicine approaches",
-      content:
-        "Explore the healing power of Unani and Homeopathic medicine with our specialized collection. These gentle yet effective treatments from alternative medical traditions offer safe, natural solutions with minimal side effects for various sexual health concerns.",
-    },
-    "hormonal-imbalance": {
-      title: "Hormonal Imbalance Solutions",
-      description: "Natural hormone regulation and balance",
-      content:
-        "Address hormonal imbalances naturally with our specialized Ayurvedic formulations. Our products help regulate hormone production, support endocrine function, and promote overall hormonal harmony for both men and women.",
-    },
   };
 
-  // Combine all products and filter based on category
-  const allProducts = [
-    ...mensHealthProducts.map((p) => ({ ...p, category: "mens-health" })),
-    ...womensHealthProducts.map((p) => ({ ...p, category: "womens-health" })),
-    ...comboProducts.map((p) => ({ ...p, category: "combos" })),
-    ...essentialProducts.map((p) => ({ ...p, category: "essentials" })),
+  const subcategories = [
+    { value: "all", label: "All Products" },
+    { value: "performance-endurance", label: "Performance & Endurance Boosters" },
+    { value: "strength-wellness-sachets", label: "Strength & Wellness Support" },
   ];
 
   useEffect(() => {
-    let products = [...allProducts];
+    let products = [...mensHealthProducts];
+
+    // Filter by subcategory
+    if (selectedSubcategory !== "all") {
+      products = products.filter(product => product.subcategory === selectedSubcategory);
+    }
 
     // Filter by search query
     if (searchQuery.trim()) {
@@ -128,7 +80,7 @@ const CategoryPage: React.FC = () => {
 
     setFilteredProducts(products);
     setCurrentPage(1); // Reset to first page when filters change
-  }, [category, sortBy, searchQuery]);
+  }, [category, sortBy, searchQuery, selectedSubcategory]);
 
   const currentCategory = categoryContent[category || ""];
 
@@ -188,6 +140,25 @@ const CategoryPage: React.FC = () => {
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               {currentCategory.content}
             </p>
+          </div>
+        </div>
+
+        {/* Subcategory Filter */}
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2">
+            {subcategories.map((subcategory) => (
+              <button
+                key={subcategory.value}
+                onClick={() => setSelectedSubcategory(subcategory.value)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  selectedSubcategory === subcategory.value
+                    ? 'bg-[#111111] text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {subcategory.label}
+              </button>
+            ))}
           </div>
         </div>
 

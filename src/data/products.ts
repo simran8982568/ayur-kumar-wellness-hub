@@ -12,298 +12,102 @@ export interface Product {
   description?: string;
   slug?: string;
   category: string;
+  subcategory?: string;
+  longDescription?: string;
+  keyBenefits?: string[];
+  usage?: string;
 }
 
 export const mensHealthProducts: Product[] = [
   {
     id: 1,
-    name: "Men's Vitality Booster",
-    price: 599,
-    originalPrice: 799,
+    name: "Dr. Kumar's Power Stride Juice",
+    price: 899,
+    originalPrice: 1199,
     rating: 4.8,
     reviews: 245,
     image: "/api/placeholder/300/300",
     badge: "Bestseller",
     inStock: true,
-    description: "Natural energy and stamina enhancer",
-    category: "mens-health"
+    description: "An advanced juice blend for men & women who want to perform better, feel stronger, and stay energized – day and night.",
+    longDescription: "Power Stride Juice is a powerful Ayurvedic formula enriched with ancient herbs and modern science to help you unlock your body's full potential. Whether it's your workout, your work day, or your personal performance – this juice keeps you going. Crafted by experts, this energizing tonic supports stamina, muscle strength, blood circulation, and recovery in a natural way.",
+    keyBenefits: [
+      "Increases stamina and muscle strength",
+      "Boosts blood circulation", 
+      "Supports athletic and personal performance",
+      "No sugar, no artificial colors"
+    ],
+    usage: "20ml twice daily with lukewarm water.",
+    category: "mens-sexual-health",
+    subcategory: "performance-endurance",
+    slug: "dr-kumar-power-stride-juice"
   },
   {
     id: 2,
-    name: "Testosterone Support Capsules",
-    price: 899,
-    originalPrice: 1199,
+    name: "Dr. Kumar's Power Stride Capsules",
+    price: 749,
+    originalPrice: 999,
     rating: 4.7,
     reviews: 189,
     image: "/api/placeholder/300/300",
     inStock: true,
-    description: "Hormonal balance and strength",
-    category: "mens-health"
+    description: "Strength packed in capsule form – a blend of nature's best stamina-boosting herbs to help you stay active, focused, and energized.",
+    longDescription: "For those who live life on-the-go, Dr. Kumar's Power Stride Capsules are the perfect travel-friendly supplement to improve your strength, stamina, and performance. Each capsule delivers a potent herbal formula that supports better energy, improved muscle recovery, and enhanced performance — naturally.",
+    keyBenefits: [
+      "Improves stamina & endurance",
+      "Faster recovery after activity",
+      "Herbal formula, no side effects",
+      "Convenient daily dosage"
+    ],
+    usage: "1 capsule twice a day after meals",
+    category: "mens-sexual-health",
+    subcategory: "performance-endurance",
+    slug: "dr-kumar-power-stride-capsules"
   },
   {
     id: 3,
-    name: "Male Fertility Enhancer",
-    price: 749,
+    name: "Dr. Kumar Power Stride Tablets (Effervescent)",
+    price: 649,
     rating: 4.6,
     reviews: 156,
     image: "/api/placeholder/300/300",
     badge: "New",
     inStock: true,
-    description: "Comprehensive reproductive health",
-    category: "mens-health"
+    description: "Instant performance drink with L-Arginine, botanical herbs, and Zinc – just drop in water and boost your energy!",
+    longDescription: "Experience strength and stamina with the fizz! These fast-dissolving effervescent tablets combine L-Arginine, Zinc, and a herbal blend to improve blood flow, stamina, and physical performance. Perfect for gym-goers, active professionals, or anyone who wants to feel their best – naturally and instantly.",
+    keyBenefits: [
+      "Boosts nitric oxide levels for better circulation",
+      "Improves strength, stamina, and endurance",
+      "Delicious green lemon flavor",
+      "No sugar, vegan friendly"
+    ],
+    usage: "Drop 1 tablet in a glass of water. Let it dissolve and drink immediately. Use daily or before workout/activity.",
+    category: "mens-sexual-health",
+    subcategory: "performance-endurance",
+    slug: "dr-kumar-power-stride-effervescent"
   },
   {
     id: 4,
-    name: "Stress Relief for Men",
-    price: 449,
-    originalPrice: 599,
+    name: "Dr. Kumar L Sachets (Large)",
+    price: 799,
+    originalPrice: 1099,
     rating: 4.5,
     reviews: 203,
     image: "/api/placeholder/300/300",
     inStock: true,
-    description: "Natural stress management",
-    category: "mens-health"
+    description: "Recharge your day with Dr. Kumar's L Sachets – a herbal tonic crafted for natural strength, vitality, and internal power.",
+    longDescription: "Tired of fatigue and low energy? These convenient sachets are packed with a doctor-formulated blend of potent herbs that naturally help boost stamina, improve blood flow, and support daily strength – without any side effects. Whether you're in the gym, in a busy office life, or just need a daily dose of power – this is your go-to support formula.",
+    keyBenefits: [
+      "Improves strength and daily stamina",
+      "Natural energy without caffeine",
+      "Herbal blend with no added chemicals",
+      "Easy-to-carry sachet form"
+    ],
+    usage: "Take 1 sachet daily with water or warm milk, preferably after meals.",
+    category: "mens-sexual-health",
+    subcategory: "strength-wellness-sachets",
+    slug: "dr-kumar-l-sachets-large"
   }
 ];
 
-export const womensHealthProducts: Product[] = [
-  {
-    id: 5,
-    name: "Women's Wellness Complex",
-    price: 649,
-    originalPrice: 849,
-    rating: 4.9,
-    reviews: 312,
-    image: "/api/placeholder/300/300",
-    badge: "Popular",
-    inStock: true,
-    description: "Complete feminine health support",
-    category: "womens-health"
-  },
-  {
-    id: 6,
-    name: "Hormonal Balance Tablets",
-    price: 549,
-    rating: 4.7,
-    reviews: 267,
-    image: "/api/placeholder/300/300",
-    inStock: true,
-    description: "Natural hormone regulation",
-    category: "womens-health"
-  },
-  {
-    id: 7,
-    name: "Iron & Calcium Supplement",
-    price: 399,
-    originalPrice: 499,
-    rating: 4.8,
-    reviews: 198,
-    image: "/api/placeholder/300/300",
-    inStock: true,
-    description: "Essential nutrients for women",
-    category: "womens-health"
-  },
-  {
-    id: 8,
-    name: "Pregnancy Care Capsules",
-    price: 799,
-    rating: 4.9,
-    reviews: 145,
-    image: "/api/placeholder/300/300",
-    badge: "Trusted",
-    inStock: true,
-    description: "Safe prenatal nutrition",
-    category: "womens-health"
-  },
-  {
-    id: 9,
-    name: "PCOS Relief Formula",
-    price: 699,
-    originalPrice: 899,
-    rating: 4.6,
-    reviews: 234,
-    image: "/api/placeholder/300/300",
-    inStock: true,
-    description: "Natural PCOS management",
-    category: "womens-health"
-  },
-  {
-    id: 10,
-    name: "Menopause Support",
-    price: 799,
-    rating: 4.5,
-    reviews: 176,
-    image: "/api/placeholder/300/300",
-    badge: "New",
-    inStock: true,
-    description: "Comfort during menopause",
-    category: "womens-health"
-  }
-];
-
-export const comboProducts: Product[] = [
-  {
-    id: 11,
-    name: "Complete Health Combo",
-    price: 1299,
-    originalPrice: 1899,
-    rating: 4.8,
-    reviews: 89,
-    image: "/api/placeholder/300/300",
-    badge: "Best Value",
-    inStock: true,
-    description: "3-month complete wellness pack",
-    category: "combos"
-  },
-  {
-    id: 12,
-    name: "Immunity Power Pack",
-    price: 899,
-    originalPrice: 1299,
-    rating: 4.7,
-    reviews: 134,
-    image: "/api/placeholder/300/300",
-    inStock: true,
-    description: "Boost your natural immunity",
-    category: "combos"
-  },
-  {
-    id: 13,
-    name: "Digestive Health Duo",
-    price: 749,
-    originalPrice: 999,
-    rating: 4.6,
-    reviews: 76,
-    image: "/api/placeholder/300/300",
-    inStock: true,
-    description: "Complete digestive care",
-    category: "combos"
-  },
-  {
-    id: 14,
-    name: "Energy & Focus Bundle",
-    price: 999,
-    originalPrice: 1399,
-    rating: 4.5,
-    reviews: 98,
-    image: "/api/placeholder/300/300",
-    badge: "New",
-    inStock: true,
-    description: "Mental and physical energy",
-    category: "combos"
-  },
-  {
-    id: 15,
-    name: "Family Wellness Package",
-    price: 1599,
-    originalPrice: 2199,
-    rating: 4.9,
-    reviews: 156,
-    image: "/api/placeholder/300/300",
-    badge: "Popular",
-    inStock: true,
-    description: "Health solutions for the whole family",
-    category: "combos"
-  },
-  {
-    id: 16,
-    name: "Couple's Health Combo",
-    price: 1199,
-    originalPrice: 1599,
-    rating: 4.7,
-    reviews: 112,
-    image: "/api/placeholder/300/300",
-    inStock: true,
-    description: "Wellness for couples",
-    category: "combos"
-  }
-];
-
-export const essentialProducts: Product[] = [
-  {
-    id: 17,
-    name: "Daily Multivitamin",
-    price: 299,
-    originalPrice: 399,
-    rating: 4.7,
-    reviews: 456,
-    image: "/api/placeholder/300/300",
-    badge: "Essential",
-    inStock: true,
-    description: "Complete daily nutrition",
-    category: "essentials"
-  },
-  {
-    id: 18,
-    name: "Herbal Immunity Tea",
-    price: 199,
-    rating: 4.6,
-    reviews: 289,
-    image: "/api/placeholder/300/300",
-    inStock: true,
-    description: "Natural immunity booster",
-    category: "essentials"
-  },
-  {
-    id: 19,
-    name: "Digestive Enzymes",
-    price: 449,
-    originalPrice: 599,
-    rating: 4.8,
-    reviews: 167,
-    image: "/api/placeholder/300/300",
-    inStock: true,
-    description: "Better digestion naturally",
-    category: "essentials"
-  },
-  {
-    id: 20,
-    name: "Sleep Support Tablets",
-    price: 349,
-    rating: 4.5,
-    reviews: 234,
-    image: "/api/placeholder/300/300",
-    badge: "Popular",
-    inStock: true,
-    description: "Natural sleep enhancement",
-    category: "essentials"
-  },
-  {
-    id: 21,
-    name: "Omega-3 Fish Oil",
-    price: 599,
-    originalPrice: 799,
-    rating: 4.8,
-    reviews: 345,
-    image: "/api/placeholder/300/300",
-    inStock: true,
-    description: "Heart and brain health",
-    category: "essentials"
-  },
-  {
-    id: 22,
-    name: "Vitamin D3 Capsules",
-    price: 249,
-    rating: 4.6,
-    reviews: 278,
-    image: "/api/placeholder/300/300",
-    badge: "New",
-    inStock: true,
-    description: "Bone health and immunity",
-    category: "essentials"
-  }
-];
-
-export const newArrivals: Product[] = [
-  ...mensHealthProducts.filter(p => p.badge === "New"),
-  ...womensHealthProducts.filter(p => p.badge === "New"),
-  ...comboProducts.filter(p => p.badge === "New"),
-  ...essentialProducts.filter(p => p.badge === "New")
-];
-
-export const allProducts: Product[] = [
-  ...mensHealthProducts,
-  ...womensHealthProducts,
-  ...comboProducts,
-  ...essentialProducts
-];
+export const allProducts: Product[] = [...mensHealthProducts];

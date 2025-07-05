@@ -30,9 +30,9 @@ const Index = () => {
         <HealthConcernsGrid />
         
         <ProductSection 
-          title="Men's Health"
-          subtitle="Boost vitality and performance naturally"
-          products={mensHealthProducts.slice(0, 4)}
+          title="Men's Sexual Health"
+          subtitle="Complete wellness solutions for male health and vitality"
+          products={mensHealthProducts}
           viewAllLink="/category/mens-sexual-health"
           showViewAll={true}
         />

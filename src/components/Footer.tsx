@@ -24,10 +24,6 @@ const Footer: React.FC = () => {
     }
   };
 
-  const handleWhatsAppClick = () => {
-    window.open('https://wa.me/918128268794', '_blank');
-  };
-
   return (
     <>
       <footer className="bg-white text-black py-12 px-4 lg:px-8 border-t border-gray-200">
@@ -49,13 +45,6 @@ const Footer: React.FC = () => {
                   <p className="text-sm text-[#FFC107] mb-1">⭐ 4.4 (180+ Reviews)</p>
                   <p className="text-sm text-gray-600">5+ Years of Clinical Experience</p>
                 </div>
-              </div>
-              
-              <div className="space-y-2 text-sm text-gray-600">
-                <p>Abhiyank Estate, Near Taste Of Punjab,</p>
-                <p>Silver Estate Ke Pas, Govindpuri-474011</p>
-                <p>📞 08128268794</p>
-                <p>📧 info@drkumar.com</p>
               </div>
             </div>
 
@@ -80,15 +69,15 @@ const Footer: React.FC = () => {
                 <li><a href="/shipping-info" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Shipping Info</a></li>
               </ul>
               
-              {/* WhatsApp Contact */}
+              {/* Contact Information */}
               <div className="mb-4">
-                <button
-                  onClick={handleWhatsAppClick}
-                  className="flex items-center space-x-2 bg-[#111111] hover:bg-[#111111]/90 text-white font-medium rounded-xl text-sm px-4 py-2 transition-colors"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>WhatsApp Dr. Kumar</span>
-                </button>
+                <h5 className="font-semibold text-[#1C1C2D] mb-2">Contact Information</h5>
+                <div className="space-y-2 text-sm text-gray-600">
+                  <p>Abhiyank Estate, Near Taste Of Punjab,</p>
+                  <p>Silver Estate Ke Pas, Govindpuri-474011</p>
+                  <p>📞 08128268794</p>
+                  <p>📧 info@drkumar.com</p>
+                </div>
               </div>
 
               {/* Feedback Button - Only for authenticated users */}
