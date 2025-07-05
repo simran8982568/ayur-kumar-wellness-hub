@@ -12,7 +12,7 @@ import TrustBadges from '@/components/TrustBadges';
 import FAQSection from '@/components/FAQSection';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { mensHealthProducts, comboProducts, newArrivals } from '@/data/products';
+import { mensHealthProducts } from '@/data/products';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -36,22 +36,18 @@ const Index = () => {
           viewAllLink="/category/mens-sexual-health"
           showViewAll={true}
         />
-        
-        <ProductSection 
-          title="New Arrivals"
-          subtitle="Latest additions to our wellness collection"
-          products={newArrivals.slice(0, 4)}
-          viewAllLink="/new-arrivals"
-          showViewAll={true}
-        />
-        
-        <ProductSection 
-          title="Best Sellers"
-          subtitle="Complete wellness packages at great value"
-          products={comboProducts.slice(0, 4)}
-          viewAllLink="/best-sellers"
-          showViewAll={true}
-        />
+
+        {/* Start Your Journey Button */}
+        <div className="py-12 bg-white">
+          <div className="max-w-7xl mx-auto px-4 text-center">
+            <Button
+              onClick={handleStartJourney}
+              className="mx-auto block text-center text-white bg-[#111111] hover:bg-[#111111]/90 px-6 py-3 rounded-xl font-medium"
+            >
+              Start Your Journey
+            </Button>
+          </div>
+        </div>
 
         <SocialIcons />
         <TrustBadges />

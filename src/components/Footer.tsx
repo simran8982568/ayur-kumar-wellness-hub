@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import FeedbackModal from './FeedbackModal';
 
@@ -21,6 +22,10 @@ const Footer: React.FC = () => {
       // Open feedback page in new tab for authenticated users
       window.open('/feedback', '_blank');
     }
+  };
+
+  const handleWhatsAppClick = () => {
+    window.open('https://wa.me/918128268794', '_blank');
   };
 
   return (
@@ -65,25 +70,38 @@ const Footer: React.FC = () => {
               </ul>
             </div>
 
-            {/* Support Section */}
+            {/* Support & Contact Section */}
             <div>
-              <h4 className="text-lg font-semibold mb-4 text-[#1C1C2D]">Support</h4>
+              <h4 className="text-lg font-semibold mb-4 text-[#1C1C2D]">Support & Contact</h4>
               <ul className="space-y-2 text-sm text-gray-600 mb-4">
                 <li><a href="/privacy-policy" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Privacy Policy</a></li>
                 <li><a href="/terms" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Terms of Service</a></li>
                 <li><a href="/return-policy" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Return Policy</a></li>
                 <li><a href="/shipping-info" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Shipping Info</a></li>
-                {isLoggedIn && (
-                  <li>
-                    <Button
-                      onClick={handleFeedbackClick}
-                      className="bg-[#111111] hover:bg-[#111111]/90 text-white font-medium rounded-xl text-sm px-4 py-2"
-                    >
-                      Send Feedback
-                    </Button>
-                  </li>
-                )}
               </ul>
+              
+              {/* WhatsApp Contact */}
+              <div className="mb-4">
+                <button
+                  onClick={handleWhatsAppClick}
+                  className="flex items-center space-x-2 bg-[#111111] hover:bg-[#111111]/90 text-white font-medium rounded-xl text-sm px-4 py-2 transition-colors"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>WhatsApp Dr. Kumar</span>
+                </button>
+              </div>
+
+              {/* Feedback Button - Only for authenticated users */}
+              {isLoggedIn && (
+                <div>
+                  <Button
+                    onClick={handleFeedbackClick}
+                    className="bg-[#111111] hover:bg-[#111111]/90 text-white font-medium rounded-xl text-sm px-4 py-2"
+                  >
+                    Send Feedback
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 

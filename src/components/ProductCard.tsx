@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Star, ShoppingCart, Minus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -36,6 +37,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
   const discount = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
+
+  // Auto-slide effect on hover
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (isHovered) {
+      interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % productImages.length);
+      }, 800); // Change image every 800ms when hovered
+    } else {
+      setCurrentImageIndex(0); // Reset to first image when not hovered
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isHovered, productImages.length]);
 
   // Check if product is in cart
   useEffect(() => {
@@ -168,7 +186,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
           </div>
         )}
         
-        {/* Image Carousel */}
+        {/* Image with Auto-slide on Hover */}
         <div className="relative">
           <img 
             src={productImages[currentImageIndex]} 
@@ -179,22 +197,26 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
             loading="lazy"
           />
           
-          {/* Carousel Navigation */}
-          <button
-            onClick={prevImage}
-            className="absolute left-1 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1 rounded-full shadow-md transition-all"
-            aria-label="Previous image"
-          >
-            <ChevronLeft className="w-3 h-3 text-gray-700" />
-          </button>
-          
-          <button
-            onClick={nextImage}
-            className="absolute right-1 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1 rounded-full shadow-md transition-all"
-            aria-label="Next image"
-          >
-            <ChevronRight className="w-3 h-3 text-gray-700" />
-          </button>
+          {/* Manual Navigation (visible on hover) */}
+          {isHovered && (
+            <>
+              <button
+                onClick={prevImage}
+                className="absolute left-1 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1 rounded-full shadow-md transition-all opacity-0 hover:opacity-100"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-3 h-3 text-gray-700" />
+              </button>
+              
+              <button
+                onClick={nextImage}
+                className="absolute right-1 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1 rounded-full shadow-md transition-all opacity-0 hover:opacity-100"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-3 h-3 text-gray-700" />
+              </button>
+            </>
+          )}
           
           {/* Image Indicators */}
           <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1">
