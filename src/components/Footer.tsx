@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, Phone, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import FeedbackModal from './FeedbackModal';
 
@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Dr. Kumar Profile */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-1">
               <div className="flex items-start space-x-4 mb-6">
                 <div className="w-20 h-20 flex-shrink-0">
                   <img 
@@ -59,26 +59,34 @@ const Footer: React.FC = () => {
               </ul>
             </div>
 
+            {/* Contact Section - Moved from Homepage */}
+            <div>
+              <h4 className="text-lg font-semibold mb-4 text-[#1C1C2D]">Contact Us</h4>
+              <div className="space-y-3 text-sm text-gray-600">
+                <div className="flex items-center space-x-3">
+                  <Phone className="w-4 h-4 text-[#1C1C2D]" />
+                  <span>08128268794</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Mail className="w-4 h-4 text-[#1C1C2D]" />
+                  <span>info@drkumar.com</span>
+                </div>
+                <div className="mt-4">
+                  <p>Abhiyank Estate, Near Taste Of Punjab,</p>
+                  <p>Silver Estate Ke Pas, Govindpuri-474011</p>
+                </div>
+              </div>
+            </div>
+
             {/* Support & Contact Section */}
             <div>
-              <h4 className="text-lg font-semibold mb-4 text-[#1C1C2D]">Support & Contact</h4>
+              <h4 className="text-lg font-semibold mb-4 text-[#1C1C2D]">Support</h4>
               <ul className="space-y-2 text-sm text-gray-600 mb-4">
                 <li><a href="/privacy-policy" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Privacy Policy</a></li>
                 <li><a href="/terms" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Terms of Service</a></li>
                 <li><a href="/return-policy" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Return Policy</a></li>
                 <li><a href="/shipping-info" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Shipping Info</a></li>
               </ul>
-              
-              {/* Contact Information */}
-              <div className="mb-4">
-                <h5 className="font-semibold text-[#1C1C2D] mb-2">Contact Information</h5>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <p>Abhiyank Estate, Near Taste Of Punjab,</p>
-                  <p>Silver Estate Ke Pas, Govindpuri-474011</p>
-                  <p>📞 08128268794</p>
-                  <p>📧 info@drkumar.com</p>
-                </div>
-              </div>
 
               {/* Feedback Button - Only for authenticated users */}
               {isLoggedIn && (

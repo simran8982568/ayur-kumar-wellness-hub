@@ -11,8 +11,8 @@ const HealthConcernsGrid: React.FC = () => {
   const navigate = useNavigate();
 
   const handleConcernClick = (concern: HealthConcern) => {
-    // Both concerns redirect to men's sexual health category
-    navigate('/category/mens-sexual-health');
+    // Navigate to the specific subcategory page based on the concern slug
+    navigate(`/category/${concern.slug}`);
   };
 
   const displayedConcerns = showAll ? healthConcerns : healthConcerns.slice(0, 2);

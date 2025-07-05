@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
@@ -18,6 +17,7 @@ import { mensHealthProducts } from "@/data/products";
 
 const CategoryPage: React.FC = () => {
   const { category } = useParams<{ category: string }>();
+  const [searchParams] = useSearchParams();
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [sortBy, setSortBy] = useState("name");
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,6 +37,18 @@ const CategoryPage: React.FC = () => {
       content:
         "Discover our comprehensive range of Ayurvedic products designed specifically for men's sexual wellness. Our formulations include powerful herbs like Ashwagandha, Shilajit, and Safed Musli that have been used for centuries to enhance male vitality, boost energy levels, and improve overall sexual health naturally.",
     },
+    "performance-endurance": {
+      title: "Performance & Endurance Boosters",
+      description: "Advanced formulas for peak performance and endurance",
+      content:
+        "Enhance your athletic performance and daily endurance with our scientifically formulated herbal supplements. These products are designed to boost stamina, improve blood circulation, and support overall physical performance naturally.",
+    },
+    "strength-wellness-sachets": {
+      title: "Strength & Wellness Support (Sachet Format)",
+      description: "Convenient sachets for daily strength and wellness",
+      content:
+        "Experience the convenience of portable wellness with our specially formulated sachets. Perfect for busy lifestyles, these easy-to-carry sachets deliver powerful herbal blends for daily strength and vitality support.",
+    },
   };
 
   const subcategories = [
@@ -46,10 +58,18 @@ const CategoryPage: React.FC = () => {
   ];
 
   useEffect(() => {
+    // Get subcategory from URL if present
+    const subcategoryFromUrl = searchParams.get('subcategory') || 'all';
+    setSelectedSubcategory(subcategoryFromUrl);
+  }, [searchParams]);
+
+  useEffect(() => {
     let products = [...mensHealthProducts];
 
-    // Filter by subcategory
-    if (selectedSubcategory !== "all") {
+    // If we're on a specific subcategory page, filter by that subcategory
+    if (category === 'performance-endurance' || category === 'strength-wellness-sachets') {
+      products = products.filter(product => product.subcategory === category);
+    } else if (selectedSubcategory !== "all") {
       products = products.filter(product => product.subcategory === selectedSubcategory);
     }
 
@@ -82,7 +102,7 @@ const CategoryPage: React.FC = () => {
     setCurrentPage(1); // Reset to first page when filters change
   }, [category, sortBy, searchQuery, selectedSubcategory]);
 
-  const currentCategory = categoryContent[category || ""];
+  const currentCategory = categoryContent[category || "mens-sexual-health"];
 
   const sortOptions = [
     { value: "name", label: "Name (A-Z)" },
@@ -143,24 +163,26 @@ const CategoryPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Subcategory Filter */}
-        <div className="mb-6">
-          <div className="flex flex-wrap gap-2">
-            {subcategories.map((subcategory) => (
-              <button
-                key={subcategory.value}
-                onClick={() => setSelectedSubcategory(subcategory.value)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  selectedSubcategory === subcategory.value
-                    ? 'bg-[#111111] text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {subcategory.label}
-              </button>
-            ))}
+        {/* Subcategory Filter - Only show if we're on main category page */}
+        {category === 'mens-sexual-health' && (
+          <div className="mb-6">
+            <div className="flex flex-wrap gap-2">
+              {subcategories.map((subcategory) => (
+                <button
+                  key={subcategory.value}
+                  onClick={() => setSelectedSubcategory(subcategory.value)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    selectedSubcategory === subcategory.value
+                      ? 'bg-[#111111] text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {subcategory.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Filters and Search */}
         <div className="mb-8">

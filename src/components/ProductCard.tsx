@@ -31,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
   
-  // Default to 4 placeholder images if product only has one
+  // Show up to 4 images per product (using same image as placeholder for now)
   const productImages = [product.image, product.image, product.image, product.image];
   
   const discount = product.originalPrice 
