@@ -1,41 +1,32 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WishlistProductCard from "@/components/WishlistProductCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { User, Heart, Package, LogOut, Edit } from "lucide-react";
-import { allProducts, Product } from "@/data/products";
+import { User, Package, LogOut, Edit, Eye } from "lucide-react";
 
 const Account = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("profile");
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
   // Check URL parameters for tab navigation
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get('tab');
-    if (tab && ['profile', 'wishlist', 'orders'].includes(tab)) {
+    if (tab && ['profile', 'orders'].includes(tab)) {
       setActiveTab(tab);
     }
   }, []);
+
   const [isEditing, setIsEditing] = useState(false);
-  const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
   const [userData, setUserData] = useState({
     name: "",
     email: "",
     phone: "",
   });
-
-  // Function to update wishlist items
-  const updateWishlistItems = () => {
-    const wishlistIds = JSON.parse(localStorage.getItem("wishlist") || "[]");
-    const wishlistProducts = allProducts.filter((product) =>
-      wishlistIds.includes(product.id)
-    );
-    setWishlistItems(wishlistProducts);
-  };
 
   useEffect(() => {
     // Check if user is logged in
@@ -49,34 +40,7 @@ const Account = () => {
     const name = localStorage.getItem("userName") || "User";
     const email = localStorage.getItem("userEmail") || "";
     setUserData({ name, email, phone: "+91 9876543210" });
-
-    // Load wishlist items
-    updateWishlistItems();
   }, [navigate]);
-
-  // Listen for wishlist updates - real-time synchronization
-  useEffect(() => {
-    const handleWishlistUpdate = () => {
-      updateWishlistItems();
-    };
-
-    // Listen for wishlist updates from any component
-    window.addEventListener("wishlistUpdated", handleWishlistUpdate);
-
-    // Also listen for storage changes (in case of multiple tabs)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'wishlist') {
-        updateWishlistItems();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-
-    return () => {
-      window.removeEventListener("wishlistUpdated", handleWishlistUpdate);
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
 
   const handleSignOut = () => {
     localStorage.removeItem("isLoggedIn");
@@ -91,9 +55,12 @@ const Account = () => {
     setIsEditing(false);
   };
 
+  const handleViewOrderDetails = (order: any) => {
+    setSelectedOrder(order);
+  };
+
   const sidebarItems = [
     { id: "profile", label: "My Profile", icon: User },
-    { id: "wishlist", label: "Wishlist", icon: Heart },
     { id: "orders", label: "Orders", icon: Package },
   ];
 
@@ -101,16 +68,25 @@ const Account = () => {
     {
       id: "ORD001",
       date: "2024-01-15",
-      products: ["Immunity Booster Juice", "Digestive Care Capsules"],
+      products: [
+        { name: "Immunity Booster Juice", quantity: 2, price: 500, image: "/lovable-uploads/b68b6220-d7de-409e-9588-7bd57831d577.png" },
+        { name: "Digestive Care Capsules", quantity: 1, price: 548, image: "/lovable-uploads/cd3f5eda-8484-4dee-940d-f87e26cac841.png" }
+      ],
       total: 1048,
       status: "Delivered",
+      shippingAddress: "123 Main St, City, State 12345",
+      paymentMethod: "Credit Card"
     },
     {
       id: "ORD002",
       date: "2024-01-20",
-      products: ["Skin Glow Serum"],
+      products: [
+        { name: "Skin Glow Serum", quantity: 1, price: 899, image: "/lovable-uploads/ed6e92d3-776a-4b30-b919-b7a35406bf8f.png" }
+      ],
       total: 899,
       status: "Pending",
+      shippingAddress: "456 Oak Ave, Town, State 67890",
+      paymentMethod: "UPI"
     },
   ];
 
@@ -235,126 +211,141 @@ const Account = () => {
                 </div>
               )}
 
-              {activeTab === "wishlist" && (
-                <div>
-                  <h2 className="text-2xl font-bold text-black mb-6">
-                    My Wishlist
-                  </h2>
-                  {wishlistItems.length === 0 ? (
-                    <div className="text-center py-12">
-                      <Heart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                      <p className="text-gray-600 mb-4">
-                        Your wishlist is empty
-                      </p>
-                      <Button
-                        onClick={() => navigate("/shop-all")}
-                        className="bg-[#111111] hover:bg-[#302e2e] text-white rounded-lg"
-                      >
-                        Continue Shopping
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                      {wishlistItems.map((product) => (
-                        <WishlistProductCard
-                          key={product.id}
-                          product={product}
-                          onAddToCart={(product) => {
-                            // Add to cart logic
-                            const cart = JSON.parse(
-                              localStorage.getItem("cart") || "[]"
-                            );
-                            const existingItem = cart.find(
-                              (item: any) => item.id === product.id
-                            );
-
-                            if (existingItem) {
-                              existingItem.quantity += 1;
-                            } else {
-                              cart.push({ ...product, quantity: 1 });
-                            }
-
-                            localStorage.setItem("cart", JSON.stringify(cart));
-                            window.dispatchEvent(
-                              new CustomEvent("cartUpdated")
-                            );
-                          }}
-                          onRemoveFromWishlist={(productId) => {
-                            // Remove from wishlist
-                            const wishlist = JSON.parse(
-                              localStorage.getItem("wishlist") || "[]"
-                            );
-                            const updatedWishlist = wishlist.filter(
-                              (id: number) => id !== productId
-                            );
-                            localStorage.setItem(
-                              "wishlist",
-                              JSON.stringify(updatedWishlist)
-                            );
-                            window.dispatchEvent(
-                              new CustomEvent("wishlistUpdated")
-                            );
-                          }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-
               {activeTab === "orders" && (
                 <div>
                   <h2 className="text-2xl font-bold text-black mb-6">
                     My Orders
                   </h2>
-                  <div className="space-y-4">
-                    {dummyOrders.map((order) => (
-                      <div
-                        key={order.id}
-                        className="border border-gray-200 rounded-lg p-4"
-                      >
-                        <div className="flex justify-between items-start mb-3">
+                  
+                  {selectedOrder ? (
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xl font-semibold">Order Details - #{selectedOrder.id}</h3>
+                        <Button
+                          onClick={() => setSelectedOrder(null)}
+                          variant="outline"
+                          className="border-[#111111] text-[#111111] hover:bg-[#111111] hover:text-white rounded-lg"
+                        >
+                          Back to Orders
+                        </Button>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
                           <div>
-                            <h3 className="font-semibold text-black">
-                              Order #{order.id}
-                            </h3>
-                            <p className="text-sm text-gray-600">
-                              Placed on {order.date}
-                            </p>
+                            <h4 className="font-semibold text-black mb-2">Order Information</h4>
+                            <div className="space-y-1 text-sm text-gray-600">
+                              <p><strong>Order ID:</strong> {selectedOrder.id}</p>
+                              <p><strong>Date:</strong> {selectedOrder.date}</p>
+                              <p><strong>Status:</strong> 
+                                <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${
+                                  selectedOrder.status === "Delivered"
+                                    ? "bg-green-100 text-green-800"
+                                    : "bg-yellow-100 text-yellow-800"
+                                }`}>
+                                  {selectedOrder.status}
+                                </span>
+                              </p>
+                              <p><strong>Total:</strong> ₹{selectedOrder.total}</p>
+                            </div>
                           </div>
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-medium ${
-                              order.status === "Delivered"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-yellow-100 text-yellow-800"
-                            }`}
-                          >
-                            {order.status}
-                          </span>
+                          
+                          <div>
+                            <h4 className="font-semibold text-black mb-2">Shipping Address</h4>
+                            <p className="text-sm text-gray-600">{selectedOrder.shippingAddress}</p>
+                          </div>
+                          
+                          <div>
+                            <h4 className="font-semibold text-black mb-2">Payment Method</h4>
+                            <p className="text-sm text-gray-600">{selectedOrder.paymentMethod}</p>
+                          </div>
                         </div>
-                        <div className="mb-3">
-                          <p className="text-sm text-gray-600">Products:</p>
-                          <ul className="text-sm text-black">
-                            {order.products.map((product, index) => (
-                              <li key={index}>• {product}</li>
+                        
+                        <div>
+                          <h4 className="font-semibold text-black mb-2">Products</h4>
+                          <div className="space-y-3">
+                            {selectedOrder.products.map((product: any, index: number) => (
+                              <div key={index} className="flex items-center space-x-3 border border-gray-200 rounded-lg p-3">
+                                <img
+                                  src={product.image}
+                                  alt={product.name}
+                                  className="w-16 h-16 object-cover rounded-lg"
+                                />
+                                <div className="flex-1">
+                                  <h5 className="font-medium text-black">{product.name}</h5>
+                                  <p className="text-sm text-gray-600">Quantity: {product.quantity}</p>
+                                  <p className="text-sm font-semibold text-black">₹{product.price}</p>
+                                </div>
+                              </div>
                             ))}
-                          </ul>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="font-semibold text-black">
-                            Total: ₹{order.total}
-                          </span>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="border-[#111111] text-[#111111] hover:bg-[#111111] hover:text-white rounded-lg"
-                          >
-                            View Details
-                          </Button>
+                          </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {dummyOrders.map((order) => (
+                        <div
+                          key={order.id}
+                          className="border border-gray-200 rounded-lg p-4"
+                        >
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <h3 className="font-semibold text-black">
+                                Order #{order.id}
+                              </h3>
+                              <p className="text-sm text-gray-600">
+                                Placed on {order.date}
+                              </p>
+                            </div>
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                order.status === "Delivered"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                              }`}
+                            >
+                              {order.status}
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center space-x-4 mb-3">
+                            {order.products.map((product, index) => (
+                              <img
+                                key={index}
+                                src={product.image}
+                                alt={product.name}
+                                className="w-12 h-12 object-cover rounded-lg"
+                              />
+                            ))}
+                          </div>
+                          
+                          <div className="mb-3">
+                            <p className="text-sm text-gray-600">Products:</p>
+                            <ul className="text-sm text-black">
+                              {order.products.map((product, index) => (
+                                <li key={index}>• {product.name} (x{product.quantity})</li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold text-black">
+                              Total: ₹{order.total}
+                            </span>
+                            <Button
+                              onClick={() => handleViewOrderDetails(order)}
+                              variant="outline"
+                              size="sm"
+                              className="border-[#111111] text-[#111111] hover:bg-[#111111] hover:text-white rounded-lg"
+                            >
+                              <Eye className="w-4 h-4 mr-2" />
+                              View Details
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

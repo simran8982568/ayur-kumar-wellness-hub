@@ -5,13 +5,14 @@ import Header from '@/components/Header';
 import HeroBanner from '@/components/HeroBanner';
 import HealthConcernsGrid from '@/components/HealthConcernsGrid';
 import ProductSection from '@/components/ProductSection';
+import SocialIcons from '@/components/SocialIcons';
 import TrustReviews from '@/components/TrustReviews';
 import TestimonialSection from '@/components/TestimonialSection';
 import TrustBadges from '@/components/TrustBadges';
 import FAQSection from '@/components/FAQSection';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { mensHealthProducts, womensHealthProducts, comboProducts, newArrivals } from '@/data/products';
+import { mensHealthProducts, comboProducts, newArrivals } from '@/data/products';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -28,21 +29,11 @@ const Index = () => {
         <HeroBanner />
         <HealthConcernsGrid />
         
-        
-        
         <ProductSection 
           title="Men's Health"
           subtitle="Boost vitality and performance naturally"
           products={mensHealthProducts.slice(0, 4)}
           viewAllLink="/category/mens-sexual-health"
-          showViewAll={true}
-        />
-        
-        <ProductSection 
-          title="Women's Health"
-          subtitle="Hormonal balance and feminine wellness"
-          products={womensHealthProducts.slice(0, 4)}
-          viewAllLink="/category/womens-sexual-health"
           showViewAll={true}
         />
         
@@ -62,6 +53,7 @@ const Index = () => {
           showViewAll={true}
         />
 
+        <SocialIcons />
         <TrustBadges />
         <TrustReviews />
         <TestimonialSection />

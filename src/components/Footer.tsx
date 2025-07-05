@@ -8,10 +8,20 @@ const Footer: React.FC = () => {
   const location = useLocation();
   const [isFeedbackOpen, setIsFeedbackOpen] = React.useState(false);
 
+  // Check if user is logged in
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
   // Don't render footer on checkout page
   if (location.pathname === '/checkout' || location.pathname === '/cart-page') {
     return null;
   }
+
+  const handleFeedbackClick = () => {
+    if (isLoggedIn) {
+      // Open feedback page in new tab for authenticated users
+      window.open('/feedback', '_blank');
+    }
+  };
 
   return (
     <>
@@ -51,7 +61,6 @@ const Footer: React.FC = () => {
                 <li><a href="/about-us" className="text-gray-600 hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">About Us</a></li>
                 <li><a href="/shop-all" className="text-gray-600 hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Shop All</a></li>
                 <li><a href="/category/mens-sexual-health" className="text-gray-600 hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Men's Health</a></li>
-                <li><a href="/category/womens-sexual-health" className="text-gray-600 hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Women's Health</a></li>
                 <li><a href="/consultation-booking" className="text-gray-600 hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Consultation Page</a></li>
               </ul>
             </div>
@@ -64,7 +73,16 @@ const Footer: React.FC = () => {
                 <li><a href="/terms" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Terms of Service</a></li>
                 <li><a href="/return-policy" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Return Policy</a></li>
                 <li><a href="/shipping-info" className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4">Shipping Info</a></li>
-                <li><button onClick={() => setIsFeedbackOpen(true)} className="hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4 text-left">Send Feedback</button></li>
+                {isLoggedIn && (
+                  <li>
+                    <Button
+                      onClick={handleFeedbackClick}
+                      className="bg-[#111111] hover:bg-[#111111]/90 text-white font-medium rounded-xl text-sm px-4 py-2"
+                    >
+                      Send Feedback
+                    </Button>
+                  </li>
+                )}
               </ul>
             </div>
           </div>

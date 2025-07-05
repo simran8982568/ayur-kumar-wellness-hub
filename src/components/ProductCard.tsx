@@ -1,9 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
-import { Star, ShoppingCart, Minus } from 'lucide-react';
+import { Star, ShoppingCart, Minus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import WishlistButton from './WishlistButton';
 
 interface Product {
   id: number;
@@ -29,7 +27,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
+  
+  // Default to 4 placeholder images if product only has one
+  const productImages = [product.image, product.image, product.image, product.image];
   
   const discount = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -57,6 +59,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
   const handleCardClick = () => {
     const slug = product.slug || product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
     navigate(`/product/${slug}`);
+  };
+
+  const nextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % productImages.length);
+  };
+
+  const prevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length);
   };
 
   const handleAddToCart = async (e: React.MouseEvent) => {
@@ -149,23 +161,53 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
             {product.badge}
           </div>
         )}
-        
-        <WishlistButton productId={product.id} />
 
         {discount > 0 && (
-          <div className="absolute top-2 right-10 z-10 bg-[#E5002B] text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-lg">
+          <div className="absolute top-2 right-2 z-10 bg-[#E5002B] text-white text-xs font-medium px-2 py-1 uppercase tracking-wide rounded-lg">
             -{discount}%
           </div>
         )}
         
-        <img 
-          src={product.image} 
-          alt={product.name}
-          className={`w-full h-32 sm:h-48 object-cover transition-transform duration-300 ${
-            isHovered ? 'scale-110' : 'scale-100'
-          }`}
-          loading="lazy"
-        />
+        {/* Image Carousel */}
+        <div className="relative">
+          <img 
+            src={productImages[currentImageIndex]} 
+            alt={`${product.name} - Image ${currentImageIndex + 1}`}
+            className={`w-full h-32 sm:h-48 object-cover transition-transform duration-300 ${
+              isHovered ? 'scale-110' : 'scale-100'
+            }`}
+            loading="lazy"
+          />
+          
+          {/* Carousel Navigation */}
+          <button
+            onClick={prevImage}
+            className="absolute left-1 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1 rounded-full shadow-md transition-all"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="w-3 h-3 text-gray-700" />
+          </button>
+          
+          <button
+            onClick={nextImage}
+            className="absolute right-1 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1 rounded-full shadow-md transition-all"
+            aria-label="Next image"
+          >
+            <ChevronRight className="w-3 h-3 text-gray-700" />
+          </button>
+          
+          {/* Image Indicators */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1">
+            {productImages.map((_, index) => (
+              <div
+                key={index}
+                className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                  index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
         
         {!product.inStock && (
           <div className="absolute inset-0 bg-gray-900/50 flex items-center justify-center">
