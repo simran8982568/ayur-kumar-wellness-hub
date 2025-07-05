@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { QueryClient } from './QueryClient';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Index from './pages/Index';
 import ShopAll from './pages/ShopAll';
 import BestSellersPage from './pages/BestSellersPage';
@@ -30,9 +31,11 @@ import TwoStepVerification from './pages/auth/TwoStepVerification';
 import NotFound from './pages/NotFound';
 import Feedback from './pages/Feedback';
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <QueryClient>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <div className="App">
           <Routes>
@@ -67,7 +70,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
-    </QueryClient>
+    </QueryClientProvider>
   );
 }
 
