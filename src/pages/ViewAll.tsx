@@ -4,18 +4,24 @@ import { useParams } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
-import { mensHealthProducts } from '@/data/products';
+import { newArrivals, essentialProducts } from '@/data/products';
 
 const ViewAll: React.FC = () => {
   const { category } = useParams<{ category: string }>();
   
   const getProductsAndTitle = () => {
     switch (category) {
-      case 'mens-sexual-health':
+      case 'new-arrivals':
         return {
-          products: mensHealthProducts,
-          title: "Men's Sexual Health",
-          subtitle: 'Complete wellness solutions for male health and vitality'
+          products: newArrivals,
+          title: 'New Arrivals',
+          subtitle: 'Discover our latest wellness innovations'
+        };
+      case 'daily-essentials':
+        return {
+          products: essentialProducts,
+          title: 'Daily Essentials',
+          subtitle: 'Must-have products for everyday health'
         };
       default:
         return {
