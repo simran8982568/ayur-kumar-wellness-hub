@@ -8,22 +8,19 @@ const TrustReviews: React.FC = () => {
       id: 1,
       name: "Rajesh Kumar",
       rating: 5,
-      comment: "Bahut pareshaan tha main... 3 month course kiya, kabhi accha laabh mila mujhe... sabse best doctor.",
-      location: "Delhi"
+      comment: "Bahut pareshaan tha main... 3 month course kiya, kabhi accha laabh mila mujhe... sabse best doctor."
     },
     {
       id: 2,
       name: "Priya Sharma",
       rating: 5,
-      comment: "Dr. Kumar ke treatment se meri problem completely solve ho gayi. Very professional service.",
-      location: "Mumbai"
+      comment: "Dr. Kumar ke treatment se meri problem completely solve ho gayi. Very professional service."
     },
     {
       id: 3,
       name: "Amit Singh",
       rating: 4,
-      comment: "Excellent products and consultation. Results dekh kar main khush hun. Highly recommended!",
-      location: "Bangalore"
+      comment: "Excellent products and consultation. Results dekh kar main khush hun. Highly recommended!"
     }
   ];
 
@@ -72,7 +69,7 @@ const TrustReviews: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900 text-sm tracking-tight">{review.name}</h4>
-                  <p className="text-sm text-gray-500">{review.location}</p>
+                  
                 </div>
               </div>
             </div>

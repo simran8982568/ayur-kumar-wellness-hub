@@ -52,7 +52,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
             <Link to={viewAllLink}>
               <Button
                 variant="outline"
-                className="border-[#c74a1b] text-[#c74a1b] hover:bg-[#c74a1b] hover:text-white rounded-xl"
+                className="border-[#111111] text-[#111111] hover:bg-[#302e2e] hover:text-white rounded-xl"
               >
                 View All
               </Button>

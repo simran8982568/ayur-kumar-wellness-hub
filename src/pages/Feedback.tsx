@@ -1,33 +1,40 @@
-
-import React, { useState } from 'react';
-import { Star, Send } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import React, { useState, useEffect } from "react";
+import { Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const Feedback: React.FC = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    rating: 0,
-    title: '',
-    message: ''
+    name: "",
+    email: "",
+    type: "",
+    subject: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleRatingClick = (rating: number) => {
-    setFormData(prev => ({ ...prev, rating }));
-  };
+  // Fetch user profile from localStorage (or adjust as per your auth system)
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (user && user.name && user.email) {
+      setFormData((prev) => ({
+        ...prev,
+        name: user.name,
+        email: user.email,
+      }));
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    console.log('Feedback submitted:', formData);
+    console.log("Feedback submitted:", formData);
     setIsSubmitted(true);
     setIsSubmitting(false);
 
@@ -35,18 +42,22 @@ const Feedback: React.FC = () => {
     setTimeout(() => {
       setIsSubmitted(false);
       setFormData({
-        name: '',
-        email: '',
-        rating: 0,
-        title: '',
-        message: ''
+        name: "",
+        email: "",
+        type: "",
+        subject: "",
+        message: "",
       });
     }, 3000);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   if (isSubmitted) {
@@ -57,8 +68,12 @@ const Feedback: React.FC = () => {
           <div className="max-w-md mx-auto text-center">
             <div className="bg-green-100 p-8 rounded-lg">
               <div className="text-green-600 text-6xl mb-4">✓</div>
-              <h2 className="text-2xl font-bold text-green-800 mb-2">Thank You!</h2>
-              <p className="text-green-700">Your feedback has been submitted successfully.</p>
+              <h2 className="text-2xl font-bold text-green-800 mb-2">
+                Thank You!
+              </h2>
+              <p className="text-green-700">
+                Your feedback has been submitted successfully.
+              </p>
             </div>
           </div>
         </main>
@@ -70,11 +85,13 @@ const Feedback: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-[#1C1C2D] mb-2">Send Feedback</h1>
+            <h1 className="text-3xl font-bold text-[#1C1C2D] mb-2">
+              Send Feedback
+            </h1>
             <p className="text-gray-600">We value your opinion and feedback</p>
           </div>
 
@@ -114,44 +131,56 @@ const Feedback: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Rating *
+                  Type *
                 </label>
-                <div className="flex space-x-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => handleRatingClick(star)}
-                      className={`p-1 transition-colors ${
-                        star <= formData.rating ? 'text-yellow-400' : 'text-gray-300'
-                      }`}
-                    >
-                      <Star 
-                        className={`w-6 h-6 ${
-                          star <= formData.rating ? 'fill-yellow-400' : ''
-                        }`} 
-                      />
-                    </button>
-                  ))}
-                  <span className="ml-2 text-sm text-gray-600">
-                    {formData.rating > 0 && `${formData.rating}/5`}
-                  </span>
-                </div>
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#111111] focus:border-transparent"
+                >
+                  <option value="">Select Type</option>
+                  <option value="Complaint">Complaint</option>
+                  <option value="Feedback">Feedback</option>
+                  <option value="Suggestion">Suggestion</option>
+                </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Title *
+                  Subject *
                 </label>
-                <input
-                  type="text"
-                  name="title"
-                  value={formData.title}
+                <select
+                  name="subject"
+                  value={formData.subject}
                   onChange={handleInputChange}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#111111] focus:border-transparent"
-                  placeholder="Brief title for your feedback"
-                />
+                >
+                  <option value="">Select Subject</option>
+                  <option value="Product Quality Issue">
+                    Product Quality Issue
+                  </option>
+                  <option value="Great Product Experience">
+                    Great Product Experience
+                  </option>
+                  <option value="Delivery Delay">Delivery Delay</option>
+                  <option value="Website Navigation Issue">
+                    Website Navigation Issue
+                  </option>
+                  <option value="Excellent Customer Service">
+                    Excellent Customer Service
+                  </option>
+                  <option value="Packaging Issue">Packaging Issue</option>
+                  <option value="Product Effectiveness">
+                    Product Effectiveness
+                  </option>
+                  <option value="Fast Delivery">Fast Delivery</option>
+                  <option value="Wrong Product Delivered">
+                    Wrong Product Delivered
+                  </option>
+                </select>
               </div>
 
               <div>
@@ -171,7 +200,7 @@ const Feedback: React.FC = () => {
 
               <Button
                 type="submit"
-                disabled={isSubmitting || formData.rating === 0}
+                disabled={isSubmitting || !formData.type || !formData.subject}
                 className="w-full bg-[#111111] hover:bg-[#111111]/90 text-white font-medium py-3 rounded-lg flex items-center justify-center space-x-2"
               >
                 {isSubmitting ? (

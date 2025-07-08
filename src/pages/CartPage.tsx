@@ -14,6 +14,10 @@ import {
   Wallet,
   Building,
   Banknote,
+  CheckCircle,
+  X,
+  Clock,
+  Package,
 } from "lucide-react";
 import { CartLoadingSkeleton } from "@/components/LoadingSkeleton";
 
@@ -30,6 +34,12 @@ const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
+  const [orderDetails, setOrderDetails] = useState<{
+    orderId: string;
+    estimatedDelivery: string;
+    total: number;
+  } | null>(null);
   const navigate = useNavigate();
 
   // Form states
@@ -194,15 +204,27 @@ const CartPage: React.FC = () => {
     // Simulate order processing
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
+    // Generate order details
+    const orderId = `ORD${Date.now()}`;
+    const estimatedDelivery = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    setOrderDetails({
+      orderId,
+      estimatedDelivery,
+      total: calculateTotal()
+    });
+
     // Clear cart
     localStorage.removeItem("cart");
     window.dispatchEvent(new CustomEvent("cartUpdated"));
 
-    alert(
-      "Order placed successfully! You will receive a confirmation email shortly."
-    );
-    navigate("/");
     setSubmitting(false);
+    setShowOrderConfirmation(true);
   };
 
   if (loading) {
@@ -230,7 +252,7 @@ const CartPage: React.FC = () => {
           </p>
           <Button
             onClick={() => navigate("/shop-all")}
-            className="bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white rounded-xl"
+            className="bg-[#111111] hover:bg-[#302e2e] text-white rounded-xl"
           >
             Continue Shopping
           </Button>
@@ -239,7 +261,84 @@ const CartPage: React.FC = () => {
     );
   }
 
+  // Order Confirmation Modal
+  const OrderConfirmationModal = () => {
+    if (!showOrderConfirmation || !orderDetails) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl max-w-md w-full mx-4 overflow-hidden shadow-2xl">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white text-center">
+            <CheckCircle className="w-16 h-16 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold mb-2">Order Placed Successfully!</h2>
+            <p className="text-green-100">Thank you for your purchase</p>
+          </div>
+
+          {/* Content */}
+          <div className="p-6 space-y-4">
+            <div className="text-center">
+              <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                <p className="text-sm text-gray-600 mb-1">Order Number</p>
+                <p className="text-lg font-bold text-[#1C1C2D]">{orderDetails.orderId}</p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3">
+                <Package className="w-5 h-5 text-blue-500" />
+                <div>
+                  <p className="font-medium text-gray-900">Order Total</p>
+                  <p className="text-sm text-gray-600">₹{orderDetails.total.toLocaleString()}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-3">
+                <Clock className="w-5 h-5 text-orange-500" />
+                <div>
+                  <p className="font-medium text-gray-900">Estimated Delivery</p>
+                  <p className="text-sm text-gray-600">{orderDetails.estimatedDelivery}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 rounded-lg p-4 mt-4">
+              <h4 className="font-semibold text-blue-900 mb-2">What's Next?</h4>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• You'll receive a confirmation email shortly</li>
+                <li>• Track your order in the "My Orders" section</li>
+                <li>• We'll notify you when your order ships</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="p-6 bg-gray-50 flex flex-col sm:flex-row gap-3">
+            <Button
+              onClick={() => navigate('/account')}
+              variant="outline"
+              className="flex-1 border-[#1C1C2D] text-[#1C1C2D] hover:bg-[#1C1C2D] hover:text-white"
+            >
+              View Orders
+            </Button>
+            <Button
+              onClick={() => {
+                setShowOrderConfirmation(false);
+                navigate('/');
+              }}
+              className="flex-1 bg-[#1C1C2D] hover:bg-[#2D2D3D] text-white"
+            >
+              Continue Shopping
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
+    <>
+      <OrderConfirmationModal />
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <Header />
 
@@ -778,6 +877,7 @@ const CartPage: React.FC = () => {
 
       <Footer />
     </div>
+    </>
   );
 };
 

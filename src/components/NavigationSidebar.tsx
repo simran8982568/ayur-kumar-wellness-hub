@@ -1,42 +1,48 @@
-
-import React, { useState } from 'react';
-import { X, ChevronDown, ChevronRight, Home, ShoppingCart, Heart, User, Info, Stethoscope } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import React, { useState } from "react";
+import {
+  X,
+  ChevronDown,
+  ChevronRight,
+  Home,
+  ShoppingCart,
+  User,
+  Info,
+  Stethoscope,
+} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 interface NavigationSidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }) => {
+const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const navigate = useNavigate();
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
   const toggleSection = (section: string) => {
     setExpandedSection(expandedSection === section ? null : section);
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('currentUser');
-    navigate('/');
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("currentUser");
+    navigate("/");
     onClose();
-    window.dispatchEvent(new CustomEvent('authStateChanged'));
+    window.dispatchEvent(new CustomEvent("authStateChanged"));
   };
 
   const categories = [
-    { name: "Men's Sexual Health", slug: 'mens-sexual-health' },
-    { name: "Women's Sexual Health", slug: 'womens-sexual-health' },
-    { name: 'Erectile Dysfunction', slug: 'erectile-dysfunction' },
-    { name: 'Nightfall & PE', slug: 'nightfall-pe' },
-    { name: 'Infertility Support', slug: 'infertility-support' },
-    { name: 'Hormonal Imbalance', slug: 'hormonal-imbalance' },
-    { name: 'Loss of Libido', slug: 'libido-boosters' },
-    { name: 'Penis Enlargement', slug: 'penis-enlargement' },
-    { name: 'Sexual Wellness Combos', slug: 'combos-kits' },
-    { name: 'Unani & Homeopathic', slug: 'unani-homeopathy' }
+    { name: "Performance & Endurance Boosters", slug: "performance-endurance" },
+    {
+      name: "Strength & Wellness Support (Sachet Format)",
+      slug: "strength-wellness-sachets",
+    },
   ];
 
   if (!isOpen) return null;
@@ -44,18 +50,22 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
   return (
     <>
       {/* Backdrop */}
-      <div 
+      <div
         className="fixed inset-0 bg-black/50 z-40 lg:hidden"
         onClick={onClose}
       />
-      
+
       {/* Sidebar */}
-      <div className={`fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-900 shadow-xl z-50 transform transition-transform duration-300 overflow-y-auto ${
-        isOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}>
+      <div
+        className={`fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-900 shadow-xl z-50 transform transition-transform duration-300 overflow-y-auto ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-black dark:text-white">Menu</h2>
+          <h2 className="text-lg font-semibold text-black dark:text-white">
+            Menu
+          </h2>
           <Button
             variant="ghost"
             size="sm"
@@ -81,21 +91,21 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
           {/* Shop by Category */}
           <div>
             <button
-              onClick={() => toggleSection('categories')}
+              onClick={() => toggleSection("categories")}
               className="flex items-center justify-between w-full px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
             >
               <div className="flex items-center space-x-3">
                 <ShoppingCart className="h-5 w-5" />
                 <span>Shop by Category</span>
               </div>
-              {expandedSection === 'categories' ? (
+              {expandedSection === "categories" ? (
                 <ChevronDown className="h-4 w-4" />
               ) : (
                 <ChevronRight className="h-4 w-4" />
               )}
             </button>
-            
-            {expandedSection === 'categories' && (
+
+            {expandedSection === "categories" && (
               <div className="ml-8 mt-2 space-y-1">
                 {categories.map((category) => (
                   <Link
@@ -134,31 +144,12 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ isOpen, onClose }
           ) : (
             <>
               <Link
-                to="/wishlist"
-                onClick={onClose}
-                className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
-              >
-                <Heart className="h-5 w-5" />
-                <span>Wishlist</span>
-              </Link>
-
-              <Link
                 to="/account"
                 onClick={onClose}
                 className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
               >
                 <User className="h-5 w-5" />
                 <span>My Account</span>
-              </Link>
-
-              {/* Feedback link only for authenticated users */}
-              <Link
-                to="/feedback"
-                onClick={onClose}
-                className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-black dark:text-white transition-colors"
-              >
-                <Info className="h-5 w-5" />
-                <span>Feedback</span>
               </Link>
             </>
           )}

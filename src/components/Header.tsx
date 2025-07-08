@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Menu, ShoppingCart, Search, User } from "lucide-react";
+import { Menu, ShoppingCart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavigationSidebar from "./NavigationSidebar";
 import CartSidebar from "./CartSidebar";
-import CheckoutSidebar from "./CheckoutSidebar";
+
+import SearchWithSuggestions from "./SearchWithSuggestions";
 
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +13,6 @@ const Header: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [cartItems, setCartItems] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   // Check if user is logged in
@@ -54,13 +54,7 @@ const Header: React.FC = () => {
     }
   };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/shop-all?search=${encodeURIComponent(searchQuery)}`);
-      setSearchQuery("");
-    }
-  };
+
 
   return (
     <>
@@ -90,22 +84,10 @@ const Header: React.FC = () => {
           </div>
 
           {/* Search Bar - Desktop */}
-          <form
-            onSubmit={handleSearch}
+          <SearchWithSuggestions
             className="hidden md:flex flex-1 max-w-md mx-8"
-          >
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <input
-                type="text"
-                placeholder="Search products, categories..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 bg-white text-[#1C1C2D] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E5002B] focus:border-transparent transition-colors duration-200"
-                aria-label="Search products"
-              />
-            </div>
-          </form>
+            placeholder="Search products, categories..."
+          />
 
           {/* Right side controls */}
           <div className="flex items-center space-x-2">
@@ -139,10 +121,10 @@ const Header: React.FC = () => {
               size="sm"
               onClick={handleCartClick}
               className="relative text-[#1C1C2D] hover:bg-gray-100 rounded-xl p-2"
-              aria-label={`Shopping cart with ${cartItems} items`}
+              aria-label={isLoggedIn ? `Shopping cart with ${cartItems} items` : "Shopping cart"}
             >
               <ShoppingCart className="h-5 w-5" />
-              {cartItems > 0 && (
+              {isLoggedIn && cartItems > 0 && (
                 <span className="absolute -top-1 -right-1 bg-[#E5002B] text-white text-xs h-5 w-5 flex items-center justify-center rounded-full font-medium">
                   {cartItems}
                 </span>
@@ -164,19 +146,11 @@ const Header: React.FC = () => {
 
         {/* Mobile Search Bar */}
         <div className="md:hidden px-4 pb-3">
-          <form onSubmit={handleSearch}>
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <input
-                type="text"
-                placeholder="Search products, categories..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 bg-white text-[#1C1C2D] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E5002B] focus:border-transparent transition-colors duration-200"
-                aria-label="Search products"
-              />
-            </div>
-          </form>
+          <SearchWithSuggestions
+            className="w-full"
+            placeholder="Search products, categories..."
+            isMobile={true}
+          />
         </div>
       </header>
 
@@ -194,10 +168,7 @@ const Header: React.FC = () => {
         }}
       />
 
-      <CheckoutSidebar
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-      />
+     
     </>
   );
 };

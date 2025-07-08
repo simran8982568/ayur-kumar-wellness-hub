@@ -44,7 +44,7 @@ const ViewAll: React.FC = () => {
               variant={selectedCategory === category.id ? "default" : "outline"}
               className={selectedCategory === category.id 
                 ? "bg-[#111111] text-white" 
-                : "border-[#111111] text-[#111111] hover:bg-[#111111] hover:text-white"
+                : "border-[#111111] text-[#111111] hover:bg-[#302e2e] hover:text-white"
               }
             >
               {category.name}

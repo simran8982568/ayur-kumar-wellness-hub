@@ -14,12 +14,12 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isDarkMode, onToggleTh
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Shop All', href: '/shop' },
-    { name: "Men's Health", href: '/men' },
-    { name: "Women's Wellness", href: '/women' },
-    { name: 'Combos', href: '/combos' },
-    { name: 'Essentials', href: '/essentials' },
-    { name: 'Consult Doctor', href: '/consult' },
+    { name: 'Shop All', href: '/shop-all' },
+    { name: "Men's Sexual Health", href: '/category/mens-sexual-health' },
+    { name: "Women's Sexual Health", href: '/category/womens-sexual-health' },
+    { name: 'Erectile Dysfunction', href: '/category/erectile-dysfunction' },
+    { name: 'Hormonal Imbalance', href: '/category/hormonal-imbalance' },
+    { name: 'Consult Doctor', href: '/consultation-booking' },
     { name: 'Blog', href: '/blog' }
   ];
 

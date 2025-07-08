@@ -1,35 +1,73 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import DoctorProfile from '@/components/DoctorProfile';
 import TrustBadges from '@/components/TrustBadges';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 
 const About: React.FC = () => {
+  const navigate = useNavigate();
+
   const highlights = [
     {
-      name: 'Immuno+ Juice',
-      benefit: 'Natural Immunity Booster',
-      image: '/api/placeholder/200/200'
+      id: 1,
+      name: "Dr. Kumar's Power Stride Juice",
+      benefit: 'Advanced Performance & Stamina Booster',
+      image: '/api/placeholder/200/200',
+      price: 899,
+      originalPrice: 1199,
+      category: 'mens-sexual-health',
+      slug: 'dr-kumar-power-stride-juice',
+      description: 'An advanced juice blend for men & women who want to perform better, feel stronger, and stay energized – day and night.'
     },
     {
-      name: 'Shilajit Capsules',
-      benefit: 'Energy & Vitality',
-      image: '/api/placeholder/200/200'
+      id: 2,
+      name: "Dr. Kumar's Power Stride Capsules",
+      benefit: 'Strength & Endurance Support',
+      image: '/api/placeholder/200/200',
+      price: 749,
+      originalPrice: 999,
+      category: 'mens-sexual-health',
+      slug: 'dr-kumar-power-stride-capsules',
+      description: 'Strength packed in capsule form – a blend of nature\'s best stamina-boosting herbs to help you stay active, focused, and energized.'
     },
     {
-      name: 'Digestive Balance Tonic',
-      benefit: 'Gut Health Support',
-      image: '/api/placeholder/200/200'
+      id: 3,
+      name: "Dr. Kumar L Sachets (Large)",
+      benefit: 'Natural Vitality & Internal Power',
+      image: '/api/placeholder/200/200',
+      price: 799,
+      originalPrice: 1099,
+      category: 'mens-sexual-health',
+      slug: 'dr-kumar-l-sachets-large',
+      description: 'Recharge your day with Dr. Kumar\'s L Sachets – a herbal tonic crafted for natural strength, vitality, and internal power.'
     },
     {
-      name: 'Skin Glow Mix',
-      benefit: 'Radiant Skin Care',
-      image: '/api/placeholder/200/200'
+      id: 4,
+      name: "Complete Sexual Health Combo",
+      benefit: 'Ultimate Male Wellness Package',
+      image: '/api/placeholder/200/200',
+      price: 2199,
+      originalPrice: 3299,
+      category: 'combos-kits',
+      slug: 'complete-sexual-health-combo',
+      description: 'Ultimate package for male sexual wellness and vitality combining our best-selling products.'
     }
   ];
+
+  const handleProductClick = (product: typeof highlights[0]) => {
+    navigate(`/product/${product.slug}`, { state: { product } });
+  };
+
+  const handleViewAllProducts = () => {
+    navigate('/shop-all');
+  };
+
+  const handleViewIngredients = () => {
+    navigate('/ingredients');
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">
@@ -49,7 +87,7 @@ const About: React.FC = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white mb-4 tracking-tight">
               Dr. Kumar Laboratories
             </h1>
-            <h2 className="text-xl md:text-2xl text-brand-primary font-medium mb-6">
+            <h2 className="text-xl md:text-2xl text-[#1C1C2D] font-medium mb-6">
               Modern Ayurvedic Wellness
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-base max-w-2xl mx-auto">
@@ -96,45 +134,13 @@ const About: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                    <Button asChild className="bg-brand-primary hover:bg-brand-secondary text-white">
-                      <Link to="/shop-all">View All Products</Link>
-                    </Button>
-                    <Button variant="outline" className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white">
-                      View Ingredients
-                    </Button>
-                  </div>
-                </div>
+               
+               </div>
               </div>
             </div>
           </div>
 
-          {/* Product Highlights */}
-          <div className="mb-16">
-            <h3 className="text-2xl font-bold text-black dark:text-white mb-8 text-center">
-              Product Highlights
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {highlights.map((product, index) => (
-                <div key={index} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-4 text-center">
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="w-full h-32 object-cover mb-4"
-                  />
-                  <h4 className="font-semibold text-black dark:text-white mb-2">
-                    {product.name}
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                    {product.benefit}
-                  </p>
-                  <Button size="sm" variant="outline" className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white">
-                    View Product
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
+          
 
           {/* Founder's Note */}
           <div className="bg-gray-50 dark:bg-gray-900 p-8 text-center">
@@ -148,7 +154,7 @@ const About: React.FC = () => {
                 approach with the timeless wisdom of Ayurveda to create solutions that truly make a difference 
                 in people's lives."
               </p>
-              <p className="text-lg font-medium text-brand-primary">
+              <p className="text-lg font-medium text-[#1C1C2D]">
                 – Dr. Kumar
               </p>
             </div>

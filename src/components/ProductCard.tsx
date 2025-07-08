@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Star, ShoppingCart, Minus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { requireAuth } from '@/utils/auth';
 
 interface Product {
   id: number;
@@ -134,28 +135,43 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
   const handleBuyNow = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsLoading(true);
-    
-    // Add to cart and redirect to cart page
-    if (!isInCart) {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      const existingItem = cart.find((item: any) => item.id === product.id);
-      
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push({ ...product, quantity: 1 });
+
+    // Check authentication before proceeding
+    requireAuth(
+      () => {
+        // User is authenticated, proceed with buy now
+        if (!isInCart) {
+          const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+          const existingItem = cart.find((item: any) => item.id === product.id);
+
+          if (existingItem) {
+            existingItem.quantity += 1;
+          } else {
+            cart.push({ ...product, quantity: 1 });
+          }
+
+          localStorage.setItem('cart', JSON.stringify(cart));
+          window.dispatchEvent(new CustomEvent('cartUpdated'));
+        }
+
+        if (onBuyNow) {
+          onBuyNow(product);
+        }
+
+        navigate('/cart-page');
+        setIsLoading(false);
+      },
+      '/sign-in',
+      {
+        type: 'buy_now',
+        product: product,
+        timestamp: Date.now()
       }
-      
-      localStorage.setItem('cart', JSON.stringify(cart));
-      window.dispatchEvent(new CustomEvent('cartUpdated'));
-    }
-    
-    if (onBuyNow) {
-      onBuyNow(product);
-    }
-    
-    navigate('/cart-page');
-    setIsLoading(false);
+    );
+
+    // If not authenticated, requireAuth will handle redirect
+    // Reset loading state in case of redirect
+    setTimeout(() => setIsLoading(false), 100);
   };
 
   return (

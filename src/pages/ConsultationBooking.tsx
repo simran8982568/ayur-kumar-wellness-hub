@@ -1,57 +1,83 @@
-
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const ConsultationBooking: React.FC = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
-  
+  const navigate = useNavigate();
+
+  // Check authentication
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+
   const [formData, setFormData] = useState({
-    fullName: '',
-    age: '',
-    gender: '',
-    mobileNumber: '',
-    emailAddress: '',
-    healthConcern: '',
-    concernDescription: '',
-    preferredDate: '',
-    preferredTime: '',
-    preferredDoctor: ''
+    fullName: "",
+    age: "",
+    gender: "",
+    mobileNumber: "",
+    emailAddress: "",
+    healthConcern: "",
+    concernDescription: "",
+    preferredDate: "",
   });
 
+  // Authentication check and auto-populate form
+  useEffect(() => {
+    // Redirect to sign-in if not authenticated
+    if (!isLoggedIn) {
+      // Store the intended destination for after login
+      sessionStorage.setItem("postLoginRedirect", "/consultation-booking");
+      navigate("/sign-in");
+      return;
+    }
+
+    // Auto-populate form with user data if authenticated
+    if (currentUser && Object.keys(currentUser).length > 0) {
+      setFormData((prevData) => ({
+        ...prevData,
+        fullName: `${currentUser.firstName || ""} ${
+          currentUser.lastName || ""
+        }`.trim(),
+        emailAddress: currentUser.email || "",
+        mobileNumber: currentUser.phone || "",
+      }));
+    }
+  }, [isLoggedIn, currentUser, navigate]);
+
   const healthConcerns = [
-    'Erectile Dysfunction',
-    'Premature Ejaculation',
-    'Low Libido',
-    'Infertility',
-    'Hormonal Imbalance',
-    'Penis Enlargement',
-    'Women\'s Health',
-    'Other'
+    "Erectile Dysfunction",
+    "Premature Ejaculation",
+    "Low Libido",
+    "Infertility",
+    "Hormonal Imbalance",
+    "Penis Enlargement",
+
+    "Other",
   ];
 
-  const doctors = [
-    'Dr. Kumar (Ayurvedic Specialist)',
-    'Dr. Priya (Women\'s Health)',
-    'Dr. Singh (Unani Medicine)',
-    'Any Available Doctor'
-  ];
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.fullName || !formData.age || !formData.gender || !formData.mobileNumber) {
+
+    if (
+      !formData.fullName ||
+      !formData.age ||
+      !formData.gender ||
+      !formData.mobileNumber
+    ) {
       toast({
         title: "Please fill required fields",
         description: "Full name, age, gender, and mobile number are required.",
@@ -61,47 +87,44 @@ const ConsultationBooking: React.FC = () => {
     }
 
     // Save consultation request (in real app, this would go to backend)
-    localStorage.setItem('consultationRequest', JSON.stringify(formData));
-    
+    localStorage.setItem("consultationRequest", JSON.stringify(formData));
+
     toast({
       title: "Request Submitted!",
-      description: "Thank you! We'll contact you shortly to finalize your consultation.",
+      description:
+        "Thank you! We'll contact you shortly to finalize your consultation.",
     });
 
     // Clear form
     setFormData({
-      fullName: '',
-      age: '',
-      gender: '',
-      mobileNumber: '',
-      emailAddress: '',
-      healthConcern: '',
-      concernDescription: '',
-      preferredDate: '',
-      preferredTime: '',
-      preferredDoctor: ''
+      fullName: "",
+      age: "",
+      gender: "",
+      mobileNumber: "",
+      emailAddress: "",
+      healthConcern: "",
+      concernDescription: "",
+      preferredDate: "",
     });
   };
 
   const handleClearForm = () => {
     setFormData({
-      fullName: '',
-      age: '',
-      gender: '',
-      mobileNumber: '',
-      emailAddress: '',
-      healthConcern: '',
-      concernDescription: '',
-      preferredDate: '',
-      preferredTime: '',
-      preferredDoctor: ''
+      fullName: "",
+      age: "",
+      gender: "",
+      mobileNumber: "",
+      emailAddress: "",
+      healthConcern: "",
+      concernDescription: "",
+      preferredDate: "",
     });
   };
 
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
@@ -109,9 +132,6 @@ const ConsultationBooking: React.FC = () => {
             <h1 className="text-3xl font-bold text-black dark:text-white mb-4">
               Book Your Online Consultation
             </h1>
-            <p className="text-gray-600 dark:text-gray-300 text-lg">
-              Fill in your details and our Ayurvedic or Unani doctor will confirm a suitable appointment time based on availability. Private, personalized & secure.
-            </p>
           </div>
 
           {/* Illustration */}
@@ -187,7 +207,7 @@ const ConsultationBooking: React.FC = () => {
                   name="mobileNumber"
                   value={formData.mobileNumber}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600"
                   placeholder="Enter your mobile number"
                   pattern="[0-9]{10}"
                   required
@@ -204,7 +224,7 @@ const ConsultationBooking: React.FC = () => {
                   name="emailAddress"
                   value={formData.emailAddress}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600"
                   placeholder="Enter your email address"
                 />
               </div>
@@ -218,11 +238,13 @@ const ConsultationBooking: React.FC = () => {
                   name="healthConcern"
                   value={formData.healthConcern}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600"
                 >
                   <option value="">Select Health Concern</option>
                   {healthConcerns.map((concern) => (
-                    <option key={concern} value={concern}>{concern}</option>
+                    <option key={concern} value={concern}>
+                      {concern}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -237,7 +259,7 @@ const ConsultationBooking: React.FC = () => {
                   value={formData.concernDescription}
                   onChange={handleInputChange}
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600"
                   placeholder="Please describe your health concern in detail..."
                 />
               </div>
@@ -252,48 +274,16 @@ const ConsultationBooking: React.FC = () => {
                   name="preferredDate"
                   value={formData.preferredDate}
                   onChange={handleInputChange}
-                  min={new Date().toISOString().split('T')[0]}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
+                  min={new Date().toISOString().split("T")[0]}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-blue-600"
                 />
-              </div>
-
-              {/* Preferred Time */}
-              <div>
-                <label className="block text-sm font-medium text-black dark:text-white mb-2">
-                  Preferred Time (Optional)
-                </label>
-                <input
-                  type="time"
-                  name="preferredTime"
-                  value={formData.preferredTime}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
-                />
-              </div>
-
-              {/* Preferred Doctor */}
-              <div>
-                <label className="block text-sm font-medium text-black dark:text-white mb-2">
-                  Preferred Doctor (Optional)
-                </label>
-                <select
-                  name="preferredDoctor"
-                  value={formData.preferredDoctor}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#c74a1b] dark:focus:ring-blue-600"
-                >
-                  <option value="">Select Preferred Doctor</option>
-                  {doctors.map((doctor) => (
-                    <option key={doctor} value={doctor}>{doctor}</option>
-                  ))}
-                </select>
               </div>
 
               {/* Action Buttons */}
               <div className="flex gap-4 pt-4  ">
                 <Button
                   type="submit"
-                  className="flex-1 bg-[#c74a1b] dark:bg-blue-600 hover:bg-[#b8441a] dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
+                  className="flex-1 bg-[#111111] dark:bg-blue-600 hover:bg-[#302e2e]  dark:hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
                 >
                   Request Appointment
                 </Button>
@@ -310,7 +300,7 @@ const ConsultationBooking: React.FC = () => {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

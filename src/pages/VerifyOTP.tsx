@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { setAuthenticatedUser, executePostLoginIntent } from '@/utils/auth';
 
 const VerifyOTP = () => {
   const navigate = useNavigate();
@@ -58,13 +59,23 @@ const VerifyOTP = () => {
     
     if (existingUser) {
       // Existing user - login and go to account
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('currentUser', JSON.stringify(existingUser));
+      setAuthenticatedUser(existingUser);
       toast({
         title: "Login Successful",
         description: "Welcome back to Dr. Kumar Laboratories",
       });
-      navigate('/account');
+
+      // Check for post-login intent and execute it
+      const intentExecuted = executePostLoginIntent();
+
+      // Check for post-login redirect (for consultation booking)
+      const postLoginRedirect = sessionStorage.getItem("postLoginRedirect");
+      if (postLoginRedirect) {
+        sessionStorage.removeItem("postLoginRedirect");
+        navigate(postLoginRedirect);
+      } else if (!intentExecuted) {
+        navigate('/account');
+      }
     } else {
       // New user - go to sign up
       navigate('/sign-up', { state: { phoneNumber } });

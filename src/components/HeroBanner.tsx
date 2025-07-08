@@ -11,8 +11,8 @@ const HeroBanner: React.FC = () => {
   const slides = [
     {
       id: 1,
-      title: "Ayurvedic Gold Inside",
-      subtitle: "Pure Traditional Wellness",
+      title: "Dr. Kumar's Power Stride Juice ",
+      subtitle: "Power Stride Juice is a powerful Ayurvedic formula",
       offer: "SAVE ₹688",
       description: "Discover the power of ancient Ayurveda with our premium herbal formulations",
       cta: "Shop Now",
@@ -22,7 +22,7 @@ const HeroBanner: React.FC = () => {
     },
     {
       id: 2,
-      title: "Immunity Booster Combo",
+      title: "Dr. Kumar L Sachets (Large)",
       subtitle: "Strengthen Your Natural Defense",
       offer: "30% OFF",
       description: "Boost your immunity with our scientifically backed Ayurvedic supplements",

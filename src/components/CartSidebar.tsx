@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { X, Plus, Minus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -127,7 +126,10 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose, onCheckout }
               <span className="font-semibold text-[#1C1C2D]">Total: ₹{calculateTotal()}</span>
             </div>
             <Button
-              onClick={onCheckout}
+              onClick={() => {
+                onClose();
+                window.location.href = '/cart-page';
+              }}
               className="w-full bg-[#111111] hover:bg-[#302e2e] text-white rounded-xl"
             >
               Checkout

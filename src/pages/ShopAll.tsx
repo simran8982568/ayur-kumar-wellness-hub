@@ -81,7 +81,7 @@ const ShopAll: React.FC = () => {
 
   const handleBuyNow = (product: any) => {
     // ProductCard will handle adding to cart internally
-    window.location.href = '/checkout';
+    window.location.href = '/cart-page';
   };
 
   return (

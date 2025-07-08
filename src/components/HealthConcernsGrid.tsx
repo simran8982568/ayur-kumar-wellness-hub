@@ -1,9 +1,8 @@
-
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ChevronRight, ChevronUp, EyeOff } from 'lucide-react';
-import { healthConcerns, HealthConcern } from '@/data/healthConcerns';
-import { Button } from '@/components/ui/button';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ChevronRight, ChevronUp, EyeOff } from "lucide-react";
+import { healthConcerns, HealthConcern } from "@/data/healthConcerns";
+import { Button } from "@/components/ui/button";
 
 const HealthConcernsGrid: React.FC = () => {
   const [showAll, setShowAll] = useState(false);
@@ -15,7 +14,8 @@ const HealthConcernsGrid: React.FC = () => {
     navigate(`/category/${concern.slug}`);
   };
 
-  const displayedConcerns = showAll ? healthConcerns : healthConcerns.slice(0, 2);
+  // Show all concerns (2) and center them for attractive view
+  const displayedConcerns = healthConcerns;
 
   if (isHidden) {
     return null;
@@ -40,17 +40,18 @@ const HealthConcernsGrid: React.FC = () => {
             </Button>
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Choose from our specialized treatments designed to address your specific health needs with Ayurvedic solutions.
+            Choose from our specialized treatments designed to address your
+            specific health needs with Ayurvedic solutions.
           </p>
         </div>
 
-        {/* Responsive grid: 1 col on xs, 2 on sm */}
-        <div className="grid grid-cols-1 xs:grid-cols-2 gap-4 lg:gap-6 justify-items-center max-w-2xl mx-auto">
+        {/* Centered grid for 2 concerns, attractive view */}
+        <div className="flex justify-center gap-6 w-full max-w-2xl mx-auto">
           {displayedConcerns.map((concern) => (
             <div
               key={concern.id}
               onClick={() => handleConcernClick(concern)}
-              className="w-full rounded-xl shadow p-4 bg-white hover:shadow-lg transition-all duration-300 cursor-pointer group border border-gray-200"
+              className="w-full max-w-[220px] rounded-xl shadow p-3 bg-white hover:shadow-lg transition-all duration-300 cursor-pointer group border border-gray-200"
             >
               <div className="text-center">
                 <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center bg-[#111111]/10 rounded-full group-hover:bg-[#111111]/20 transition-colors">

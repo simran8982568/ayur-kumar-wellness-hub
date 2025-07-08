@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 
 const HealthConcerns: React.FC = () => {
   const concerns = [
-    { icon: '👨‍⚕️', title: "Men's Health", href: '/mens-health', description: 'Vitality & Performance' },
-    { icon: '🌸', title: "Women's Wellness", href: '/womens-health', description: 'Hormonal Balance' },
-    { icon: '🛡️', title: 'Immunity', href: '/immunity', description: 'Natural Defense' },
-    { icon: '🌿', title: 'Digestion', href: '/digestion', description: 'Gut Health' },
-    { icon: '😴', title: 'Stress & Sleep', href: '/stress-sleep', description: 'Mental Wellness' },
-    { icon: '🦴', title: 'Joint Care', href: '/joint-care', description: 'Bone Health' },
-    { icon: '✨', title: 'Skin & Hair', href: '/skin-hair', description: 'Beauty Care' },
-    { icon: '⚖️', title: 'Weight Management', href: '/weight', description: 'Healthy Balance' }
+    { icon: '👨‍⚕️', title: "Men's Sexual Health", href: '/category/mens-sexual-health', description: 'Vitality & Performance' },
+    { icon: '🌸', title: "Women's Sexual Health", href: '/category/womens-sexual-health', description: 'Hormonal Balance' },
+    { icon: '🔥', title: 'Erectile Dysfunction', href: '/category/erectile-dysfunction', description: 'Natural Solutions' },
+    { icon: '⚡', title: 'Premature Ejaculation', href: '/category/premature-ejaculation', description: 'Performance Support' },
+    { icon: '⚖️', title: 'Hormonal Imbalance', href: '/category/hormonal-imbalance', description: 'Natural Balance' },
+    { icon: '👶', title: 'Infertility Support', href: '/category/infertility-support', description: 'Fertility Enhancement' },
+    { icon: '🌿', title: 'General Wellness', href: '/category/general-wellness', description: 'Overall Health' },
+    { icon: '💊', title: 'All Products', href: '/shop-all', description: 'Complete Range' }
   ];
 
   return (

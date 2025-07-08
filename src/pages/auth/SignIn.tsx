@@ -1,44 +1,57 @@
-
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { setAuthenticatedUser, executePostLoginIntent } from "@/utils/auth";
 
 const AuthSignIn: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  
-  const phoneNumber = location.state?.phoneNumber || '';
-  
+
+  const phoneNumber = location.state?.phoneNumber || "";
+
   const [formData, setFormData] = useState({
     phone: phoneNumber,
-    password: ''
+    password: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Check credentials
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find((u: any) => u.phone === formData.phone && u.password === formData.password);
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const user = users.find(
+      (u: any) => u.phone === formData.phone && u.password === formData.password
+    );
 
     if (user) {
-      localStorage.setItem('currentUser', JSON.stringify(user));
+      setAuthenticatedUser(user);
       toast({
         title: "Welcome Back!",
         description: "Successfully signed in to your account.",
       });
-      navigate('/account');
+
+      // Check for post-login intent and execute it
+      const intentExecuted = executePostLoginIntent();
+
+      // Check for post-login redirect (for consultation booking)
+      const postLoginRedirect = sessionStorage.getItem("postLoginRedirect");
+      if (postLoginRedirect) {
+        sessionStorage.removeItem("postLoginRedirect");
+        navigate(postLoginRedirect);
+      } else if (!intentExecuted) {
+        navigate("/account");
+      }
     } else {
       toast({
         title: "Invalid Credentials",
@@ -51,7 +64,7 @@ const AuthSignIn: React.FC = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-md mx-auto">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
@@ -96,7 +109,7 @@ const AuthSignIn: React.FC = () => {
               <div className="text-right">
                 <button
                   type="button"
-                  onClick={() => navigate('/auth/forgot-password')}
+                  onClick={() => navigate("/auth/forgot-password")}
                   className="text-[#111111] dark:text-blue-400 hover:underline text-sm"
                 >
                   Forgot password?
@@ -113,7 +126,7 @@ const AuthSignIn: React.FC = () => {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

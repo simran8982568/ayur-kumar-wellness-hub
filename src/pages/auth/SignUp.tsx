@@ -12,7 +12,7 @@ const AuthSignUp: React.FC = () => {
   const { toast } = useToast();
   
   const phoneNumber = location.state?.phoneNumber || '';
-  
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
