@@ -29,51 +29,27 @@ const CategoryPage: React.FC = () => {
   const productsPerPage = 12; // Increased for better grid layout
 
   // Category content mapping with descriptions
-  const categoryContent: Record<string, { title: string; description: string; subtitle?: string }> = {
+  const categoryContent: Record<
+    string,
+    { title: string; description: string; subtitle?: string }
+  > = {
     "mens-sexual-health": {
       title: "Men's Sexual Health",
-      description: "Choose from our specialized treatments designed to address your specific health needs with Ayurvedic solutions.",
-      subtitle: "Complete wellness solutions for male health and vitality"
-    },
-    "womens-sexual-health": {
-      title: "Women's Sexual Health",
-      description: "Natural feminine wellness and hormonal balance solutions designed for women's unique health needs.",
-      subtitle: "Comprehensive women's health and wellness support"
-    },
-    "erectile-dysfunction": {
-      title: "Erectile Dysfunction",
-      description: "Specialized Ayurvedic formulations to support male performance and confidence naturally.",
-      subtitle: "Natural support for male performance and confidence"
-    },
-    "premature-ejaculation": {
-      title: "Premature Ejaculation",
-      description: "Natural stamina enhancement and performance control solutions using traditional herbs.",
-      subtitle: "Enhance stamina and performance control naturally"
-    },
-    "hormonal-imbalance": {
-      title: "Hormonal Imbalance",
-      description: "Natural hormonal regulation products for optimal health and wellness balance.",
-      subtitle: "Restore hormonal balance naturally"
-    },
-    "infertility-support": {
-      title: "Infertility Support",
-      description: "Natural fertility enhancement solutions to support reproductive health.",
-      subtitle: "Natural fertility and reproductive health support"
-    },
-    "general-wellness": {
-      title: "General Wellness",
-      description: "Overall health and immunity support products for complete wellness.",
-      subtitle: "Complete health and immunity support"
+      description:
+        "Choose from our specialized treatments designed to address your specific health needs with Ayurvedic solutions.",
+      subtitle: "Complete wellness solutions for male health and vitality",
     },
     "performance-endurance": {
       title: "Performance & Endurance Boosters",
-      description: "Advanced formulations to boost physical performance and endurance naturally.",
-      subtitle: "Enhance your physical performance and stamina"
+      description:
+        "Advanced formulations to boost physical performance and endurance naturally.",
+      subtitle: "Enhance your physical performance and stamina",
     },
     "strength-wellness-sachets": {
-      title: "Strength & Wellness Support (Sachet Format)",
-      description: "Convenient sachet format wellness products for daily strength and vitality.",
-      subtitle: "Convenient daily wellness in sachet format"
+      title: "Strength & Wellness Support",
+      description:
+        "Convenient sachet format wellness products for daily strength and vitality.",
+      subtitle: "Convenient daily wellness in sachet format",
     },
   };
 
@@ -85,7 +61,7 @@ const CategoryPage: React.FC = () => {
     },
     {
       value: "strength-wellness-sachets",
-      label: "Strength & Wellness Support (Sachet Format)",
+      label: "Strength & Wellness Support",
     },
   ];
 
@@ -102,24 +78,23 @@ const CategoryPage: React.FC = () => {
 
       try {
         // Simulate loading delay for better UX
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise((resolve) => setTimeout(resolve, 300));
 
         let products: Product[] = [];
 
         // Get products based on category
-        if (category === "mens-sexual-health") {
-          products = [...mensHealthProducts];
-        } else {
-          // For other categories, filter from all products
-          products = allProducts.filter((product) => product.category === category);
-        }
+        products = allProducts.filter(
+          (product) => product.category === category
+        );
 
         // If we're on a specific subcategory page, filter by that subcategory
         if (
           category === "performance-endurance" ||
           category === "strength-wellness-sachets"
         ) {
-          products = mensHealthProducts.filter((product) => product.subcategory === category);
+          products = mensHealthProducts.filter(
+            (product) => product.subcategory === category
+          );
         } else if (selectedSubcategory !== "all") {
           products = products.filter(
             (product) => product.subcategory === selectedSubcategory
@@ -229,7 +204,10 @@ const CategoryPage: React.FC = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, index) => (
-              <div key={index} className="bg-white border border-gray-200 rounded-lg p-4 animate-pulse">
+              <div
+                key={index}
+                className="bg-white border border-gray-200 rounded-lg p-4 animate-pulse"
+              >
                 <div className="h-48 bg-gray-200 rounded mb-4"></div>
                 <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
                 <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
@@ -285,13 +263,8 @@ const CategoryPage: React.FC = () => {
         </div>
 
         {/* Subcategory Filter - Show for all health concern categories */}
-        {(category === "mens-sexual-health" ||
-          category === "womens-sexual-health" ||
-          category === "erectile-dysfunction" ||
-          category === "premature-ejaculation" ||
-          category === "hormonal-imbalance" ||
-          category === "infertility-support" ||
-          category === "general-wellness") && (
+        {(category === "performance-endurance" ||
+          category === "strength-wellness-sachets") && (
           <div className="mb-6">
             <div className="flex flex-wrap gap-2">
               {subcategories.map((subcategory) => (
@@ -321,8 +294,12 @@ const CategoryPage: React.FC = () => {
               className="w-full sm:w-auto border-[#1C1C2D] text-[#1C1C2D] hover:bg-[#1C1C2D] hover:text-white rounded-lg"
             >
               <Filter className="w-4 h-4 mr-2" />
-              {showFilters ? 'Hide Filters' : 'Show Filters'}
-              {showFilters ? <X className="w-4 h-4 ml-2" /> : <Filter className="w-4 h-4 ml-2" />}
+              {showFilters ? "Hide Filters" : "Show Filters"}
+              {showFilters ? (
+                <X className="w-4 h-4 ml-2" />
+              ) : (
+                <Filter className="w-4 h-4 ml-2" />
+              )}
             </Button>
           </div>
 
@@ -366,8 +343,18 @@ const CategoryPage: React.FC = () => {
                 ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                <svg
+                  className="w-4 h-4 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </div>
             </div>
@@ -382,8 +369,16 @@ const CategoryPage: React.FC = () => {
                 "No products found"
               ) : (
                 <>
-                  Showing <span className="font-semibold">{startIndex + 1}-{Math.min(endIndex, filteredProducts.length)}</span> of{" "}
-                  <span className="font-semibold">{filteredProducts.length}</span> product{filteredProducts.length !== 1 ? 's' : ''}
+                  Showing{" "}
+                  <span className="font-semibold">
+                    {startIndex + 1}-
+                    {Math.min(endIndex, filteredProducts.length)}
+                  </span>{" "}
+                  of{" "}
+                  <span className="font-semibold">
+                    {filteredProducts.length}
+                  </span>{" "}
+                  product{filteredProducts.length !== 1 ? "s" : ""}
                   {searchQuery && (
                     <span className="text-gray-500"> for "{searchQuery}"</span>
                   )}
@@ -397,12 +392,12 @@ const CategoryPage: React.FC = () => {
             <div className="flex items-center gap-4 text-sm text-gray-500">
               <span className="flex items-center gap-1">
                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                {filteredProducts.filter(p => p.inStock).length} In Stock
+                {filteredProducts.filter((p) => p.inStock).length} In Stock
               </span>
-              {filteredProducts.some(p => p.badge) && (
+              {filteredProducts.some((p) => p.badge) && (
                 <span className="flex items-center gap-1">
                   <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                  {filteredProducts.filter(p => p.badge).length} Featured
+                  {filteredProducts.filter((p) => p.badge).length} Featured
                 </span>
               )}
             </div>
@@ -414,12 +409,13 @@ const CategoryPage: React.FC = () => {
           <div className="text-center py-16">
             <div className="text-gray-400 mb-4">
               <Search className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-              <h3 className="text-xl font-semibold text-gray-600 mb-2">No products found</h3>
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                No products found
+              </h3>
               <p className="text-gray-500 mb-6">
-                {searchQuery ?
-                  `No products match "${searchQuery}". Try adjusting your search terms.` :
-                  "No products available in this category at the moment."
-                }
+                {searchQuery
+                  ? `No products match "${searchQuery}". Try adjusting your search terms.`
+                  : "No products available in this category at the moment."}
               </p>
               {searchQuery && (
                 <Button
@@ -437,11 +433,11 @@ const CategoryPage: React.FC = () => {
             {/* Products Grid - Responsive Layout */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
               {currentProducts.map((product) => (
-                <div key={`${product.category}-${product.id}`} className="w-full">
-                  <ProductCard
-                    product={product}
-                    onBuyNow={handleBuyNow}
-                  />
+                <div
+                  key={`${product.category}-${product.id}`}
+                  className="w-full"
+                >
+                  <ProductCard product={product} onBuyNow={handleBuyNow} />
                 </div>
               ))}
             </div>
@@ -450,7 +446,8 @@ const CategoryPage: React.FC = () => {
             {filteredProducts.length > currentProducts.length && (
               <div className="text-center mt-8 p-4 bg-gray-50 rounded-lg">
                 <p className="text-gray-600">
-                  Showing {currentProducts.length} of {filteredProducts.length} products
+                  Showing {currentProducts.length} of {filteredProducts.length}{" "}
+                  products
                 </p>
               </div>
             )}

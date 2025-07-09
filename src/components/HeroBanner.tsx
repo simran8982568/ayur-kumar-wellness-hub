@@ -1,54 +1,64 @@
-
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const HeroBanner: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
 
+  // Example: In future, fetch slides from backend and perform CRUD operations
+  // const [slides, setSlides] = useState<ProductBannerType[]>([]);
+  // useEffect(() => {
+  //   fetch('/api/banners')
+  //     .then(res => res.json())
+  //     .then(data => setSlides(data));
+  // }, []);
+
   const slides = [
     {
       id: 1,
-      title: "Dr. Kumar's Power Stride Juice ",
-      subtitle: "Power Stride Juice is a powerful Ayurvedic formula",
-      offer: "SAVE ₹688",
-      description: "Discover the power of ancient Ayurveda with our premium herbal formulations",
+      title: "Dr. Kumar's Power Stride Juice",
+      subtitle: "Advanced Performance & Stamina Booster",
+      offer: "SAVE ₹299",
+      description:
+        "An advanced juice blend for men & women who want to perform better, feel stronger, and stay energized – day and night.",
       cta: "Shop Now",
-      productSlug: "ayurvedic-gold-capsules",
+      productSlug: "dr-kumar-power-stride-juice",
       image: "/api/placeholder/600/400",
-      bgColor: "bg-white"
+      bgColor: "bg-white",
     },
     {
       id: 2,
-      title: "Dr. Kumar L Sachets (Large)",
-      subtitle: "Strengthen Your Natural Defense",
-      offer: "30% OFF",
-      description: "Boost your immunity with our scientifically backed Ayurvedic supplements",
-      cta: "Buy Now",
-      productSlug: "immunity-booster-combo",
+      title: "Dr. Kumar's Power Stride Capsules",
+      subtitle: "Strength & Endurance Support",
+      offer: "SAVE ₹299",
+      description:
+        "Strength packed in capsule form – a blend of nature's best stamina-boosting herbs to help you stay active, focused, and energized.",
+      cta: "Shop Now",
+      productSlug: "dr-kumar-power-stride-capsules",
       image: "/api/placeholder/600/400",
-      bgColor: "bg-gray-50"
+      bgColor: "bg-white",
     },
     {
       id: 3,
-      title: "Men's Vitality Pack",
-      subtitle: "Complete Wellness Solution",
-      offer: "FREE CONSULTATION",
-      description: "Enhance your vitality with our specialized men's health formulations",
-      cta: "Consult Now",
-      productSlug: "mens-vitality-pack",
+      title: "Dr. Kumar L Sachets (Large)",
+      subtitle: "Daily Strength & Recovery Support",
+      offer: "NEW LAUNCH",
+      description:
+        "Easy-to-use sachets for daily strength and recovery. Perfect for busy lifestyles and on-the-go wellness.",
+      cta: "Shop Now",
+      productSlug: "dr-kumar-l-sachets-large",
       image: "/api/placeholder/600/400",
-      bgColor: "bg-white"
-    }
+      bgColor: "bg-white",
+    },
   ];
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
-    
+
     return () => clearInterval(timer);
   }, [slides.length]);
 
@@ -60,20 +70,12 @@ const HeroBanner: React.FC = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const handleSlideClick = (slide: typeof slides[0]) => {
-    if (slide.cta === "Consult Now") {
-      navigate('/consultation-booking');
-    } else {
-      navigate(`/product/${slide.productSlug}`);
-    }
+  const handleSlideClick = (slide: (typeof slides)[0]) => {
+    navigate(`/product/${slide.productSlug}`);
   };
 
-  const handleCtaClick = (slide: typeof slides[0]) => {
-    if (slide.cta === "Consult Now") {
-      navigate('/consultation-booking');
-    } else {
-      navigate(`/product/${slide.productSlug}`);
-    }
+  const handleCtaClick = (slide: (typeof slides)[0]) => {
+    navigate(`/product/${slide.productSlug}`);
   };
 
   return (
@@ -82,12 +84,17 @@ const HeroBanner: React.FC = () => {
         <div
           key={slide.id}
           className={`absolute inset-0 transition-transform duration-500 ease-in-out cursor-pointer ${
-            index === currentSlide ? 'translate-x-0' : 
-            index < currentSlide ? '-translate-x-full' : 'translate-x-full'
+            index === currentSlide
+              ? "translate-x-0"
+              : index < currentSlide
+              ? "-translate-x-full"
+              : "translate-x-full"
           }`}
           onClick={() => handleSlideClick(slide)}
         >
-          <div className={`h-full ${slide.bgColor} dark:bg-gray-800 relative overflow-hidden`}>
+          <div
+            className={`h-full ${slide.bgColor} dark:bg-gray-800 relative overflow-hidden`}
+          >
             <div className="container mx-auto px-6 h-full flex items-center">
               <div className="grid lg:grid-cols-2 gap-8 items-center w-full">
                 {/* Content */}
@@ -95,7 +102,7 @@ const HeroBanner: React.FC = () => {
                   <div className="inline-block bg-black dark:bg-white text-white dark:text-black px-4 py-2 text-sm font-medium uppercase tracking-wide rounded-md">
                     {slide.offer}
                   </div>
-                  
+
                   <div>
                     <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-2 tracking-tight">
                       {slide.title}
@@ -107,9 +114,9 @@ const HeroBanner: React.FC = () => {
                       {slide.description}
                     </p>
                   </div>
-                  
+
                   <div className="flex space-x-4">
-                    <Button 
+                    <Button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleCtaClick(slide);
@@ -118,11 +125,11 @@ const HeroBanner: React.FC = () => {
                     >
                       {slide.cta}
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate('/about-us');
+                        navigate("/about-us");
                       }}
                       className="border border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-black px-6 py-2 font-medium uppercase tracking-wide rounded-full transition-all duration-300"
                     >
@@ -130,11 +137,11 @@ const HeroBanner: React.FC = () => {
                     </Button>
                   </div>
                 </div>
-                
+
                 {/* Image */}
                 <div className="hidden lg:block relative">
-                  <img 
-                    src={slide.image} 
+                  <img
+                    src={slide.image}
                     alt={slide.title}
                     className="w-full h-80 object-cover border border-gray-200 dark:border-gray-700 rounded-lg"
                   />
@@ -157,7 +164,7 @@ const HeroBanner: React.FC = () => {
       >
         <ChevronLeft className="w-6 h-6 text-gray-700 dark:text-gray-300" />
       </Button>
-      
+
       <Button
         variant="ghost"
         size="sm"
@@ -180,9 +187,9 @@ const HeroBanner: React.FC = () => {
               setCurrentSlide(index);
             }}
             className={`h-3 transition-all duration-300 rounded-full ${
-              index === currentSlide 
-                ? 'bg-[#111111] dark:bg-blue-600 w-8' 
-                : 'bg-gray-400 hover:bg-gray-600 w-3'
+              index === currentSlide
+                ? "bg-[#111111] dark:bg-blue-600 w-8"
+                : "bg-gray-400 hover:bg-gray-600 w-3"
             }`}
           />
         ))}

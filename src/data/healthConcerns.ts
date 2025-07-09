@@ -17,7 +17,7 @@ export const healthConcerns: HealthConcern[] = [
   },
   {
     id: "hc2",
-    title: "Strength & Wellness Support (Sachet Format)",
+    title: "Strength & Wellness Support",
     slug: "strength-wellness-sachets",
     icon: "💪",
     description: "Convenient sachets for daily strength and wellness",

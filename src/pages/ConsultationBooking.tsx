@@ -9,6 +9,9 @@ const ConsultationBooking: React.FC = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Add a loading state to prevent UI flash before redirect
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
   // Check authentication
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
@@ -24,16 +27,13 @@ const ConsultationBooking: React.FC = () => {
     preferredDate: "",
   });
 
-  // Authentication check and auto-populate form
   useEffect(() => {
     // Redirect to sign-in if not authenticated
     if (!isLoggedIn) {
-      // Store the intended destination for after login
       sessionStorage.setItem("postLoginRedirect", "/consultation-booking");
-      navigate("/sign-in");
+      navigate("/sign-in", { replace: true });
       return;
     }
-
     // Auto-populate form with user data if authenticated
     if (currentUser && Object.keys(currentUser).length > 0) {
       setFormData((prevData) => ({
@@ -45,6 +45,7 @@ const ConsultationBooking: React.FC = () => {
         mobileNumber: currentUser.phone || "",
       }));
     }
+    setCheckingAuth(false);
   }, [isLoggedIn, currentUser, navigate]);
 
   const healthConcerns = [
@@ -120,6 +121,11 @@ const ConsultationBooking: React.FC = () => {
       preferredDate: "",
     });
   };
+
+  if (checkingAuth) {
+    // Prevent UI flash before redirect
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">

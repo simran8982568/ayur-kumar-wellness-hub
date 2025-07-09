@@ -54,15 +54,13 @@ const Header: React.FC = () => {
     }
   };
 
-
-
   return (
     <>
       <header className="sticky top-0 z-40 w-full bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo - Now clickable */}
           <div
-            className="flex items-center space-x-2 sm:space-x-3 cursor-pointer hover:opacity-80 transition-opacity duration-300"
+            className="flex items-center space-x-2 sm:space-x-3 "
             onClick={handleLogoClick}
           >
             <div className="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
@@ -121,7 +119,11 @@ const Header: React.FC = () => {
               size="sm"
               onClick={handleCartClick}
               className="relative text-[#1C1C2D] hover:bg-gray-100 rounded-xl p-2"
-              aria-label={isLoggedIn ? `Shopping cart with ${cartItems} items` : "Shopping cart"}
+              aria-label={
+                isLoggedIn
+                  ? `Shopping cart with ${cartItems} items`
+                  : "Shopping cart"
+              }
             >
               <ShoppingCart className="h-5 w-5" />
               {isLoggedIn && cartItems > 0 && (
@@ -167,8 +169,6 @@ const Header: React.FC = () => {
           setIsCheckoutOpen(true);
         }}
       />
-
-     
     </>
   );
 };
