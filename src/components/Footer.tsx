@@ -76,7 +76,7 @@ const Footer: React.FC = () => {
                     href="/consultation-booking"
                     className="text-gray-600 hover:text-[#E5002B] transition-all duration-200 font-medium underline-offset-4"
                   >
-                    Consultation Booking
+                    Consultation 
                   </a>
                 </li>
               </ul>

@@ -30,6 +30,18 @@ interface CartItem {
   quantity: number;
 }
 
+interface Address {
+  id: number;
+  name: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+  type: "primary" | "secondary";
+  isPrimary: boolean;
+}
+
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,6 +74,12 @@ const CartPage: React.FC = () => {
   const [upiId, setUpiId] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+
+  // Address management states
+  const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [isCreatingAddress, setIsCreatingAddress] = useState(false);
 
   const paymentOptions = [
     {
@@ -101,6 +119,39 @@ const CartPage: React.FC = () => {
     const timer = setTimeout(() => {
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       setCartItems(cart);
+
+      // Load saved addresses
+      const addresses = JSON.parse(localStorage.getItem("addresses") || "[]");
+      setSavedAddresses(addresses);
+
+      // Load user profile data
+      const currentUser = localStorage.getItem("currentUser");
+      if (currentUser) {
+        const user = JSON.parse(currentUser);
+        setContactInfo({
+          phone: user.phone || "",
+          email: user.email || "",
+          fullName: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+        });
+      }
+
+      // Auto-select primary address if available
+      const primaryAddress = addresses.find((addr: Address) => addr.isPrimary);
+      if (primaryAddress) {
+        setSelectedAddressId(primaryAddress.id);
+        setDeliveryAddress({
+          address: primaryAddress.address,
+          pincode: primaryAddress.zip,
+          city: primaryAddress.city,
+          state: primaryAddress.state,
+          billingIsSame: true,
+          getUpdates: false,
+        });
+      } else if (addresses.length === 0) {
+        // No addresses exist, show address creation form
+        setShowAddressForm(true);
+      }
+
       setLoading(false);
     }, 1000);
 
@@ -179,21 +230,76 @@ const CartPage: React.FC = () => {
     }
   };
 
+  const handleAddressSelection = (addressId: number) => {
+    const selectedAddress = savedAddresses.find(addr => addr.id === addressId);
+    if (selectedAddress) {
+      setSelectedAddressId(addressId);
+      setDeliveryAddress({
+        address: selectedAddress.address,
+        pincode: selectedAddress.zip,
+        city: selectedAddress.city,
+        state: selectedAddress.state,
+        billingIsSame: true,
+        getUpdates: false,
+      });
+    }
+  };
+
+  const handleCreateAddress = async (newAddressData: any) => {
+    setIsCreatingAddress(true);
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const addresses = JSON.parse(localStorage.getItem("addresses") || "[]");
+    const hasPrimary = addresses.some((addr: Address) => addr.isPrimary);
+
+    const newAddress: Address = {
+      id: Date.now(),
+      name: newAddressData.name,
+      address: newAddressData.address,
+      city: newAddressData.city,
+      state: newAddressData.state,
+      zip: newAddressData.pincode,
+      country: newAddressData.country || "India",
+      type: hasPrimary ? "secondary" : "primary",
+      isPrimary: !hasPrimary,
+    };
+
+    const updatedAddresses = [...addresses, newAddress];
+    localStorage.setItem("addresses", JSON.stringify(updatedAddresses));
+    setSavedAddresses(updatedAddresses);
+
+    // Auto-select the newly created address
+    setSelectedAddressId(newAddress.id);
+    setDeliveryAddress({
+      address: newAddress.address,
+      pincode: newAddress.zip,
+      city: newAddress.city,
+      state: newAddress.state,
+      billingIsSame: true,
+      getUpdates: false,
+    });
+
+    setShowAddressForm(false);
+    setIsCreatingAddress(false);
+  };
+
   const validateForm = () => {
-    return (
-      contactInfo.phone &&
-      contactInfo.email &&
-      contactInfo.fullName &&
-      deliveryAddress.address &&
-      deliveryAddress.pincode &&
-      deliveryAddress.city &&
-      deliveryAddress.state
-    );
+    const hasContactInfo = contactInfo.phone && contactInfo.email && contactInfo.fullName;
+    const hasAddressSelected = selectedAddressId !== null;
+    const hasManualAddress = deliveryAddress.address && deliveryAddress.pincode && deliveryAddress.city && deliveryAddress.state;
+
+    return hasContactInfo && (hasAddressSelected || hasManualAddress);
   };
 
   const handlePlaceOrder = async () => {
     if (!validateForm()) {
-      alert("Please fill in all required delivery details to proceed");
+      if (!contactInfo.phone || !contactInfo.email || !contactInfo.fullName) {
+        alert("Please fill in all contact information to proceed");
+      } else if (!selectedAddressId && (!deliveryAddress.address || !deliveryAddress.pincode || !deliveryAddress.city || !deliveryAddress.state)) {
+        alert("Please select a delivery address or create a new one to proceed");
+      }
       return;
     }
 
@@ -218,6 +324,32 @@ const CartPage: React.FC = () => {
       estimatedDelivery,
       total: calculateTotal()
     });
+
+    // Save order to localStorage
+    const selectedAddress = savedAddresses.find(addr => addr.id === selectedAddressId);
+    const shippingAddress = selectedAddress
+      ? `${selectedAddress.address}, ${selectedAddress.city}, ${selectedAddress.state} ${selectedAddress.zip}`
+      : `${deliveryAddress.address}, ${deliveryAddress.city}, ${deliveryAddress.state} ${deliveryAddress.pincode}`;
+
+    const newOrder = {
+      id: parseInt(orderId.replace('ORD', '')),
+      date: new Date().toISOString().split('T')[0],
+      items: cartItems.reduce((total, item) => total + item.quantity, 0),
+      total: calculateTotal(),
+      status: "Processing",
+      productName: cartItems.length === 1 ? cartItems[0].name : `${cartItems.length} items`,
+      productImage: cartItems[0]?.image || "/api/placeholder/100/100",
+      shippingAddress: shippingAddress,
+      paymentMethod: paymentMethod === "upi" ? "UPI Payment" :
+                    paymentMethod === "card" ? "Credit/Debit Card" :
+                    paymentMethod === "wallet" ? "Digital Wallet" :
+                    paymentMethod === "netbanking" ? "Net Banking" : "Cash on Delivery",
+      trackingNumber: `TRK${Date.now()}`,
+    };
+
+    const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+    existingOrders.push(newOrder);
+    localStorage.setItem("orders", JSON.stringify(existingOrders));
 
     // Clear cart
     localStorage.removeItem("cart");
@@ -458,81 +590,111 @@ const CartPage: React.FC = () => {
 
             {/* Delivery Address */}
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-black dark:text-white mb-4">
-                Delivery Address
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-black dark:text-white mb-2">
-                    Address (House No., Building, Street, Area) *
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold text-black dark:text-white">
+                  Delivery Address
+                </h2>
+                {savedAddresses.length > 0 && !showAddressForm && (
+                  <Button
+                    onClick={() => setShowAddressForm(true)}
+                    variant="outline"
+                    size="sm"
+                    className="text-[#111111] border-[#111111]"
+                  >
+                    Add New Address
+                  </Button>
+                )}
+              </div>
+
+              {/* Address Selection */}
+              {savedAddresses.length > 0 && !showAddressForm && (
+                <div className="space-y-3 mb-4">
+                  <label className="block text-sm font-medium text-black dark:text-white">
+                    Select Delivery Address
                   </label>
-                  <Input
-                    value={deliveryAddress.address}
-                    onChange={(e) =>
-                      setDeliveryAddress((prev) => ({
-                        ...prev,
-                        address: e.target.value,
-                      }))
-                    }
-                    placeholder="Enter complete address"
-                    className="rounded-lg"
-                    required
+                  {savedAddresses.map((address) => (
+                    <div
+                      key={address.id}
+                      className={`border rounded-lg p-3 cursor-pointer transition-colors ${
+                        selectedAddressId === address.id
+                          ? "border-[#111111] bg-gray-50 dark:bg-gray-700"
+                          : "border-gray-200 dark:border-gray-600 hover:border-gray-300"
+                      }`}
+                      onClick={() => handleAddressSelection(address.id)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <input
+                            type="radio"
+                            checked={selectedAddressId === address.id}
+                            onChange={() => handleAddressSelection(address.id)}
+                            className="text-[#111111]"
+                          />
+                          <div>
+                            <div className="flex items-center space-x-2">
+                              <span className="font-medium text-black dark:text-white">
+                                {address.name}
+                              </span>
+                              {address.isPrimary && (
+                                <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
+                                  Primary
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
+                              {address.address}, {address.city}, {address.state} {address.zip}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Address Creation Form */}
+              {showAddressForm && (
+                <div className="space-y-4 border-t pt-4">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-medium text-black dark:text-white">
+                      {savedAddresses.length === 0 ? "Create Primary Address" : "Add New Address"}
+                    </h3>
+                    {savedAddresses.length > 0 && (
+                      <Button
+                        onClick={() => setShowAddressForm(false)}
+                        variant="outline"
+                        size="sm"
+                      >
+                        Cancel
+                      </Button>
+                    )}
+                  </div>
+                  <AddressCreationForm
+                    onSave={handleCreateAddress}
+                    isLoading={isCreatingAddress}
+                    isPrimary={savedAddresses.length === 0}
                   />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-black dark:text-white mb-2">
-                      Pincode *
-                    </label>
-                    <Input
-                      value={deliveryAddress.pincode}
-                      onChange={(e) =>
-                        setDeliveryAddress((prev) => ({
-                          ...prev,
-                          pincode: e.target.value,
-                        }))
-                      }
-                      placeholder="PIN code"
-                      className="rounded-lg"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-black dark:text-white mb-2">
-                      City *
-                    </label>
-                    <Input
-                      value={deliveryAddress.city}
-                      onChange={(e) =>
-                        setDeliveryAddress((prev) => ({
-                          ...prev,
-                          city: e.target.value,
-                        }))
-                      }
-                      placeholder="City"
-                      className="rounded-lg"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-black dark:text-white mb-2">
-                      State *
-                    </label>
-                    <Input
-                      value={deliveryAddress.state}
-                      onChange={(e) =>
-                        setDeliveryAddress((prev) => ({
-                          ...prev,
-                          state: e.target.value,
-                        }))
-                      }
-                      placeholder="State"
-                      className="rounded-lg"
-                      required
-                    />
-                  </div>
+              )}
+
+              {/* Manual Address Entry (fallback) */}
+              {!showAddressForm && savedAddresses.length === 0 && (
+                <div className="text-center py-8">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
+                    No saved addresses found. Please create an address to continue.
+                  </p>
+                  <Button
+                    onClick={() => setShowAddressForm(true)}
+                    className="bg-[#111111] hover:bg-[#111111]/90 text-white"
+                  >
+                    Create Address
+                  </Button>
                 </div>
-                <div className="space-y-2">
+              )}
+
+              {/* Address Options */}
+              {selectedAddressId && !showAddressForm && (
+                <div className="space-y-2 pt-4 border-t">
                   <label className="flex items-center space-x-2">
                     <input
                       type="checkbox"
@@ -566,7 +728,7 @@ const CartPage: React.FC = () => {
                     </span>
                   </label>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Payment Method */}
@@ -878,6 +1040,125 @@ const CartPage: React.FC = () => {
       <Footer />
     </div>
     </>
+  );
+};
+
+// Address Creation Form Component
+const AddressCreationForm: React.FC<{
+  onSave: (addressData: any) => void;
+  isLoading: boolean;
+  isPrimary: boolean;
+}> = ({ onSave, isLoading, isPrimary }) => {
+  const [formData, setFormData] = useState({
+    name: isPrimary ? "Home" : "Work",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+    country: "India",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave(formData);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-black dark:text-white mb-2">
+          Address Name *
+        </label>
+        <Input
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="e.g., Home, Office"
+          className="rounded-lg"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-black dark:text-white mb-2">
+          Complete Address *
+        </label>
+        <Input
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          placeholder="House No., Building, Street, Area"
+          className="rounded-lg"
+          required
+        />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-black dark:text-white mb-2">
+            Pincode *
+          </label>
+          <Input
+            name="pincode"
+            value={formData.pincode}
+            onChange={handleChange}
+            placeholder="PIN code"
+            className="rounded-lg"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-black dark:text-white mb-2">
+            City *
+          </label>
+          <Input
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            placeholder="City"
+            className="rounded-lg"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-black dark:text-white mb-2">
+            State *
+          </label>
+          <Input
+            name="state"
+            value={formData.state}
+            onChange={handleChange}
+            placeholder="State"
+            className="rounded-lg"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="flex space-x-3">
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className="bg-[#111111] hover:bg-[#111111]/90 text-white"
+        >
+          {isLoading ? (
+            <div className="flex items-center space-x-2">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>Creating...</span>
+            </div>
+          ) : (
+            `Create ${isPrimary ? "Primary" : "Secondary"} Address`
+          )}
+        </Button>
+      </div>
+    </form>
   );
 };
 

@@ -20,11 +20,10 @@ interface Order {
 
 interface Address {
   id: number;
-  name: string;
   address: string;
   city: string;
   state: string;
-  zip: string;
+  pin: string; // changed from zip to pin
   country: string;
   type: "primary" | "secondary";
   isPrimary: boolean;
@@ -35,85 +34,37 @@ const Account: React.FC = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("profile");
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [orders, setOrders] = useState<Order[]>([
-    {
-      id: 1,
-      date: "2023-01-15",
-      items: 3,
-      total: 145.0,
-      status: "Delivered",
-      productName: "Ayurvedic Strength Booster",
-      productImage: "/api/placeholder/100/100",
-      shippingAddress: "123 Main St, Anytown, CA 91234",
-      paymentMethod: "Credit Card ending in 1234",
-      trackingNumber: "TRK123456789",
-    },
-    {
-      id: 2,
-      date: "2023-02-01",
-      items: 1,
-      total: 79.99,
-      status: "Shipped",
-      productName: "Herbal Wellness Capsules",
-      productImage: "/api/placeholder/100/100",
-      shippingAddress: "123 Main St, Anytown, CA 91234",
-      paymentMethod: "UPI Payment",
-      trackingNumber: "TRK987654321",
-    },
-    {
-      id: 3,
-      date: "2023-02-15",
-      items: 2,
-      total: 98.5,
-      status: "Processing",
-      productName: "Natural Energy Sachets",
-      productImage: "/api/placeholder/100/100",
-      shippingAddress: "123 Main St, Anytown, CA 91234",
-      paymentMethod: "Debit Card ending in 5678",
-    },
-  ]);
-  const [addresses, setAddresses] = useState<Address[]>([
-    {
-      id: 1,
-      name: "Home",
-      address: "123 Main St",
-      city: "Anytown",
-      state: "CA",
-      zip: "91234",
-      country: "USA",
-      type: "primary",
-      isPrimary: true,
-    },
-    {
-      id: 2,
-      name: "Work",
-      address: "456 Business Ave",
-      city: "Anytown",
-      state: "CA",
-      zip: "91234",
-      country: "USA",
-      type: "secondary",
-      isPrimary: false,
-    },
-  ]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [addresses, setAddresses] = useState<Address[]>([]);
 
   const [profileData, setProfileData] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+91 9876543210",
+    name: "",
+    email: "",
+    phone: "",
   });
 
   useEffect(() => {
-    // Load profile data from localStorage
-    const storedProfile = localStorage.getItem("profile");
-    if (storedProfile) {
-      setProfileData(JSON.parse(storedProfile));
+    // Load profile data from authenticated user
+    const currentUser = localStorage.getItem("currentUser");
+    if (currentUser) {
+      const user = JSON.parse(currentUser);
+      setProfileData({
+        name: `${user.firstName} ${user.lastName}`,
+        email: user.email,
+        phone: user.phone,
+      });
     }
 
     // Load addresses from localStorage
     const storedAddresses = localStorage.getItem("addresses");
     if (storedAddresses) {
       setAddresses(JSON.parse(storedAddresses));
+    }
+
+    // Load orders from localStorage
+    const storedOrders = localStorage.getItem("orders");
+    if (storedOrders) {
+      setOrders(JSON.parse(storedOrders));
     }
   }, []);
 
@@ -132,85 +83,90 @@ const Account: React.FC = () => {
   const renderProfileSection = () => (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-[#1C1C2D]">My Profile</h2>
-      <form className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Full Name
-          </label>
-          <input
-            type="text"
-            value={profileData.name}
-            readOnly
-            disabled
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
-            title="Name cannot be changed"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email ID
-          </label>
-          <input
-            type="email"
-            value={profileData.email}
-            readOnly
-            disabled
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
-            title="Email ID cannot be changed"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            value={profileData.phone}
-            readOnly
-            disabled
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
-            title="Phone number cannot be changed"
-          />
-        </div>
-      </form>
-      {/* Show primary and secondary addresses in profile section */}
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-[#1C1C2D] mt-6">
-          Saved Addresses
-        </h3>
-        {addresses.length === 0 && (
-          <p className="text-gray-500">No addresses saved.</p>
-        )}
-        {addresses.map((address) => (
-          <div
-            key={address.id}
-            className={`rounded-lg border p-3 mb-2 ${
-              address.isPrimary
-                ? "border-blue-300 bg-blue-50"
-                : "border-gray-200"
-            }`}
-          >
-            <div className="flex items-center gap-3 mb-1">
-              <span className="font-medium text-gray-900">{address.name}</span>
-              <span
-                className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                  address.isPrimary
-                    ? "bg-blue-100 text-blue-800"
-                    : "bg-gray-100 text-gray-800"
-                }`}
-              >
-                {address.isPrimary ? "Primary Address" : "Secondary Address"}
-              </span>
-            </div>
-            <div className="text-gray-600 text-sm">
-              {address.address}, {address.city}, {address.state} {address.zip},
-              {address.country}
-            </div>
+      {profileData.name ? (
+        <form className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Full Name
+            </label>
+            <input
+              type="text"
+              value={profileData.name}
+              readOnly
+              disabled
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+              title="Name cannot be changed"
+            />
           </div>
-        ))}
-      </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email ID
+            </label>
+            <input
+              type="email"
+              value={profileData.email}
+              readOnly
+              disabled
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+              title="Email ID cannot be changed"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              value={profileData.phone}
+              readOnly
+              disabled
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+              title="Phone number cannot be changed"
+            />
+          </div>
+        </form>
+      ) : (
+        <div className="text-center py-8">
+          <p className="text-gray-500">Please log in to view your profile details.</p>
+        </div>
+      )}
+      {/* Show primary and secondary addresses in profile section only if addresses exist */}
+      {addresses.length > 0 && (
+        <div className="space-y-2">
+          <h3 className="text-lg font-semibold text-[#1C1C2D] mt-6">
+            Saved Addresses
+          </h3>
+          {addresses.map((address) => (
+            <div
+              key={address.id}
+              className={`rounded-lg border p-3 mb-2 ${
+                address.isPrimary
+                  ? "border-blue-300 bg-blue-50"
+                  : "border-gray-200"
+              }`}
+            >
+              <div className="flex items-center gap-3 mb-1">
+                <span className="font-medium text-gray-900">{/* name removed */}</span>
+                <span
+                  className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                    address.isPrimary
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-gray-100 text-gray-800"
+                  }`}
+                >
+                  {address.isPrimary ? "Primary Address" : "Secondary Address"}
+                </span>
+              </div>
+              <div className="text-gray-600 text-sm">
+                {address.address}, {address.city}, {address.state} {address.pin},
+                {address.country}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 
@@ -411,7 +367,10 @@ const Account: React.FC = () => {
             ))}
           </div>
         ) : (
-          <p className="text-gray-600">No orders found.</p>
+          <div className="text-center py-8">
+            <p className="text-gray-600">No orders found.</p>
+            <p className="text-sm text-gray-500 mt-2">Your order history will appear here once you place an order.</p>
+          </div>
         )}
       </div>
     );
@@ -541,9 +500,7 @@ const Account: React.FC = () => {
           <div className="flex justify-between items-start">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <h3 className="text-lg font-medium text-gray-900">
-                  {address.name}
-                </h3>
+                {/* Removed name display */}
                 <span
                   className={`px-2 py-1 text-xs font-semibold rounded-full ${
                     address.isPrimary
@@ -556,7 +513,7 @@ const Account: React.FC = () => {
               </div>
               <p className="text-gray-600">{address.address}</p>
               <p className="text-gray-600">
-                {address.city}, {address.state} {address.zip}
+                {address.city}, {address.state} {address.pin}
               </p>
               <p className="text-gray-600">{address.country}</p>
             </div>
@@ -589,13 +546,15 @@ const Account: React.FC = () => {
     onCancel: () => void;
   }> = ({ address, onSave, onCancel }) => {
     const [formData, setFormData] = useState({
-      name: address?.name || "",
       address: address?.address || "",
       city: address?.city || "",
       state: address?.state || "",
-      zip: address?.zip || "",
+      pin: address?.pin || "", // changed from zip
       country: address?.country || "India",
-      isPrimary: address?.isPrimary || false,
+      isPrimary:
+        address?.isPrimary !== undefined
+          ? address.isPrimary
+          : !addresses.some((addr) => addr.isPrimary), // Default to primary if none exists
     });
 
     const hasPrimary = addresses.some(
@@ -607,11 +566,8 @@ const Account: React.FC = () => {
       e.preventDefault();
       const addressData = {
         ...formData,
-        type: formData.isPrimary
-          ? ("primary" as const)
-          : ("secondary" as const),
+        type: formData.isPrimary ? ("primary" as const) : ("secondary" as const),
       };
-
       if (address) {
         onSave({ ...address, ...addressData });
       } else {
@@ -625,22 +581,6 @@ const Account: React.FC = () => {
           {address ? "Edit Address" : "Add New Address"}
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Address Name *
-            </label>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              required
-              placeholder="e.g., Home, Office"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#111111] focus:border-transparent"
-            />
-          </div>
-
           {/* Address Type Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -675,9 +615,7 @@ const Account: React.FC = () => {
                   type="radio"
                   name="addressType"
                   checked={!formData.isPrimary}
-                  onChange={() =>
-                    setFormData({ ...formData, isPrimary: false })
-                  }
+                  onChange={() => setFormData({ ...formData, isPrimary: false })}
                   className="mt-1 mr-3 text-[#111111] focus:ring-[#111111]"
                 />
                 <div>
@@ -745,13 +683,13 @@ const Account: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                ZIP Code *
+                Pin Code *
               </label>
               <input
                 type="text"
-                value={formData.zip}
+                value={formData.pin}
                 onChange={(e) =>
-                  setFormData({ ...formData, zip: e.target.value })
+                  setFormData({ ...formData, pin: e.target.value })
                 }
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#111111] focus:border-transparent"
